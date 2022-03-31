@@ -4,9 +4,9 @@ Egg Incubator for Hardware verison 4.1
 - [x] generate project
 - [x] set up pins
 - [x] share the code in the github
-- [ ] define code strategy
+- [x] define code strategy
 - [ ] writing library
-  - [ ] LCD
+  - [x] LCD
   - [ ] Keys
   - [ ] SHT
   - [ ] Buzzers
