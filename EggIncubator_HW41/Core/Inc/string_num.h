@@ -9,5 +9,5 @@
 #define INC_STRING_NUM_H_
 
 //void ftoa(float a ,uint8_t *integer_part,uint8_t *fractional_part);
-void ftoa(float a ,char *str);
+char * ftoa(float a );
 #endif /* INC_STRING_NUM_H_ */

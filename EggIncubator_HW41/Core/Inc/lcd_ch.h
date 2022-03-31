@@ -96,7 +96,16 @@
 // DDRAM address of first char of line 2
 #define LCD16X2_START_LINE_2	0x40
 ///////////////////////////////////////////////////////////////
-
+#define MORGHSHAKHDAR_STR	0	
+#define BOGHALAMOON_STR		1
+#define BELDERCHIN_STR		2
+#define	GHARGHAVOL_STR		3
+#define KABK_STR					4
+#define ORDAK_STR					5
+#define GHAZ_STR					6
+#define SHOTORMORGH_STR		7
+#define DASTI_STR					8
+#define MORGH_STR					9
 
 #define	CUSTOM1_CHAR_TO	0
 #define	CUSTOM1_CHAR_SE	1
@@ -141,4 +150,6 @@ void LCD_clear_home(void);
 void LCD_gotoxy(unsigned char x_pos, unsigned char y_pos);
 void LCD_putstrpos(char *lcd_string,unsigned char x_pos, unsigned char y_pos);
 void LCD_put_custom_char( uint8_t location);
+void LCD_putpersian(uint8_t StringCode,uint8_t posx,uint8_t posy);
+
 #endif /* LCD_CH_H_ */

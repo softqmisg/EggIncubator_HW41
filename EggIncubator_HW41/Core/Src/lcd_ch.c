@@ -5,17 +5,45 @@
  *      Author: mehdi
  */
 #include "lcd_ch.h"
+uint8_t MorghShakhdar_Pos_ch[]={0,1,2,3,4,5,6,1};
+uint8_t Boghalamoon_Pos_ch[]={7,8,9,10,11,8,12};
+uint8_t Belderchin_Pos_ch[]={7,10,13,1,14,15,12};
+uint8_t Gharghavol_Pos_ch[]={9,16,9,4,8,17};
+uint8_t Kabk_Pos_ch[]={18,19,20};
+uint8_t Ordak_Pos_ch[]={6,1,13,20};
+uint8_t Ghaz_Pos_ch[]={21,4,22};
+uint8_t Shotormorgh_Pos_ch[]={3,23,16,0,1,2};
+uint8_t Dasti_Pos_ch[]={13,24,23,25};
+uint8_t Morgh_Pos_ch[]={0,1,2};
 
-uint8_t custom_char1[][8] = {
-		   {6, 0, 1, 25, 30, 8, 24, 0 },//TO
-		   {0, 0, 1, 25, 25, 30, 0, 0 },//SE
-		   {0, 0, 12, 20, 28, 7, 0, 0 },//EM
-		   {0, 24, 9, 11, 30, 0, 0, 0 },//MHV
-		   {0, 0, 0, 3, 11, 9, 27, 0 },//RGH
-			 {3, 16, 18, 21, 21, 30, 0,0 },//AS
-			 {0, 0, 1, 19, 11, 15, 24,0 },//D
-			 {0, 1, 2, 4, 4, 28, 0, 0 }//K
-   };
+uint8_t custom_character[][8] = {
+		   {0x00, 0x00, 0x00, 0x1f, 0x05, 0x07, 0x00, 0x00 },//0//Mo
+		   {0x00, 0x00, 0x00, 0x02, 0x02, 0x02, 0x04, 0x18 },//1//R
+		   {0x02, 0x00, 0x03, 0x04, 0x0b, 0x08, 0x08, 0x07 },//2//Gh
+		   {0x04, 0x0A, 0x00, 0x15, 0x15, 0x1f, 0x00, 0x00 },//3//Sh
+		   {0x00, 0x04, 0x04, 0x04, 0x04, 0x07, 0x00, 0x00 },//4//A_
+			 {0x04, 0x00, 0x06, 0x11, 0x09, 0x0F, 0x10,	0x00 },//5//KhD
+			 {0x00, 0x04, 0x04, 0x04, 0x04, 0x04, 0x00,	0x00 },//6//A
+			 {0x00, 0x00, 0x00, 0x02, 0x02, 0x1e, 0x00, 0x04 },//7//B
+			 {0x00, 0x00, 0x00, 0x0e, 0x0a, 0x0f, 0x04, 0x18 },//8//Oo
+			 {0x00, 0x05, 0x00, 0x07, 0x05, 0x1f, 0x00, 0x00 },//9//Gh
+			 {0x00, 0x02, 0x02, 0x02, 0x02, 0x1f, 0x00, 0x00 },//10//_L_
+			 {0x00, 0x00, 0x00, 0x00, 0x00, 0x1f, 0x05, 0x07 },//11//m
+			 {0x00, 0x04, 0x00, 0x11, 0x11, 0x11, 0x0e, 0x00 },//12//N
+			 {0x00, 0x00, 0x00, 0x0c, 0x02, 0x01, 0x02, 0x0c },//13//D
+			 {0x00, 0x00, 0x00, 0x0e, 0x01, 0x1f, 0x00, 0x0e },//14//Ch			 
+			 {0x00, 0x00, 0x00, 0x02, 0x02, 0x1f, 0x00, 0x0c },//15//_Ie_		 			 
+			 {0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x04, 0x18 },//16//_R		 			 
+			 {0x00, 0x01, 0x01, 0x01, 0x11, 0x11, 0x0E, 0x00 },//17//L		 			 
+			 {0x01, 0x02, 0x04, 0x02, 0x01, 0x1f, 0x00, 0x00 },//18//K_		 			 
+			 {0x00, 0x00, 0x00, 0x02, 0x02, 0x1f, 0x00, 0x04 },//19//_B_		 			 
+			 {0x01, 0x02, 0x04, 0x02, 0x11, 0x1f, 0x00, 0x00 },//20//K		 			 
+			 {0x02, 0x00, 0x03, 0x04, 0x04, 0x1f, 0x00, 0x00 },//21//Gh_		 			 
+			 {0x00, 0x02, 0x00, 0x02, 0x02, 0x02, 0x04, 0x18 },//22//Z		 			 
+			 {0x00, 0x00, 0x18, 0x02, 0x02, 0x1f, 0x00, 0x00 },//23//_T_		 			 
+			 {0x00, 0x00, 0x00, 0x15, 0x15, 0x1f, 0x00, 0x00 },//24//S
+			 {0x00, 0x00, 0x00, 0x00, 0x00, 0x13, 0x12, 0x0C },//25//Y
+};
    uint8_t custom_char2[][8] = {
 		   {0, 2, 3, 18, 18, 18, 12, 0 },//S
 		   {0, 23, 21, 7, 1, 1, 14, 0 },//V
@@ -92,8 +120,29 @@ void LCD_clear_home(void)
 	LCD_send(LCD16X2_CURSOR_HOME, CMD);
 }
 /*
+ * 	cerate custom  character in location of CGRAM
+ *	data_bytes of value of  
+*/
+void LCD_create_custom_char(uint8_t location, uint8_t* data_bytes)
+{
+	int i;
+
+	// We only have 8 locations 0-7 for custom chars
+	location &= 0x07;
+
+	// Set CGRAM address
+	LCD_send(LCD16X2_SET_CGRAM_ADDRESS | (location << 3),CMD);
+
+	// Write 8 bytes custom char pattern
+	for (i = 0; i < 8; i++)
+	{
+		LCD_send(data_bytes[i],DAT);
+	}
+}
+/*
  * initilize lcd
  */
+
 void LCD_init(void)
 {
 	HAL_GPIO_WritePin(LCDWR_PORT, LCDWR_PIN, GPIO_PIN_RESET);
@@ -106,6 +155,7 @@ void LCD_init(void)
 	LCD_send(LCD16X2_DISPLAY_CURSOR_ON_OFF| LCD16X2_DISPLAY_ON| LCD16X2_CURSOR_UNDERLINE_OFF|LCD16X2_CURSOR_BLINK_OFF,CMD);
 	LCD_clear_home();
 	LCD_send(LCD16X2_CHARACTER_ENTRY_MODE|LCD16X2_INCREMENT|LCD16X2_DISPLAY_SHIFT_OFF,CMD);
+	
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -113,13 +163,7 @@ void LCD_putstr(char *lcd_string)
 {
 	do
 	{
-		if((*lcd_string)<128)
-			LCD_send(*lcd_string++, DAT);
-		else
-		{
-			LCD_put_custom_char(*lcd_string-128);
-			lcd_string++;
-		}
+		LCD_send(*lcd_string++, DAT);
 	}while(*lcd_string != '\0');
 }
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -241,23 +285,7 @@ void LCD_cursor_shift_right(void)
 	LCD_send(LCD16X2_DISPLAY_CURSOR_SHIFT |
 			LCD16X2_CURSOR_MOVE | LCD16X2_RIGHT_SHIFT,CMD);
 }
-//////////////////////////////////////////////////////////////////////////////////////////
-void LCD_create_custom_char(uint8_t location, uint8_t* data_bytes)
-{
-	int i;
 
-	// We only have 8 locations 0-7 for custom chars
-	location &= 0x07;
-
-	// Set CGRAM address
-	LCD_send(LCD16X2_SET_CGRAM_ADDRESS | (location << 3),CMD);
-
-	// Write 8 bytes custom char pattern
-	for (i = 0; i < 8; i++)
-	{
-		LCD_send(data_bytes[i],DAT);
-	}
-}
 //////////////////////////////////////////////////////////////////////////////////////////
 void LCD_put_custom_char( uint8_t location)
 {
@@ -270,6 +298,61 @@ void LCD_load_custom_char(uint8_t custom_chars[][8])
 				LCD_create_custom_char(i, custom_chars[i]);	
 }
 //////////////////////////////////////////////////////////////////////////////////////////
+
+	 
+void LCD_putpersian(uint8_t StringCode,uint8_t posx,uint8_t posy)
+{
+	uint8_t lengthofcustom=0;
+	uint8_t *posofcustomchar;
+	switch(StringCode)
+	{
+		case MORGHSHAKHDAR_STR:
+			lengthofcustom=8;
+			posofcustomchar=MorghShakhdar_Pos_ch;
+		break;
+		case BOGHALAMOON_STR:
+			lengthofcustom=7;
+			posofcustomchar=Boghalamoon_Pos_ch;
+		break;
+		case BELDERCHIN_STR:
+			lengthofcustom=7;
+			posofcustomchar=Belderchin_Pos_ch;
+		break;
+		case GHARGHAVOL_STR:
+			lengthofcustom=6;
+			posofcustomchar=Gharghavol_Pos_ch;
+		break;		
+		case KABK_STR:
+			lengthofcustom=3;
+			posofcustomchar=Kabk_Pos_ch;
+		break;	
+		case ORDAK_STR:
+			lengthofcustom=4;
+			posofcustomchar=Ordak_Pos_ch;
+		break;	
+		case GHAZ_STR:
+			lengthofcustom=3;
+			posofcustomchar=Ghaz_Pos_ch;
+		break;	
+		case SHOTORMORGH_STR:
+			lengthofcustom=6;
+			posofcustomchar=Shotormorgh_Pos_ch;
+		break;	
+		case DASTI_STR:
+			lengthofcustom=4;
+			posofcustomchar=Dasti_Pos_ch;
+		break;
+		case MORGH_STR:
+			lengthofcustom=3;
+			posofcustomchar=Morgh_Pos_ch;
+		break;
+	}
+	for( uint8_t i=0;i<lengthofcustom;i++)
+		LCD_create_custom_char(i,custom_character[posofcustomchar[i]]);
+	LCD_gotoxy(posx,posy);
+	for( uint8_t i=0;i<lengthofcustom;i++)
+		LCD_send(lengthofcustom-1-i,DAT);//(lengthofcustom-1-i);
+}
 /*void LCD_put_custom_text(uint8_t x,uint8_t y,uint8_t text)
 {
 	if(text==CUSTOM_TEXT_BIRD)

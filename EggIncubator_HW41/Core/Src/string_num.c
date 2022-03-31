@@ -13,11 +13,12 @@
 //	   *integer_part=(uint8_t)a;
 //	   *fractional_part=(int)((a-(double)*integer_part)*10.0);
 //}
-
-void ftoa(float a ,char *str)
+char ftoa_str[16];
+char * ftoa(float a )
 {
 	uint8_t integer_part=(uint8_t)a;
 	uint8_t fractional_part=(int)((a-(double)integer_part)*10.0);
-	sprintf(str,"%d.%d",integer_part,fractional_part);
+	sprintf(ftoa_str,"%d.%d",integer_part,fractional_part);
+	return ftoa_str;
 
 }

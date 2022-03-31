@@ -105,17 +105,23 @@ int main(void)
 
   LCD_init();
   char lcd_str[16];
-  sprintf(lcd_str,"Hello Mehdi%d",12);
-  LCD_putstrpos(lcd_str, 0, 0);
-
+	char lcd_float[16];
+  //sprintf(lcd_str,"Hello Mehdi%d",12);
+  //LCD_putstrpos(lcd_str, 0, 0);
+	LCD_putpersian(MORGH_STR,5,0);
   float a=30.2;
 //  uint8_t integer_part,fractional_part;
 //  ftoa(a, &integer_part,&fractional_part);
 //  sprintf(lcd_str,"%d.%d",integer_part,fractional_part);
 //  LCD_putstrpos(lcd_str, 0, 1);
-    ftoa(a,lcd_str);
+  
+	sprintf(lcd_str,"Mehdi:%s",ftoa(a));
   LCD_putstrpos(lcd_str, 0, 1);
 
+	HAL_Delay(5000);
+
+	sprintf(lcd_str,"Mehdi:%s",ftoa(42.6));
+  LCD_putstrpos(lcd_str, 0, 1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
