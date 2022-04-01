@@ -108,8 +108,11 @@ int main(void)
 	char lcd_float[16];
   //sprintf(lcd_str,"Hello Mehdi%d",12);
   //LCD_putstrpos(lcd_str, 0, 0);
-	LCD_putpersian(MORGH_STR,5,0);
-  float a=30.2;
+	LCD_putpersian(ROTOBAT_STR,9,0);
+
+LCD_putpersian(DAMA_STR,5,0);
+
+float a=30.2;
 //  uint8_t integer_part,fractional_part;
 //  ftoa(a, &integer_part,&fractional_part);
 //  sprintf(lcd_str,"%d.%d",integer_part,fractional_part);

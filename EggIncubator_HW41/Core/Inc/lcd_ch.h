@@ -106,6 +106,12 @@
 #define SHOTORMORGH_STR		7
 #define DASTI_STR					8
 #define MORGH_STR					9
+#define TIMER_STR					10
+#define CHARKHSH_STR			11
+#define DAMA_STR					12
+#define ROTOBAT_STR				13
+#define ZAMAN_STR					14
+#define ROOZ_STR					15
 
 #define	CUSTOM1_CHAR_TO	0
 #define	CUSTOM1_CHAR_SE	1

@@ -3,7 +3,7 @@
 <title>Static Call Graph - [EggIncubator_HW41\EggIncubator_HW41.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image EggIncubator_HW41\EggIncubator_HW41.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6140002: Last Updated: Thu Mar 31 17:42:15 2022
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6140002: Last Updated: Fri Apr  1 18:51:32 2022
 <BR><P>
 <H3>Maximum Stack Usage =        204 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -299,6 +299,10 @@ Global Symbols
 
 <P><STRONG><a name="[79]"></a>__scatterload_rt2</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, init.o(.text), UNUSED)
 
+<P><STRONG><a name="[7a]"></a>__decompress</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __dczerorl.o(.text), UNUSED)
+
+<P><STRONG><a name="[7b]"></a>__decompress0</STRONG> (Thumb, 58 bytes, Stack size unknown bytes, __dczerorl.o(.text), UNUSED)
+
 <P><STRONG><a name="[5b]"></a>Error_Handler</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, main.o(.text.Error_Handler))
 <BR><BR>[Called By]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_TIM1_Init
 <LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_I2C1_Init
@@ -477,7 +481,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_TIM1_Init
 </UL>
 
-<P><STRONG><a name="[49]"></a>HAL_TIM_MspPostInit</STRONG> (Thumb, 76 bytes, Stack size 32 bytes, tim.o(.text.HAL_TIM_MspPostInit))
+<P><STRONG><a name="[49]"></a>HAL_TIM_MspPostInit</STRONG> (Thumb, 80 bytes, Stack size 32 bytes, tim.o(.text.HAL_TIM_MspPostInit))
 <BR><BR>[Stack]<UL><LI>Max Depth = 84<LI>Call Chain = HAL_TIM_MspPostInit &rArr; HAL_GPIO_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_Init
@@ -560,7 +564,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[1a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[57]"></a>LCD_putpersian</STRONG> (Thumb, 168 bytes, Stack size 32 bytes, lcd_ch.o(.text.LCD_putpersian))
+<P><STRONG><a name="[57]"></a>LCD_putpersian</STRONG> (Thumb, 232 bytes, Stack size 32 bytes, lcd_ch.o(.text.LCD_putpersian))
 <BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = LCD_putpersian &rArr; LCD_create_custom_char &rArr; LCD_send &rArr; LCD_4bit_send &rArr; toggle_EN_pin
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_send
@@ -703,7 +707,7 @@ Global Symbols
 <LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcd_delay_us
 </UL>
 
-<P><STRONG><a name="[1a]"></a>main</STRONG> (Thumb, 164 bytes, Stack size 16 bytes, main.o(.text.main))
+<P><STRONG><a name="[1a]"></a>main</STRONG> (Thumb, 176 bytes, Stack size 16 bytes, main.o(.text.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 204<LI>Call Chain = main &rArr; MX_TIM1_Init &rArr; HAL_TIM_MspPostInit &rArr; HAL_GPIO_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ftoa
@@ -734,7 +738,7 @@ Global Symbols
 <LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_core
 </UL>
 
-<P><STRONG><a name="[7a]"></a>__1sprintf$3</STRONG> (Thumb, 0 bytes, Stack size 24 bytes, printf3.o(i.__0sprintf$3), UNUSED)
+<P><STRONG><a name="[7c]"></a>__1sprintf$3</STRONG> (Thumb, 0 bytes, Stack size 24 bytes, printf3.o(i.__0sprintf$3), UNUSED)
 
 <P><STRONG><a name="[66]"></a>__2sprintf</STRONG> (Thumb, 0 bytes, Stack size 24 bytes, printf3.o(i.__0sprintf$3))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = __2sprintf
@@ -747,11 +751,11 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[29]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_double_epilogue
 </UL>
 
-<P><STRONG><a name="[7b]"></a>__scatterload_copy</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_copy), UNUSED)
+<P><STRONG><a name="[7d]"></a>__scatterload_copy</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_copy), UNUSED)
 
-<P><STRONG><a name="[7c]"></a>__scatterload_null</STRONG> (Thumb, 2 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_null), UNUSED)
+<P><STRONG><a name="[7e]"></a>__scatterload_null</STRONG> (Thumb, 2 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_null), UNUSED)
 
-<P><STRONG><a name="[7d]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
+<P><STRONG><a name="[7f]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
 <P>
 <H3>
 Local Symbols
