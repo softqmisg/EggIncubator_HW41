@@ -113,40 +113,6 @@
 #define ZAMAN_STR					14
 #define ROOZ_STR					15
 
-#define	CUSTOM1_CHAR_TO	0
-#define	CUSTOM1_CHAR_SE	1
-#define	CUSTOM1_CHAR_EM	2
-#define	CUSTOM1_CHAR_MHV	3
-#define	CUSTOM1_CHAR_RGH	4
-#define	CUSTOM1_CHAR_AS	5
-#define	CUSTOM1_CHAR_D	6
-#define	CUSTOM1_CHAR_K	7
-
-#define	ASCII_CHAR_TO CUSTOM1_CHAR_TO+128
-#define	ASCII_CHAR_SE CUSTOM1_CHAR_SE+128
-#define	ASCII_CHAR_EM CUSTOM1_CHAR_EM+128
-#define	ASCII_CHAR_MHV CUSTOM1_CHAR_MHV+128
-#define	ASCII_CHAR_RGH CUSTOM1_CHAR_RGH+128
-#define	ASCII_CHAR_AS CUSTOM1_CHAR_AS+128
-#define	ASCII_CHAR_D CUSTOM1_CHAR_D+128
-#define	ASCII_CHAR_K CUSTOM1_CHAR_K+128
-
-#define	CUSTOM2_CHAR_BEEP	7
-#define	CUSTOM2_CHAR_dC	6
-#define CUSTOM2_CHAR_THERMO 5
-#define CUSTOM2_CHAR_DROP 4
-//#define CUSTOM_CHAR_GH	3
-//#define CUSTOM_CHAR_NN	2
-//#define CUSTOM_CHAR_V	1
-//#define CUSTOM_CHAR_S	0
-
-//#define ASCII_CHAR_GH	CUSTOM_CHAR_GH+128
-//#define ASCII_CHAR_NN	CUSTOM_CHAR_NN+128
-//#define ASCII_CHAR_V	CUSTOM_CHAR_V+128
-//#define ASCII_CHAR_S	CUSTOM_CHAR_S+128
-#define ASCII_CHAR_dC	CUSTOM2_CHAR_dC+128
-#define ASCII_CHAR_DROP CUSTOM2_CHAR_DROP+128
-#define ASCII_CHAR_THERMO CUSTOM2_CHAR_THERMO+128
 ///////////////////////////////////////////////////////////////
 void LCD_backlight(uint8_t onoff);
 void LCD_init(void);
@@ -157,5 +123,6 @@ void LCD_gotoxy(unsigned char x_pos, unsigned char y_pos);
 void LCD_putstrpos(char *lcd_string,unsigned char x_pos, unsigned char y_pos);
 void LCD_put_custom_char( uint8_t location);
 void LCD_putpersian(uint8_t StringCode,uint8_t posx,uint8_t posy);
+void LCD_clearrow(uint8_t row);
 
 #endif /* LCD_CH_H_ */

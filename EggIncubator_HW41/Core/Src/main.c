@@ -28,6 +28,7 @@
 #include <stdio.h>
 #include "lcd_ch.h"
 #include "string_num.h"
+#include "sht2x_BB.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -105,7 +106,7 @@ int main(void)
 
   LCD_init();
   char lcd_str[16];
-	char lcd_float[16];
+	//char lcd_float[16];
   //sprintf(lcd_str,"Hello Mehdi%d",12);
   //LCD_putstrpos(lcd_str, 0, 0);
 	LCD_putpersian(ROTOBAT_STR,9,0);
@@ -121,10 +122,14 @@ float a=30.2;
 	sprintf(lcd_str,"Mehdi:%s",ftoa(a));
   LCD_putstrpos(lcd_str, 0, 1);
 
-	HAL_Delay(5000);
+	HAL_Delay(1000);
 
 	sprintf(lcd_str,"Mehdi:%s",ftoa(42.6));
   LCD_putstrpos(lcd_str, 0, 1);
+	SHT2x_SoftReset();
+	int16_t temp,hum;
+
+	
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -132,7 +137,18 @@ float a=30.2;
   while (1)
   {
     /* USER CODE END WHILE */
-
+		LCD_clearrow(0);
+		if(!SHT2x_GetValue(&temp,&hum))
+		{
+			sprintf(lcd_str,"%s,",ftoa(temp/10.0));
+			sprintf(lcd_str,"%s%s",lcd_str,ftoa(hum/10.0));
+		}
+		else
+		{
+			sprintf(lcd_str,"----,----");
+		}
+		LCD_putstrpos(lcd_str,0,0);
+		HAL_Delay(3000);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */

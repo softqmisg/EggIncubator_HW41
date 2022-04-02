@@ -59,16 +59,6 @@ uint8_t custom_character[][8] = {
 			 {0x00, 0x00, 0x0e, 0x0a, 0x0e, 0x02, 0x04, 0x18 },//32//Oo			 
 
 };
-   uint8_t custom_char2[][8] = {
-		   {0, 2, 3, 18, 18, 18, 12, 0 },//S
-		   {0, 23, 21, 7, 1, 1, 14, 0 },//V
-		   {0, 0, 4, 1, 30, 0, 0, 0 },//N
-		   {3, 0, 7, 5, 31, 0, 0, 0 },//GH
-		   {4, 10, 10, 17, 31, 31, 14,0 },//DROP
-			 {4, 10, 10, 10, 10, 27, 31,14 },//thermo
-			 {24, 24, 0, 3, 4, 4, 3,0 },//'C
-			 {0, 0, 0, 0, 0, 0, 0, 0 }//ALARM oFF
-   };	 
 /*
  * micro second delay for LCD
  */
@@ -133,6 +123,12 @@ void LCD_clear_home(void)
 {
 	LCD_send(LCD16X2_CLEAR_DISPLAY, CMD);
 	LCD_send(LCD16X2_CURSOR_HOME, CMD);
+}
+void LCD_clearrow(uint8_t row)
+{
+	LCD_gotoxy(0,row);
+	for(uint8_t i=0;i<16;i++)
+	LCD_send(' ',DAT);
 }
 /*
  * 	cerate custom  character in location of CGRAM

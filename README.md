@@ -8,7 +8,7 @@ Egg Incubator for Hardware verison 4.1
 - [ ] writing library
   - [x] LCD
   - [ ] Keys
-  - [ ] SHT
+  - [x] SHT
   - [ ] Buzzers
   - [ ] EEPROM
 - [ ] Writing Menus
