@@ -85,7 +85,7 @@ uint8_t SHT2x_MeasurePoll(etSHT2xMeasureType eSHT2xMeasureType, int16_t *pMeasur
 // return: error
 // note: timing for timeout may be changed
 //==============================================================================
-uint8_t SHT2x_MeasureHM(etSHT2xMeasureType eSHT2xMeasureType, int16_t *pMeasurand);
+uint8_t SHT2x_MeasureHM(etSHT2xMeasureType eSHT2xMeasureType, float *pMeasurand);
 //==============================================================================
 // measures humidity or temperature. This function waits for a hold master until
 // measurement is ready or a timeout occurred.
@@ -125,7 +125,7 @@ uint8_t SHT2x_GetSerialNumber(uint8_t u8SerialNumber[]);
 // u8SerialNumber[7] u8SerialNumber[0]
 // SNA_1 SNA_0 SNB_3 SNB_2 SNB_1 SNB_0 SNC_1 SNC_0
 // return: error
-uint8_t SHT2x_GetValue(int16_t *temperature,int16_t *humidity);
+uint8_t SHT2x_GetValue(float *temperature,float *humidity);
 
 
 uint8_t SHT2x_Reset();

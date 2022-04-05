@@ -55,6 +55,7 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
+uint8_t tik_1s=0;
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	//call every 1ms
@@ -83,6 +84,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 				}
 			}
 		}
+	}
+	////////////////////////////////////////////////////////////////////
+	//call every 1s
+	if(htim->Instance==TIM17)
+	{
+		tik_1s=1;
 	}
 }
 /* USER CODE END PFP */
@@ -128,9 +135,11 @@ int main(void)
   MX_I2C1_Init();
   MX_TIM1_Init();
   MX_TIM16_Init();
+  MX_TIM17_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
 	HAL_TIM_Base_Start_IT(&htim16);
+	HAL_TIM_Base_Start_IT(&htim17);
 	
   HAL_GPIO_WritePin(LedHeater_GPIO_Port, LedHeater_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(LedHumidity_GPIO_Port, LedHumidity_Pin, GPIO_PIN_SET);
@@ -158,9 +167,11 @@ float a=30.2;
 	sprintf(lcd_str,"Mehdi:%s",ftoa(42.6));
   LCD_putstrpos(lcd_str, 0, 1);
 	SHT2x_SoftReset();
-	int16_t temp,hum;
+	float temp,hum;
 	BuzzerOn(100);
-  /* USER CODE END 2 */
+	LCD_clearrow(0);
+
+/* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -169,20 +180,22 @@ float a=30.2;
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		LCD_clearrow(0);
-		if(!SHT2x_GetValue(&temp,&hum))
+		if(tik_1s)
 		{
-			BuzzerRepeatStop();
-			sprintf(lcd_str,"%s,",ftoa(temp/10.0));
-			sprintf(lcd_str,"%s%s",lcd_str,ftoa(hum/10.0));
-		}
-		else
-		{
-			BuzzerRepeatStart(100,4000);
-			sprintf(lcd_str,"----,----");
-		}
-		LCD_putstrpos(lcd_str,0,0);
-		HAL_Delay(3000);
+			tik_1s=0;
+			if(!SHT2x_GetValue(&temp,&hum))
+			{
+				BuzzerRepeatStop();
+				sprintf(lcd_str,"%s,",ftoa(temp));
+				sprintf(lcd_str,"%s%s",lcd_str,ftoa(hum));
+			}
+			else
+			{
+				BuzzerRepeatStart(100,4000);
+				sprintf(lcd_str,"----,----");
+			}
+			LCD_putstrpos(lcd_str,0,0);
+		}//HAL_Delay(3000);
 	
   }
   /* USER CODE END 3 */

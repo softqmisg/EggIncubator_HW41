@@ -69,7 +69,7 @@ uint8_t SHT2x_WriteUserRegister(uint8_t *pRegisterValue)
 	return error;
 }
 //===========================================================================
-uint8_t SHT2x_MeasureHM(etSHT2xMeasureType eSHT2xMeasureType, int16_t *pMeasurand)
+uint8_t SHT2x_MeasureHM(etSHT2xMeasureType eSHT2xMeasureType, float *pMeasurand)
 //===========================================================================
 {
 	uint8_t checksum; //checksum
@@ -110,10 +110,12 @@ uint8_t SHT2x_MeasureHM(etSHT2xMeasureType eSHT2xMeasureType, int16_t *pMeasuran
 	switch(eSHT2xMeasureType)
 	{
 		case HUMIDITY:
-			*pMeasurand=(int16_t)((float)SHT2x_CalcRH(tmp)*10.0);
+//			*pMeasurand=(int16_t)((float)SHT2x_CalcRH(tmp)*10.0);
+			*pMeasurand=SHT2x_CalcRH(tmp);		
 			break;
 		case TEMP:
-			*pMeasurand=(int16_t)((float)SHT2x_CalcTemperatureC(tmp)*10.0);
+//			*pMeasurand=(int16_t)((float)SHT2x_CalcTemperatureC(tmp)*10.0);
+			*pMeasurand=SHT2x_CalcTemperatureC(tmp);
 			break;
 	}
 	//-- verify checksum --
@@ -242,7 +244,7 @@ uint8_t SHT2x_GetSerialNumber(uint8_t u8SerialNumber[])
 	return error;
 }	
 ///////////////////////////////////////////////////////////
-uint8_t SHT2x_GetValue(int16_t *temperature,int16_t *humidity)
+uint8_t SHT2x_GetValue(float *temperature,float *humidity)
 {
 	uint8_t error=0;
 	error|=SHT2x_MeasureHM(TEMP, temperature);
