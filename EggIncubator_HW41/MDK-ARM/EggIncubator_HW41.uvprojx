@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F030x6</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F0xx_HAL_Driver/Inc;../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F0xx/Include;../Drivers/CMSIS/Include</IncludePath>
+              <IncludePath>../Core/Inc; ../Drivers/STM32F0xx_HAL_Driver/Inc; ../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy; ../Drivers/CMSIS/Device/ST/STM32F0xx/Include; ../Drivers/CMSIS/Include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -394,6 +394,31 @@
           <GroupName>Application/User/Core</GroupName>
           <Files>
             <File>
+              <FileName>lcd_ch.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\lcd_ch.c</FilePath>
+            </File>
+            <File>
+              <FileName>string_num.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\string_num.c</FilePath>
+            </File>
+            <File>
+              <FileName>I2C_HAL.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\I2C_HAL.c</FilePath>
+            </File>
+            <File>
+              <FileName>sht2x_BB.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\sht2x_BB.c</FilePath>
+            </File>
+            <File>
+              <FileName>Buzzer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\Buzzer.c</FilePath>
+            </File>
+            <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/main.c</FilePath>
@@ -422,26 +447,6 @@
               <FileName>stm32f0xx_hal_msp.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/stm32f0xx_hal_msp.c</FilePath>
-            </File>
-            <File>
-              <FileName>lcd_ch.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\lcd_ch.c</FilePath>
-            </File>
-            <File>
-              <FileName>string_num.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\string_num.c</FilePath>
-            </File>
-            <File>
-              <FileName>I2C_HAL.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\I2C_HAL.c</FilePath>
-            </File>
-            <File>
-              <FileName>sht2x_BB.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\sht2x_BB.c</FilePath>
             </File>
           </Files>
         </Group>

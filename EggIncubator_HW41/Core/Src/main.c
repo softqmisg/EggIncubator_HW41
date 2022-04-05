@@ -29,6 +29,7 @@
 #include "lcd_ch.h"
 #include "string_num.h"
 #include "sht2x_BB.h"
+#include "Buzzer.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -54,7 +55,36 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
-
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+	//call every 1ms
+	if(htim->Instance==TIM16)
+	{
+		if(Buzzer.active)
+		{
+			BUZZER_ON();
+			Buzzer.counter_on++;
+			if(Buzzer.counter_on>Buzzer.duration)
+			{
+				Buzzer.counter_on=0;
+				BUZZER_OFF();
+				Buzzer.active=0;
+			}
+		}
+		else
+		{
+			if(Buzzer.repeatstate)
+			{
+				Buzzer.counter_repeat++;
+				if(Buzzer.counter_repeat>Buzzer.delaybetweenrepeat)
+				{
+					Buzzer.counter_repeat=0;
+					Buzzer.active=1;
+				}
+			}
+		}
+	}
+}
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -97,8 +127,11 @@ int main(void)
   MX_GPIO_Init();
   MX_I2C1_Init();
   MX_TIM1_Init();
+  MX_TIM16_Init();
   /* USER CODE BEGIN 2 */
-//  HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
+  HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
+	HAL_TIM_Base_Start_IT(&htim16);
+	
   HAL_GPIO_WritePin(LedHeater_GPIO_Port, LedHeater_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(LedHumidity_GPIO_Port, LedHumidity_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(LedExhaust_GPIO_Port, LedExhaust_Pin, GPIO_PIN_SET);
@@ -121,15 +154,12 @@ float a=30.2;
   
 	sprintf(lcd_str,"Mehdi:%s",ftoa(a));
   LCD_putstrpos(lcd_str, 0, 1);
-
 	HAL_Delay(1000);
-
 	sprintf(lcd_str,"Mehdi:%s",ftoa(42.6));
   LCD_putstrpos(lcd_str, 0, 1);
 	SHT2x_SoftReset();
 	int16_t temp,hum;
-
-	
+	BuzzerOn(100);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -137,19 +167,23 @@ float a=30.2;
   while (1)
   {
     /* USER CODE END WHILE */
+
+    /* USER CODE BEGIN 3 */
 		LCD_clearrow(0);
 		if(!SHT2x_GetValue(&temp,&hum))
 		{
+			BuzzerRepeatStop();
 			sprintf(lcd_str,"%s,",ftoa(temp/10.0));
 			sprintf(lcd_str,"%s%s",lcd_str,ftoa(hum/10.0));
 		}
 		else
 		{
+			BuzzerRepeatStart(100,4000);
 			sprintf(lcd_str,"----,----");
 		}
 		LCD_putstrpos(lcd_str,0,0);
 		HAL_Delay(3000);
-    /* USER CODE BEGIN 3 */
+	
   }
   /* USER CODE END 3 */
 }
@@ -178,7 +212,6 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-
   /** Initializes the CPU, AHB and APB buses clocks
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
@@ -234,3 +267,5 @@ void assert_failed(uint8_t *file, uint32_t line)
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
+
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

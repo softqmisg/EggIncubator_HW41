@@ -5,11 +5,12 @@ Egg Incubator for Hardware verison 4.1
 - [x] set up pins
 - [x] share the code in the github
 - [x] define code strategy
+- [x] define Timers
 - [ ] writing library
   - [x] LCD
   - [ ] Keys
   - [x] SHT
-  - [ ] Buzzers
+  - [x] Buzzers
   - [ ] EEPROM
 - [ ] Writing Menus
 - [ ] Temperature and humidity algorithm
