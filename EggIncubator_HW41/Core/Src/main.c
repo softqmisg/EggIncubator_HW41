@@ -20,6 +20,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "i2c.h"
+#include "iwdg.h"
 #include "tim.h"
 #include "gpio.h"
 
@@ -30,6 +31,7 @@
 #include "string_num.h"
 #include "sht2x_BB.h"
 #include "Buzzer.h"
+#include  "Keys.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -56,14 +58,17 @@
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 uint8_t tik_1s=0;
+GPIO_PinState st;
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-	//call every 1ms
+	//call every 10ms
 	if(htim->Instance==TIM16)
 	{
+		//Buzzer evaluate//
 		if(Buzzer.active)
 		{
-			BUZZER_ON();
+			if(!Buzzer.mute)
+				BUZZER_ON();
 			Buzzer.counter_on++;
 			if(Buzzer.counter_on>Buzzer.duration)
 			{
@@ -83,6 +88,43 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 					Buzzer.active=1;
 				}
 			}
+		}
+		//Read Keys//
+		for(uint8_t i=0;i<KEYSNUM;i++)
+		{
+			st=HAL_GPIO_ReadPin(Keys[i].port,Keys[i].pin);
+			Keys[i].RawState=(KeyState_t)st;
+			if(Keys[i].Prev_RawState==Release && Keys[i].RawState==Press) //press
+			{
+				Keys[i].counter=0;
+				Keys[i].LongPress=0;
+				Keys[i].ShortPress=0;
+				Keys[i].LongLongPress=0;
+			}
+			else if(Keys[i].Prev_RawState==Press && Keys[i].RawState==Press) //continue press
+			{
+				Keys[i].counter++;
+				if(Keys[i].counter>LONGPRESS_MIN)
+				{
+					Keys[i].LongPress=1;
+					Keys[i].counter=0;
+				}
+				else if(Keys[i].LongPress && Keys[i].counter>LONGLONGPRESS_MIN)
+				{
+					Keys[i].LongLongPress=1;
+					Keys[i].counter=0;
+				}
+			}
+			else if(Keys[i].Prev_RawState==Press && Keys[i].RawState==Release) //release
+			{
+				if(Keys[i].counter>SHORTPRESS_MIN && Keys[i].counter<SHORTPRESS_MAX)
+				{
+					if(!Keys[i].LongPress && !Keys[i].LongLongPress)
+						Keys[i].ShortPress=1;
+				}
+				Keys[i].counter=0;
+			}
+			Keys[i].Prev_RawState=Keys[i].RawState;
 		}
 	}
 	////////////////////////////////////////////////////////////////////
@@ -136,6 +178,7 @@ int main(void)
   MX_TIM1_Init();
   MX_TIM16_Init();
   MX_TIM17_Init();
+  MX_IWDG_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
 	HAL_TIM_Base_Start_IT(&htim16);
@@ -147,6 +190,8 @@ int main(void)
   HAL_GPIO_WritePin(LedHatcher_GPIO_Port, LedHatcher_Pin, GPIO_PIN_SET);
 
   LCD_init();
+	BuzzerInit();
+	KeysInit();
   char lcd_str[16];
 	//char lcd_float[16];
   //sprintf(lcd_str,"Hello Mehdi%d",12);
@@ -155,7 +200,7 @@ int main(void)
 
 LCD_putpersian(DAMA_STR,5,0);
 
-float a=30.2;
+double a=30.2;
 //  uint8_t integer_part,fractional_part;
 //  ftoa(a, &integer_part,&fractional_part);
 //  sprintf(lcd_str,"%d.%d",integer_part,fractional_part);
@@ -164,19 +209,22 @@ float a=30.2;
 	sprintf(lcd_str,"Mehdi:%s",ftoa(a));
   LCD_putstrpos(lcd_str, 0, 1);
 	HAL_Delay(1000);
-	sprintf(lcd_str,"Mehdi:%s",ftoa(42.6));
+	a=42.6;
+	sprintf(lcd_str,"Mehdi:%s",ftoa(a));
   LCD_putstrpos(lcd_str, 0, 1);
 	SHT2x_SoftReset();
 	float temp,hum;
 	BuzzerOn(100);
 	LCD_clearrow(0);
-
-/* USER CODE END 2 */
+	a=50.0;
+	HAL_IWDG_Init(&hiwdg);
+  /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+		HAL_IWDG_Refresh(&hiwdg);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -195,8 +243,41 @@ float a=30.2;
 				sprintf(lcd_str,"----,----");
 			}
 			LCD_putstrpos(lcd_str,0,0);
-		}//HAL_Delay(3000);
-	
+		}
+		if(Keys[KEYUP].ShortPress)
+		{
+			Keys[KEYUP].ShortPress=0;
+			a+=0.1;
+			sprintf(lcd_str,"Mehdi:%s",ftoa(a));
+			LCD_putstrpos(lcd_str, 0, 1);			
+		}
+		if(Keys[KEYUP].LongLongPress)
+		{
+			Keys[KEYUP].LongLongPress=0;
+			a+=1.0;
+			sprintf(lcd_str,"Mehdi:%s",ftoa(a));
+			LCD_putstrpos(lcd_str, 0, 1);			
+		}		
+		if(Keys[KEYLEDBUZZER].LongPress)
+		{
+			Keys[KEYLEDBUZZER].LongPress=0;
+			if(Buzzer.mute)
+			{
+				BuzzerMute(0);
+				sprintf(lcd_str,"Alarm on");
+			}
+			else
+			{
+				BuzzerMute(1);
+				sprintf(lcd_str,"Alarm off");				
+			}
+			LCD_putstrpos(lcd_str, 0, 0);	
+		}			
+		if(Keys[KEYDOWN].RawState==Press && Keys[KEYUP].RawState==Press)
+		{
+				sprintf(lcd_str,"Both");				
+				LCD_putstrpos(lcd_str, 0, 0);	
+		}
   }
   /* USER CODE END 3 */
 }
@@ -214,9 +295,10 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI|RCC_OSCILLATORTYPE_LSI;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+  RCC_OscInitStruct.LSIState = RCC_LSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
   RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL12;

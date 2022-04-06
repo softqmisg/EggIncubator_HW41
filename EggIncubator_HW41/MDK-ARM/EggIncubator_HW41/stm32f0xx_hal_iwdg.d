@@ -1,5 +1,5 @@
-eggincubator_hw41/stm32f0xx_hal_pwr_ex.o: \
-  ..\Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_pwr_ex.c \
+eggincubator_hw41/stm32f0xx_hal_iwdg.o: \
+  ..\Drivers\STM32F0xx_HAL_Driver\Src\stm32f0xx_hal_iwdg.c \
   ..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal.h \
   ..\Core\Inc\stm32f0xx_hal_conf.h \
   ..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal_rcc.h \

@@ -1,5 +1,5 @@
-#ifndef SHT2x_H
-#define SHT2x_H
+#ifndef INC_SHT2x_BB_H
+#define INC_SHT2x_BB_H
 //==============================================================================
 // S E N S I R I O N AG, Laubisruetistr. 50, CH-8712 Staefa, Switzerland
 //==============================================================================

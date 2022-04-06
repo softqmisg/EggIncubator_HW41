@@ -5,8 +5,8 @@
  *      Author: mehdi
  */
 
-#ifndef LCD_CH_H_
-#define LCD_CH_H_
+#ifndef INC_LCD_CH_H_
+#define INC_LCD_CH_H_
 #include "main.h"
 /*
  * Pin out definition
