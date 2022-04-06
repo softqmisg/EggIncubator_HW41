@@ -458,6 +458,11 @@
               <FileType>1</FileType>
               <FilePath>../Core/Src/stm32f0xx_hal_msp.c</FilePath>
             </File>
+            <File>
+              <FileName>eeprom.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\eeprom.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

@@ -32,6 +32,7 @@
 #include "sht2x_BB.h"
 #include "Buzzer.h"
 #include  "Keys.h"
+#include "eeprom.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -178,7 +179,7 @@ int main(void)
   MX_TIM1_Init();
   MX_TIM16_Init();
   MX_TIM17_Init();
-  MX_IWDG_Init();
+  //MX_IWDG_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
 	HAL_TIM_Base_Start_IT(&htim16);
@@ -216,15 +217,30 @@ double a=30.2;
 	float temp,hum;
 	BuzzerOn(100);
 	LCD_clearrow(0);
-	a=50.0;
-	HAL_IWDG_Init(&hiwdg);
+
+	
+	sprintf(lcd_str,"mehdi_");
+//	lcd_str[0]='H';
+
+	EEWriteStr(lcd_str,14);
+	char lcd_str1[16];
+	EEReadStr(lcd_str1,14);
+  LCD_putstrpos(lcd_str1, 0, 0);
+
+	double pData[2]={10.2,12.6},rData[2];
+	EEWriteDouble(pData,2,0);
+	EEReadDouble(rData,2,0);
+
+	HAL_Delay(5000);
+	a=rData[0];
+	//HAL_IWDG_Init(&hiwdg);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		HAL_IWDG_Refresh(&hiwdg);
+		//HAL_IWDG_Refresh(&hiwdg);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
