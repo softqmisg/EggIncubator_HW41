@@ -8,7 +8,7 @@ Egg Incubator for Hardware verison 4.1
 - [x] define Timers
 - [ ] writing library
   - [x] LCD
-  - [ ] Keys
+  - [x] Keys
   - [x] SHT
   - [x] Buzzers
   - [ ] EEPROM
