@@ -10,13 +10,13 @@
       <TargetName>EggIncubator_HW41</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>6140000::V6.14::ARMCLANG</pCCUsed>
+      <pCCUsed>6150000::V6.15::ARMCLANG</pCCUsed>
       <uAC6>1</uAC6>
       <TargetOption>
         <TargetCommonOption>
           <Device>STM32F030C6Tx</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F0xx_DFP.2.0.0</PackID>
+          <PackID>Keil.STM32F0xx_DFP.2.1.0</PackID>
           <PackURL>http://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000-0x20000FFF) IROM(0x8000000-0x8007FFF) CLOCK(8000000) CPUTYPE("Cortex-M0") TZ</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -463,6 +463,11 @@
               <FileType>1</FileType>
               <FilePath>..\Core\Src\eeprom.c</FilePath>
             </File>
+            <File>
+              <FileName>Bird.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\Bird.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -584,11 +589,6 @@
     <Layers>
       <Layer>
         <LayName>&lt;Project Info&gt;</LayName>
-        <LayDesc></LayDesc>
-        <LayUrl></LayUrl>
-        <LayKeys></LayKeys>
-        <LayCat></LayCat>
-        <LayLic></LayLic>
         <LayTarg>0</LayTarg>
         <LayPrjMark>1</LayPrjMark>
       </Layer>

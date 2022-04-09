@@ -31,8 +31,10 @@
 #include "string_num.h"
 #include "sht2x_BB.h"
 #include "Buzzer.h"
-#include  "Keys.h"
+#include "Keys.h"
+#include "user_eeprom.h"
 #include "eeprom.h"
+#include "bird.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
