@@ -11,6 +11,7 @@ Egg Incubator for Hardware verison 4.1
   - [x] Keys
   - [x] SHT
   - [x] Buzzers
+  - [x] Birds
   - [ ] EEPROM
 - [ ] Writing Menus
 - [ ] Temperature and humidity algorithm
