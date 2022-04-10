@@ -468,6 +468,26 @@
               <FileType>1</FileType>
               <FilePath>..\Core\Src\Bird.c</FilePath>
             </File>
+            <File>
+              <FileName>user_time.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\user_time.c</FilePath>
+            </File>
+            <File>
+              <FileName>Motor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\Motor.c</FilePath>
+            </File>
+            <File>
+              <FileName>user_sht.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\user_sht.c</FilePath>
+            </File>
+            <File>
+              <FileName>Heater_fan.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\Heater_fan.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

@@ -5,6 +5,7 @@
  *      Author: mehdi
  */
 #include "lcd_ch.h"
+#include <string.h>
 uint8_t MorghShakhdar_Pos_ch[]={0,1,2,3,4,5,6,1};
 uint8_t Boghalamoon_Pos_ch[]={7,8,9,10,11,8,12};
 uint8_t Belderchin_Pos_ch[]={7,10,13,1,14,15,12};
@@ -390,6 +391,25 @@ void LCD_putpersian(uint8_t StringCode,uint8_t posx,uint8_t posy)
 	LCD_gotoxy(posx,posy);
 	for( uint8_t i=0;i<lengthofcustom;i++)
 		LCD_send(lengthofcustom-1-i+memstartpos,DAT);//(lengthofcustom-1-i);
+}
+/*
+*/
+void LCD_putstralign(char *lcd_str,uint8_t y_pos,Alignment_t align)
+{
+	uint8_t x_pos;
+	switch(align)
+	{
+		case AlignLeft:
+			x_pos=0;
+		break;
+		case AlignCenter:
+			x_pos=(16-strlen(lcd_str))/2;			
+			break;
+		case AlignRight:
+			x_pos=16-strlen(lcd_str);
+		break;
+	}
+	LCD_putstrpos(lcd_str,x_pos,y_pos);
 }
 /*void LCD_put_custom_text(uint8_t x,uint8_t y,uint8_t text)
 {

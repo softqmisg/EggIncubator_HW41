@@ -112,7 +112,8 @@
 #define ROTOBAT_STR				13
 #define ZAMAN_STR					14
 #define ROOZ_STR					15
-
+//////////////////////////////////////////////////////////////////
+typedef enum{AlignLeft=0,AlignCenter,AlignRight} Alignment_t;
 ///////////////////////////////////////////////////////////////
 void LCD_backlight(uint8_t onoff);
 void LCD_init(void);
@@ -124,5 +125,6 @@ void LCD_putstrpos(char *lcd_string,unsigned char x_pos, unsigned char y_pos);
 void LCD_put_custom_char( uint8_t location);
 void LCD_putpersian(uint8_t StringCode,uint8_t posx,uint8_t posy);
 void LCD_clearrow(uint8_t row);
+void LCD_putstralign(char *lcd_str,uint8_t y_pos,Alignment_t align);
 
 #endif /* LCD_CH_H_ */

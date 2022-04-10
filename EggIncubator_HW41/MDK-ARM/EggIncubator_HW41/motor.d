@@ -1,4 +1,4 @@
-eggincubator_hw41/bird.o: ..\Core\Src\Bird.c ..\Core\Inc\Bird.h \
+eggincubator_hw41/motor.o: ..\Core\Src\Motor.c ..\Core\Inc\Motor.h \
   ..\Core\Inc\main.h ..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal.h \
   ..\Core\Inc\stm32f0xx_hal_conf.h \
   ..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal_rcc.h \
@@ -31,6 +31,7 @@ eggincubator_hw41/bird.o: ..\Core\Src\Bird.c ..\Core\Inc\Bird.h \
   ..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal_pwr_ex.h \
   ..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal_tim.h \
   ..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal_tim_ex.h \
-  ..\Core\Inc\user_time.h ..\Core\Inc\user_eeprom.h ..\Core\Inc\bird.h \
-  ..\Core\Inc\eeprom.h ..\Core\Inc\i2c.h \
-  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\string.h
+  ..\Core\Inc\user_time.h \
+  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\string.h \
+  ..\Core\Inc\user_eeprom.h ..\Core\Inc\bird.h ..\Core\Inc\eeprom.h \
+  ..\Core\Inc\i2c.h

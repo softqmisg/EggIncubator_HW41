@@ -45,16 +45,16 @@ Prog_t MorghShakhdar_prog[2]={
 };
 
 Bird_t	defaultBirds[NumOfBirds]={
-	{.Type=Manual,				.TotalDurationDays=21,.HatchTotalDays=3,.NumofProg=2,.pProgs=Manual_prog,				.curDateTime={0,0,0,0}},//Manual
-	{.Type=Morgh,					.TotalDurationDays=21,.HatchTotalDays=3,.NumofProg=2,.pProgs=Morgh_prog,				.curDateTime={0,0,0,0}},//Morgh
-	{.Type=ShotorMorgh,		.TotalDurationDays=21,.HatchTotalDays=3,.NumofProg=2,.pProgs=ShotorMorgh_prog,	.curDateTime={0,0,0,0}},//ShotorMorgh
-	{.Type=Ghaz,					.TotalDurationDays=21,.HatchTotalDays=3,.NumofProg=2,.pProgs=Ghaz_prog,					.curDateTime={0,0,0,0}},//Ghaz
-	{.Type=Ordak,					.TotalDurationDays=21,.HatchTotalDays=3,.NumofProg=2,.pProgs=Ordak_prog,				.curDateTime={0,0,0,0}},//Ordak
-	{.Type=Kabk,					.TotalDurationDays=21,.HatchTotalDays=3,.NumofProg=2,.pProgs=Kabk_prog,					.curDateTime={0,0,0,0}},//Kabk
-	{.Type=Gharghavol,		.TotalDurationDays=21,.HatchTotalDays=3,.NumofProg=2,.pProgs=Gharghavol_prog,		.curDateTime={0,0,0,0}},//Gharghavol
-	{.Type=Belderchin,		.TotalDurationDays=21,.HatchTotalDays=3,.NumofProg=2,.pProgs=Belderchin_prog,		.curDateTime={0,0,0,0}},//Belderchin
-	{.Type=Boghalamoon,		.TotalDurationDays=21,.HatchTotalDays=3,.NumofProg=2,.pProgs=Boghalamoon_prog,	.curDateTime={0,0,0,0}},//Boghalamoon
-	{.Type=MorghShakhdar,	.TotalDurationDays=21,.HatchTotalDays=3,.NumofProg=2,.pProgs=MorghShakhdar_prog,.curDateTime={0,0,0,0}},//MorghShakhdar
+	{.Type=Manual,				.TotalDurationDays=21,.HatchTotalDays=3,.NumofProg=2,.pProgs=Manual_prog,				},//Manual
+	{.Type=Morgh,					.TotalDurationDays=21,.HatchTotalDays=3,.NumofProg=2,.pProgs=Morgh_prog,				},//Morgh
+	{.Type=ShotorMorgh,		.TotalDurationDays=21,.HatchTotalDays=3,.NumofProg=2,.pProgs=ShotorMorgh_prog,	},//ShotorMorgh
+	{.Type=Ghaz,					.TotalDurationDays=21,.HatchTotalDays=3,.NumofProg=2,.pProgs=Ghaz_prog,					},//Ghaz
+	{.Type=Ordak,					.TotalDurationDays=21,.HatchTotalDays=3,.NumofProg=2,.pProgs=Ordak_prog,				},//Ordak
+	{.Type=Kabk,					.TotalDurationDays=21,.HatchTotalDays=3,.NumofProg=2,.pProgs=Kabk_prog,					},//Kabk
+	{.Type=Gharghavol,		.TotalDurationDays=21,.HatchTotalDays=3,.NumofProg=2,.pProgs=Gharghavol_prog,		},//Gharghavol
+	{.Type=Belderchin,		.TotalDurationDays=21,.HatchTotalDays=3,.NumofProg=2,.pProgs=Belderchin_prog,		},//Belderchin
+	{.Type=Boghalamoon,		.TotalDurationDays=21,.HatchTotalDays=3,.NumofProg=2,.pProgs=Boghalamoon_prog,	},//Boghalamoon
+	{.Type=MorghShakhdar,	.TotalDurationDays=21,.HatchTotalDays=3,.NumofProg=2,.pProgs=MorghShakhdar_prog,},//MorghShakhdar
 };
 
 /*
@@ -72,7 +72,6 @@ void BirdReadManual(Bird_t *bird)
 	EEReadByte((uint8_t *)&(bird->pProgs[1].humidty),2,add);add+=2;		
 	EEReadByte((uint8_t *)&(bird->pProgs[1].temperature),2,add);add+=2;		
 	EEReadByte((uint8_t *)&(bird->pProgs[1].durationDays),2,add);	
-
 }
 void BirdSaveManual(Bird_t bird)
 {
@@ -89,5 +88,10 @@ void BirdSaveManual(Bird_t bird)
 }
 void BirdInit(Bird_t *bird)
 {
+	EEReadByte((uint8_t *) &(bird->Type),1,EE_ADD_CURBIRDTYPE);
+	if(bird->Type==Manual)
+	{		
+		BirdReadManual(&defaultBirds[Manual]);
+	}
 	memcpy((void  *)bird,(void  *)&defaultBirds[(uint8_t)(bird->Type)],sizeof(defaultBirds[(uint8_t)(bird->Type)]));
 }

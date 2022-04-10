@@ -27,6 +27,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
+#include <string.h>
 #include "lcd_ch.h"
 #include "string_num.h"
 #include "sht2x_BB.h"
@@ -34,7 +35,11 @@
 #include "Keys.h"
 #include "user_eeprom.h"
 #include "eeprom.h"
+#include "user_time.h"
 #include "bird.h"
+#include "Motor.h"
+#include "user_sht.h"
+#include "heater_fan.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -183,32 +188,23 @@ int main(void)
   MX_TIM17_Init();
   //MX_IWDG_Init();
   /* USER CODE BEGIN 2 */
-  HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
-	HAL_TIM_Base_Start_IT(&htim16);
-	HAL_TIM_Base_Start_IT(&htim17);
+	HAL_TIM_Base_Start_IT(&htim16); //timer 10ms
+	HAL_TIM_Base_Start_IT(&htim17);	//timer 1s
 	
   HAL_GPIO_WritePin(LedHeater_GPIO_Port, LedHeater_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(LedHumidity_GPIO_Port, LedHumidity_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(LedExhaust_GPIO_Port, LedExhaust_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(LedHatcher_GPIO_Port, LedHatcher_Pin, GPIO_PIN_SET);
-
   LCD_init();
 	BuzzerInit();
 	KeysInit();
-  char lcd_str[16];
-	//char lcd_float[16];
-  //sprintf(lcd_str,"Hello Mehdi%d",12);
-  //LCD_putstrpos(lcd_str, 0, 0);
+	BuzzerOn(100);
+
+	#if 0
+	char lcd_str[16];
 	LCD_putpersian(ROTOBAT_STR,9,0);
-
-LCD_putpersian(DAMA_STR,5,0);
-
-double a=30.2;
-//  uint8_t integer_part,fractional_part;
-//  ftoa(a, &integer_part,&fractional_part);
-//  sprintf(lcd_str,"%d.%d",integer_part,fractional_part);
-//  LCD_putstrpos(lcd_str, 0, 1);
-  
+	LCD_putpersian(DAMA_STR,5,0);
+	double a=30.2;
 	sprintf(lcd_str,"Mehdi:%s",ftoa(a));
   LCD_putstrpos(lcd_str, 0, 1);
 	HAL_Delay(1000);
@@ -219,10 +215,7 @@ double a=30.2;
 	float temp,hum;
 	BuzzerOn(100);
 	LCD_clearrow(0);
-
-	
 	sprintf(lcd_str,"mehdi_");
-//	lcd_str[0]='H';
 
 	EEWriteStr(lcd_str,14);
 	char lcd_str1[16];
@@ -235,67 +228,100 @@ double a=30.2;
 
 	HAL_Delay(5000);
 	a=rData[0];
-	//HAL_IWDG_Init(&hiwdg);
+	#endif
+	char lcd_str[2][16];
+	uint8_t tmp_uint8;
+	uint16_t tmp_uint16;
+	Time_t curTime={.sec=0,.min=0,.hr=0,.day=0};
+	LCD_putstralign("Ghoghnoos",0,AlignCenter);
+	LCD_putstralign("Loading...",0,AlignCenter);
+	if(Keys[KEYUP].RawState==Press && Keys[KEYDOWN].RawState==Press)
+	{
+	
+		TimeSave(curTime,EE_ADD_CURTIME);
+		tmp_uint8=(uint8_t)DEFAULT_CURBIRDTYPE;
+		EEWriteByte(&tmp_uint8,1,EE_ADD_CURBIRDTYPE);
+		BirdSaveManual(defaultBirds[Manual]);
+		TimeSave(defaultMotor.OnTime,EE_ADD_MOTOR_ON);
+		TimeSave(defaultMotor.OffTime,EE_ADD_MOTOR_OFF);
+		FanSave(defaultFan);
+		HeaterSave(defaultHeater);
+		ShtSave(defaultSht);
+	}
+	//////////////////////Initialize after boot///////////////////////////////////////////
+	TimeInit(&curTime);
+	Bird_t curBird;
+	BirdInit(&curBird);
+	Motor_t motor;
+	MotorInit(&motor);
+	Sht_t sht20;
+	ShtInit(&sht20);
+	Fan_t fan;
+	FanInit(&fan);
+	Heater_t heater;
+	HeaterInit(&heater);
+	///////////////////////////////////////////////////////////////
+	HAL_IWDG_Init(&hiwdg);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		//HAL_IWDG_Refresh(&hiwdg);
+		HAL_IWDG_Refresh(&hiwdg);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		if(tik_1s)
-		{
-			tik_1s=0;
-			if(!SHT2x_GetValue(&temp,&hum))
-			{
-				BuzzerRepeatStop();
-				sprintf(lcd_str,"%s,",ftoa(temp));
-				sprintf(lcd_str,"%s%s",lcd_str,ftoa(hum));
-			}
-			else
-			{
-				BuzzerRepeatStart(100,4000);
-				sprintf(lcd_str,"----,----");
-			}
-			LCD_putstrpos(lcd_str,0,0);
-		}
-		if(Keys[KEYUP].ShortPress)
-		{
-			Keys[KEYUP].ShortPress=0;
-			a+=0.1;
-			sprintf(lcd_str,"Mehdi:%s",ftoa(a));
-			LCD_putstrpos(lcd_str, 0, 1);			
-		}
-		if(Keys[KEYUP].LongLongPress)
-		{
-			Keys[KEYUP].LongLongPress=0;
-			a+=1.0;
-			sprintf(lcd_str,"Mehdi:%s",ftoa(a));
-			LCD_putstrpos(lcd_str, 0, 1);			
-		}		
-		if(Keys[KEYLEDBUZZER].LongPress)
-		{
-			Keys[KEYLEDBUZZER].LongPress=0;
-			if(Buzzer.mute)
-			{
-				BuzzerMute(0);
-				sprintf(lcd_str,"Alarm on");
-			}
-			else
-			{
-				BuzzerMute(1);
-				sprintf(lcd_str,"Alarm off");				
-			}
-			LCD_putstrpos(lcd_str, 0, 0);	
-		}			
-		if(Keys[KEYDOWN].RawState==Press && Keys[KEYUP].RawState==Press)
-		{
-				sprintf(lcd_str,"Both");				
-				LCD_putstrpos(lcd_str, 0, 0);	
-		}
+//		if(tik_1s)
+//		{
+//			tik_1s=0;
+//			if(!SHT2x_GetValue(&temp,&hum))
+//			{
+//				BuzzerRepeatStop();
+//				sprintf(lcd_str,"%s,",ftoa(temp));
+//				sprintf(lcd_str,"%s%s",lcd_str,ftoa(hum));
+//			}
+//			else
+//			{
+//				BuzzerRepeatStart(100,4000);
+//				sprintf(lcd_str,"----,----");
+//			}
+//			LCD_putstrpos(lcd_str,0,0);
+//		}
+//		if(Keys[KEYUP].ShortPress)
+//		{
+//			Keys[KEYUP].ShortPress=0;
+//			a+=0.1;
+//			sprintf(lcd_str,"Mehdi:%s",ftoa(a));
+//			LCD_putstrpos(lcd_str, 0, 1);			
+//		}
+//		if(Keys[KEYUP].LongLongPress)
+//		{
+//			Keys[KEYUP].LongLongPress=0;
+//			a+=1.0;
+//			sprintf(lcd_str,"Mehdi:%s",ftoa(a));
+//			LCD_putstrpos(lcd_str, 0, 1);			
+//		}		
+//		if(Keys[KEYLEDBUZZER].LongPress)
+//		{
+//			Keys[KEYLEDBUZZER].LongPress=0;
+//			if(Buzzer.mute)
+//			{
+//				BuzzerMute(0);
+//				sprintf(lcd_str,"Alarm on");
+//			}
+//			else
+//			{
+//				BuzzerMute(1);
+//				sprintf(lcd_str,"Alarm off");				
+//			}
+//			LCD_putstrpos(lcd_str, 0, 0);	
+//		}			
+//		if(Keys[KEYDOWN].RawState==Press && Keys[KEYUP].RawState==Press)
+//		{
+//				sprintf(lcd_str,"Both");				
+//				LCD_putstrpos(lcd_str, 0, 0);	
+//		}
   }
   /* USER CODE END 3 */
 }
