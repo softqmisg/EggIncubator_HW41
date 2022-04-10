@@ -13,5 +13,10 @@ Egg Incubator for Hardware verison 4.1
   - [x] Buzzers
   - [x] Birds
   - [x] EEPROM
+  - [x] Motor
+  - [x] Heater
+  - [x] Fan
+- [x] Write Default Values to EEPROM  algorithm
+- [x] Inialization variables after boot
 - [ ] Writing Menus
 - [ ] Temperature and humidity algorithm
