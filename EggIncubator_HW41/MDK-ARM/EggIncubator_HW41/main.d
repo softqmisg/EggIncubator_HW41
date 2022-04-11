@@ -40,4 +40,4 @@ eggincubator_hw41/main.o: ..\Core\Src\main.c ..\Core\Inc\main.h \
   ..\Core\Inc\bird.h ..\Core\Inc\user_time.h ..\Core\Inc\eeprom.h \
   ..\Core\Inc\i2c.h ..\Core\Inc\user_time.h ..\Core\Inc\bird.h \
   ..\Core\Inc\Motor.h ..\Core\Inc\user_sht.h ..\Core\Inc\sht2x_BB.h \
-  ..\Core\Inc\heater_fan.h
+  ..\Core\Inc\heater_fan.h ..\Core\Inc\tim.h

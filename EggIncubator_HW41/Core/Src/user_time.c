@@ -74,6 +74,11 @@ void IncTime(Time_t *time,Time_t inc)
 		}
 	}
 }
+void IncTimesec(Time_t *t)
+{
+	Time_t tmp={.sec=1,.min=0,.hr=0,.day=0};
+	IncTime(t,tmp);
+}
 /*
 */
 void TimeSave(Time_t t,uint16_t add)

@@ -49,6 +49,8 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define DELAY_MAINMENU	20//s
+#define DELAY_SWITCHMAINDISPLAY		5//s
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -142,6 +144,26 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		tik_1s=1;
 	}
 }
+////////////////////////////////////
+uint8_t FindProgNum(Bird_t bird,Time_t time)
+{
+	uint8_t prognum=0;
+	uint16_t sumdays=0;
+	while(bird.TotalDurationDays>sumdays)
+	{
+		sumdays+=bird.pProgs[prognum].durationDays;
+		if(sumdays>time.day) break;
+		prognum++;
+	}
+	if(prognum>bird.NumofProg) 
+		prognum=bird.NumofProg-1;
+	if(prognum==(bird.NumofProg-1))
+		HAL_GPIO_WritePin(LedHatcher_GPIO_Port,LedHatcher_Pin,GPIO_PIN_RESET);
+	else
+		HAL_GPIO_WritePin(LedHatcher_GPIO_Port,LedHatcher_Pin,GPIO_PIN_SET);
+	return prognum;
+}
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -260,68 +282,148 @@ int main(void)
 	FanInit(&fan);
 	Heater_t heater;
 	HeaterInit(&heater);
+	uint8_t curProg=FindProgNum(curBird,curTime);
+	LCD_clear_home();
 	///////////////////////////////////////////////////////////////
 	HAL_IWDG_Init(&hiwdg);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+	enum{MainMenu=0,AdvanceMenu} curMenu=MainMenu;
+	uint8_t counter_switchmaindispaly=0,tik_switchmaindispaly=0,MainPageNumber=0;
   while (1)
   {
 		HAL_IWDG_Refresh(&hiwdg);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-//		if(tik_1s)
-//		{
-//			tik_1s=0;
-//			if(!SHT2x_GetValue(&temp,&hum))
-//			{
-//				BuzzerRepeatStop();
-//				sprintf(lcd_str,"%s,",ftoa(temp));
-//				sprintf(lcd_str,"%s%s",lcd_str,ftoa(hum));
-//			}
-//			else
-//			{
-//				BuzzerRepeatStart(100,4000);
-//				sprintf(lcd_str,"----,----");
-//			}
-//			LCD_putstrpos(lcd_str,0,0);
-//		}
-//		if(Keys[KEYUP].ShortPress)
-//		{
-//			Keys[KEYUP].ShortPress=0;
-//			a+=0.1;
-//			sprintf(lcd_str,"Mehdi:%s",ftoa(a));
-//			LCD_putstrpos(lcd_str, 0, 1);			
-//		}
-//		if(Keys[KEYUP].LongLongPress)
-//		{
-//			Keys[KEYUP].LongLongPress=0;
-//			a+=1.0;
-//			sprintf(lcd_str,"Mehdi:%s",ftoa(a));
-//			LCD_putstrpos(lcd_str, 0, 1);			
-//		}		
-//		if(Keys[KEYLEDBUZZER].LongPress)
-//		{
-//			Keys[KEYLEDBUZZER].LongPress=0;
-//			if(Buzzer.mute)
-//			{
-//				BuzzerMute(0);
-//				sprintf(lcd_str,"Alarm on");
-//			}
-//			else
-//			{
-//				BuzzerMute(1);
-//				sprintf(lcd_str,"Alarm off");				
-//			}
-//			LCD_putstrpos(lcd_str, 0, 0);	
-//		}			
-//		if(Keys[KEYDOWN].RawState==Press && Keys[KEYUP].RawState==Press)
-//		{
-//				sprintf(lcd_str,"Both");				
-//				LCD_putstrpos(lcd_str, 0, 0);	
-//		}
+		switch(curMenu)
+		{
+			case MainMenu:
+				if(tik_1s)
+				{
+					tik_1s=0;
+					counter_switchmaindispaly++;
+					if(counter_switchmaindispaly>DELAY_SWITCHMAINDISPLAY)
+					{
+						counter_switchmaindispaly=0;
+						tik_switchmaindispaly=1;
+					}
+					IncTimesec(&curTime);
+					if(curTime.sec==0)
+							TimeSave(curTime,EE_ADD_CURTIME);
+					curProg=FindProgNum(curBird,curTime);
+					ShtReadSensor(&sht20);
+					if(!sht20.error)
+					{
+						FanCheckHum(fan,curBird.pProgs[curProg].humidty,sht20.humidity);
+						FanCheckTemp(fan,curBird.pProgs[curProg].temperature,sht20.temperature);
+						HeaterCheck(heater,curBird.pProgs[curProg].temperature,sht20.temperature);
+						if(sht20.humidity<curBird.pProgs[curProg].humidty)
+						{
+							HAL_GPIO_WritePin(HumidityOut_GPIO_Port,HumidityOut_Pin,GPIO_PIN_SET);
+							HAL_GPIO_WritePin(LedHumidity_GPIO_Port,LedHumidity_Pin,GPIO_PIN_RESET);
+						}
+						else
+						{
+							HAL_GPIO_WritePin(HumidityOut_GPIO_Port,HumidityOut_Pin,GPIO_PIN_RESET);
+							HAL_GPIO_WritePin(LedHumidity_GPIO_Port,LedHumidity_Pin,GPIO_PIN_SET);							
+						}
+					}
+				}
+				if(tik_switchmaindispaly)
+				{
+					tik_switchmaindispaly=0;
+					MainPageNumber++;
+					if(MainPageNumber>2)
+						MainPageNumber=0;					
+					switch(MainPageNumber)
+					{
+						case 0:
+							break;
+						case 1:
+							break;
+						case 2:
+							break;
+					}
+				}
+				if(Keys[KEYLEDBUZZER].ShortPress)
+				{
+					Keys[KEYLEDBUZZER].ShortPress=0;
+					HAL_GPIO_TogglePin(LedCntlOut_GPIO_Port,LedCntlOut_Pin);
+				}
+				if(Keys[KEYLEDBUZZER].LongLongPress)
+				{
+					Keys[KEYLEDBUZZER].LongLongPress=0;
+					LCD_clearrow(0);
+					if(Buzzer.mute)
+					{
+						Buzzer.mute=0;
+						LCD_putstralign("BUZZER OFF",0,AlignCenter);
+					}
+					else
+					{
+						Buzzer.mute=1;
+						LCD_putstralign("BUZZER ON",0,AlignCenter);						
+					}
+				}				
+				break;
+			case AdvanceMenu:
+				break;
+		}
+		#if 0
+		if(tik_1s)
+		{
+			tik_1s=0;
+			if(!SHT2x_GetValue(&temp,&hum))
+			{
+				BuzzerRepeatStop();
+				sprintf(lcd_str,"%s,",ftoa(temp));
+				sprintf(lcd_str,"%s%s",lcd_str,ftoa(hum));
+			}
+			else
+			{
+				BuzzerRepeatStart(100,4000);
+				sprintf(lcd_str,"----,----");
+			}
+			LCD_putstrpos(lcd_str,0,0);
+		}
+		if(Keys[KEYUP].ShortPress)
+		{
+			Keys[KEYUP].ShortPress=0;
+			a+=0.1;
+			sprintf(lcd_str,"Mehdi:%s",ftoa(a));
+			LCD_putstrpos(lcd_str, 0, 1);			
+		}
+		if(Keys[KEYUP].LongLongPress)
+		{
+			Keys[KEYUP].LongLongPress=0;
+			a+=1.0;
+			sprintf(lcd_str,"Mehdi:%s",ftoa(a));
+			LCD_putstrpos(lcd_str, 0, 1);			
+		}		
+		if(Keys[KEYLEDBUZZER].LongPress)
+		{
+			Keys[KEYLEDBUZZER].LongPress=0;
+			if(Buzzer.mute)
+			{
+				BuzzerMute(0);
+				sprintf(lcd_str,"Alarm on");
+			}
+			else
+			{
+				BuzzerMute(1);
+				sprintf(lcd_str,"Alarm off");				
+			}
+			LCD_putstrpos(lcd_str, 0, 0);	
+		}			
+		if(Keys[KEYDOWN].RawState==Press && Keys[KEYUP].RawState==Press)
+		{
+				sprintf(lcd_str,"Both");				
+				LCD_putstrpos(lcd_str, 0, 0);	
+		}
+	#endif
   }
   /* USER CODE END 3 */
 }

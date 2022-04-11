@@ -32,5 +32,5 @@ eggincubator_hw41/heater_fan.o: ..\Core\Src\Heater_fan.c \
   ..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal_pwr_ex.h \
   ..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal_tim.h \
   ..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal_tim_ex.h \
-  ..\Core\Inc\user_eeprom.h ..\Core\Inc\bird.h ..\Core\Inc\user_time.h \
-  ..\Core\Inc\eeprom.h ..\Core\Inc\i2c.h
+  ..\Core\Inc\tim.h ..\Core\Inc\user_eeprom.h ..\Core\Inc\bird.h \
+  ..\Core\Inc\user_time.h ..\Core\Inc\eeprom.h ..\Core\Inc\i2c.h

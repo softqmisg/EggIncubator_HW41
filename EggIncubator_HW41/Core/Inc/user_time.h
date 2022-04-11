@@ -9,4 +9,6 @@ typedef struct {
 } Time_t;
 void TimeSave(Time_t t,uint16_t add);
 void TimeInit(Time_t *t);
+void IncTime(Time_t *time,Time_t inc);
+void IncTimesec(Time_t *time);
 #endif

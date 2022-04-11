@@ -12,5 +12,6 @@ typedef struct{
 
 void ShtInit(Sht_t *sensor);
 void ShtSave(Sht_t sensor);
+void ShtReadSensor(Sht_t *sensor);
 extern Sht_t defaultSht;
 #endif

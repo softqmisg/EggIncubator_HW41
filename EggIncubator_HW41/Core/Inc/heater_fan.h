@@ -21,11 +21,14 @@ typedef struct{
 void FanInit(Fan_t *fan);
 void FanSetState(Fan_t *fan,FanState_t state);
 void FanSave(Fan_t fan);
+void FanCheckTemp(Fan_t fan,int16_t setTemp,int16_t curTemp);
+void FanCheckHum(Fan_t fan,int16_t setHum,int16_t curHum);
+
 
 void HeaterInit(Heater_t *heater);
 void HeaterSetPercent(uint16_t percent);
 void HeaterSave(Heater_t heater);
-
+void HeaterCheck(Heater_t heater,int16_t setTemp,int16_t curTemp);
 
 extern Heater_t defaultHeater;
 extern Fan_t defaultFan;
