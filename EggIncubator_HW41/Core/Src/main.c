@@ -50,7 +50,7 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define DELAY_MAINMENU	20//s
-#define DELAY_SWITCHMAINDISPLAY		5//s
+#define DELAY_SWITCHMAINDISPLAY		3//s
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -68,7 +68,6 @@
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 uint8_t tik_1s=0;
-GPIO_PinState st;
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	//call every 10ms
@@ -102,8 +101,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		//Read Keys//
 		for(uint8_t i=0;i<KEYSNUM;i++)
 		{
-			st=HAL_GPIO_ReadPin(Keys[i].port,Keys[i].pin);
-			Keys[i].RawState=(KeyState_t)st;
+			Keys[i].RawState=(KeyState_t)HAL_GPIO_ReadPin(Keys[i].port,Keys[i].pin);
 			if(Keys[i].Prev_RawState==Release && Keys[i].RawState==Press) //press
 			{
 				Keys[i].counter=0;
@@ -168,12 +166,8 @@ uint8_t FindProgNum(Bird_t bird,Time_t time)
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-//void ftoa(float a ,uint8_t *integer_part,uint8_t *fractional_part)
-//{
-//	   *integer_part=(uint8_t)a;
-//	   *fractional_part=(int)((a-(double)*integer_part)*10.0);
-
-//}
+	Time_t st={.day=300,.hr=52,.min=32,.sec=0};
+	Time_t rt;
 /* USER CODE END 0 */
 
 /**
@@ -208,7 +202,7 @@ int main(void)
   MX_TIM1_Init();
   MX_TIM16_Init();
   MX_TIM17_Init();
-  //MX_IWDG_Init();
+  MX_IWDG_Init();
   /* USER CODE BEGIN 2 */
 	HAL_TIM_Base_Start_IT(&htim16); //timer 10ms
 	HAL_TIM_Base_Start_IT(&htim17);	//timer 1s
@@ -221,8 +215,17 @@ int main(void)
 	BuzzerInit();
 	KeysInit();
 	BuzzerOn(100);
-
+	
 	#if 0
+	Buzzer.mute=1;
+	TimeSave(st,EE_ADD_CURTIME);
+	TimeInit(&rt);
+	EEWriteByte((uint8_t*)&defaultBirds[Manual].Type,1,EE_ADD_CURBIRDTYPE);
+	BirdSaveManual(defaultBirds[Manual]);
+	Bird_t bb;
+	BirdInit(&bb);
+while(1);
+
 	char lcd_str[16];
 	LCD_putpersian(ROTOBAT_STR,9,0);
 	LCD_putpersian(DAMA_STR,5,0);
@@ -255,11 +258,11 @@ int main(void)
 	uint8_t tmp_uint8;
 	uint16_t tmp_uint16;
 	Time_t curTime={.sec=0,.min=0,.hr=0,.day=0};
-	LCD_putstralign("Ghoghnoos",0,AlignCenter);
-	LCD_putstralign("Loading...",0,AlignCenter);
+	LCD_putstralign("Ghoghnoos",0,0,AlignCenter);
+	LCD_putstralign("Loading...",0,1,AlignCenter);
 	if(Keys[KEYUP].RawState==Press && Keys[KEYDOWN].RawState==Press)
 	{
-	
+		LCD_putstralign("Save Default...",0,1,AlignCenter);
 		TimeSave(curTime,EE_ADD_CURTIME);
 		tmp_uint8=(uint8_t)DEFAULT_CURBIRDTYPE;
 		EEWriteByte(&tmp_uint8,1,EE_ADD_CURBIRDTYPE);
@@ -283,6 +286,7 @@ int main(void)
 	Heater_t heater;
 	HeaterInit(&heater);
 	uint8_t curProg=FindProgNum(curBird,curTime);
+	HAL_Delay(3000);
 	LCD_clear_home();
 	///////////////////////////////////////////////////////////////
 	HAL_IWDG_Init(&hiwdg);
@@ -291,7 +295,7 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 	enum{MainMenu=0,AdvanceMenu} curMenu=MainMenu;
-	uint8_t counter_switchmaindispaly=0,tik_switchmaindispaly=0,MainPageNumber=0;
+	uint8_t counter_switchmaindispaly=0,tik_switchmaindispaly=1,MainPageNumber=0;
   while (1)
   {
 		HAL_IWDG_Refresh(&hiwdg);
@@ -335,16 +339,36 @@ int main(void)
 				if(tik_switchmaindispaly)
 				{
 					tik_switchmaindispaly=0;
-					MainPageNumber++;
-					if(MainPageNumber>2)
-						MainPageNumber=0;					
 					switch(MainPageNumber)
 					{
 						case 0:
+							LCD_clear_home();
+							LCD_putstralign("Bird",0,0,AlignCenter);
+							LCD_putpersian((uint8_t)curBird.Type,0,1,AlignCenter);
+							MainPageNumber=1;
 							break;
 						case 1:
+							LCD_clear_home();
+							LCD_putpersian(DAMA_STR,3,0,AlignNone);
+							sprintf(lcd_str[0],"=%3d.%1d %cC",sht20.temperature/10,sht20.temperature%10,DEGREE_CH_CODE);
+							LCD_putstralign(lcd_str[0],7,0,AlignNone);
+
+							LCD_putpersian(ROTOBAT_STR,1,1,AlignNone);
+							sprintf(lcd_str[0],"=%3d.%1d %%",sht20.humidity/10,sht20.humidity%10);
+							LCD_putstralign(lcd_str[0],7,1,AlignNone);
+							MainPageNumber=2;
 							break;
 						case 2:
+							LCD_clear_home();
+							LCD_putpersian(ZAMAN_STR,2,0,AlignNone);
+							sprintf(lcd_str[0],"= %02d:%02d  ",curTime.hr,curTime.min);
+							LCD_putstralign(lcd_str[0],7,0,AlignNone);
+
+							LCD_putpersian(ROOZ_STR,2,1,AlignNone);
+							sprintf(lcd_str[0],"= %3d",curTime.day);
+							LCD_putstralign(lcd_str[0],7,1,AlignNone);
+						
+							MainPageNumber=0;
 							break;
 					}
 				}
@@ -353,19 +377,19 @@ int main(void)
 					Keys[KEYLEDBUZZER].ShortPress=0;
 					HAL_GPIO_TogglePin(LedCntlOut_GPIO_Port,LedCntlOut_Pin);
 				}
-				if(Keys[KEYLEDBUZZER].LongLongPress)
+				if(Keys[KEYLEDBUZZER].LongPress)
 				{
-					Keys[KEYLEDBUZZER].LongLongPress=0;
+					Keys[KEYLEDBUZZER].LongPress=0;
 					LCD_clearrow(0);
 					if(Buzzer.mute)
 					{
 						Buzzer.mute=0;
-						LCD_putstralign("BUZZER OFF",0,AlignCenter);
+						LCD_putstralign("BUZZER OFF",0,0,AlignCenter);
 					}
 					else
 					{
 						Buzzer.mute=1;
-						LCD_putstralign("BUZZER ON",0,AlignCenter);						
+						LCD_putstralign("BUZZER ON",0,0,AlignCenter);						
 					}
 				}				
 				break;

@@ -10,7 +10,6 @@ void EEWriteByte(uint8_t *pData,uint8_t len,uint16_t memaddress)
 		HAL_Delay(10);
 	}
 		HAL_GPIO_WritePin(EEWP_Port,EEWP_Pin,GPIO_PIN_SET);
-	
 }
 void EEReadByte(uint8_t *pData,uint8_t len,uint16_t memaddress)
 {

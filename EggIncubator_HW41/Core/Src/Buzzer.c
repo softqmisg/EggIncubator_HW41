@@ -34,6 +34,6 @@ void BuzzerInit()
 	Buzzer.counter_repeat=0;
 	Buzzer.active=0;
 	Buzzer.repeatstate=0;
-	Buzzer.duration=10;
-	Buzzer.delaybetweenrepeat=400;
+	Buzzer.duration=10; //*10ms
+	Buzzer.delaybetweenrepeat=400;//*10ms
 }

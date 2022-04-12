@@ -96,24 +96,26 @@
 // DDRAM address of first char of line 2
 #define LCD16X2_START_LINE_2	0x40
 ///////////////////////////////////////////////////////////////
-#define MORGHSHAKHDAR_STR	0	
-#define BOGHALAMOON_STR		1
-#define BELDERCHIN_STR		2
-#define	GHARGHAVOL_STR		3
-#define KABK_STR					4
-#define ORDAK_STR					5
-#define GHAZ_STR					6
-#define SHOTORMORGH_STR		7
-#define DASTI_STR					8
-#define MORGH_STR					9
+#define DASTI_STR					0
+#define MORGH_STR					1
+#define SHOTORMORGH_STR		2
+#define GHAZ_STR					3
+#define ORDAK_STR					4
+#define KABK_STR					5
+#define	GHARGHAVOL_STR		6
+#define BELDERCHIN_STR		7
+#define BOGHALAMOON_STR		8
+#define MORGHSHAKHDAR_STR	9	
 #define TIMER_STR					10
 #define CHARKHSH_STR			11
 #define DAMA_STR					12
 #define ROTOBAT_STR				13
 #define ZAMAN_STR					14
 #define ROOZ_STR					15
+
+#define DEGREE_CH_CODE					0XDF
 //////////////////////////////////////////////////////////////////
-typedef enum{AlignLeft=0,AlignCenter,AlignRight} Alignment_t;
+typedef enum{AlignLeft=0,AlignCenter,AlignRight,AlignNone} Alignment_t;
 ///////////////////////////////////////////////////////////////
 void LCD_backlight(uint8_t onoff);
 void LCD_init(void);
@@ -123,8 +125,7 @@ void LCD_clear_home(void);
 void LCD_gotoxy(unsigned char x_pos, unsigned char y_pos);
 void LCD_putstrpos(char *lcd_string,unsigned char x_pos, unsigned char y_pos);
 void LCD_put_custom_char( uint8_t location);
-void LCD_putpersian(uint8_t StringCode,uint8_t posx,uint8_t posy);
+void LCD_putpersian(uint8_t StringCode,uint8_t posx,uint8_t posy,Alignment_t align);
 void LCD_clearrow(uint8_t row);
-void LCD_putstralign(char *lcd_str,uint8_t y_pos,Alignment_t align);
-
+void LCD_putstralign(char *lcd_str,uint8_t x_pos,uint8_t y_pos,Alignment_t align);
 #endif /* LCD_CH_H_ */

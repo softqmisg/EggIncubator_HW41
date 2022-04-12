@@ -7,6 +7,7 @@ Fan_t defaultFan={
 	.state=FanOff
 };
 Heater_t defaultHeater={
+	.upperLimitTemp=DEFAULT_UPPER_LIMIT_TEMP,
 	.adjustHeaterPwmp=DEFAULT_ADJUST_HEATER_PWMP,
 	.adjustHeaterTemp=DEFAULT_ADJUST_HEATER_TEMP,
 	.percent=DEFAULT_HEATER_PWM
@@ -89,12 +90,14 @@ void FanCheckHum(Fan_t fan,int16_t setHum,int16_t curHum)
 
 void HeaterSave(Heater_t heater)
 {
+	EEWriteByte((uint8_t *)&heater.upperLimitTemp,2,EE_ADD_UPPER_LIMIT_TEMP);
 	EEWriteByte((uint8_t *)&heater.adjustHeaterTemp,2,EE_ADD_ADJUST_HEATER_TEMP);
 	EEWriteByte((uint8_t *)&heater.adjustHeaterPwmp,2,EE_ADD_ADJUST_HEATER_PWMP);	
 	EEWriteByte((uint8_t *)&heater.percent,2,EE_ADD_HEATER_PWM);	
 }
 void HeaterInit(Heater_t *heater)
 {
+	EEReadByte((uint8_t *)&(heater->upperLimitTemp),2,EE_ADD_UPPER_LIMIT_TEMP);
 	EEReadByte((uint8_t *)&(heater->adjustHeaterTemp),2,EE_ADD_ADJUST_HEATER_TEMP);
 	EEReadByte((uint8_t *)&(heater->adjustHeaterPwmp),2,EE_ADD_ADJUST_HEATER_PWMP);	
 	EEReadByte((uint8_t *)&(heater->percent),2,EE_ADD_HEATER_PWM);		
@@ -109,18 +112,27 @@ void HeaterSetPercent(uint16_t percent)
 	else
 		HAL_GPIO_WritePin(LedHeater_GPIO_Port,LedHeater_Pin,GPIO_PIN_RESET);
 }
+
 void HeaterCheck(Heater_t heater,int16_t setTemp,int16_t curTemp)
 {
-	if(curTemp>setTemp)
+	if(curTemp>heater.upperLimitTemp)
 	{
-		HeaterSetPercent(0);
-	}
-	else if(setTemp-curTemp<heater.adjustHeaterTemp)
-	{
-		HeaterSetPercent(heater.adjustHeaterPwmp);
+		HAL_GPIO_WritePin(HeaterRelay_GPIO_Port,HeaterRelay_Pin,GPIO_PIN_RESET);
 	}
 	else
 	{
-		HeaterSetPercent(heater.percent);
+		HAL_GPIO_WritePin(HeaterRelay_GPIO_Port,HeaterRelay_Pin,GPIO_PIN_SET);
+		if(curTemp>setTemp)
+		{
+			HeaterSetPercent(0);
+		}
+		else if(setTemp-curTemp<heater.adjustHeaterTemp)
+		{
+			HeaterSetPercent(heater.adjustHeaterPwmp);
+		}
+		else
+		{
+			HeaterSetPercent(heater.percent);
+		}
 	}
 }

@@ -57,7 +57,7 @@ uint8_t custom_character[][8] = {
 			 {0x00, 0x02, 0x05, 0x00, 0x15, 0x17, 0x14, 0x1c },//29//_Sh			 
 			 {0x04, 0x04, 0x04, 0x07, 0x05, 0x1f, 0x00, 0x00 },//30//t_			 
 			 {0x00, 0x00, 0x0A, 0x00, 0x11, 0x1e, 0x00, 0x00 },//31//T			 
-			 {0x00, 0x00, 0x0e, 0x0a, 0x0e, 0x02, 0x04, 0x18 },//32//Oo			 
+			 {0x00, 0x00, 0x0e, 0x0a, 0x0e, 0x02, 0x04, 0x18 },//32//Oo	
 
 };
 /*
@@ -312,7 +312,7 @@ void LCD_load_custom_char(uint8_t custom_chars[][8])
 //////////////////////////////////////////////////////////////////////////////////////////
 
 	 
-void LCD_putpersian(uint8_t StringCode,uint8_t posx,uint8_t posy)
+void LCD_putpersian(uint8_t StringCode,uint8_t posx,uint8_t posy,Alignment_t align)
 {
 	uint8_t lengthofcustom=0;
 	uint8_t *posofcustomchar;
@@ -388,15 +388,26 @@ void LCD_putpersian(uint8_t StringCode,uint8_t posx,uint8_t posy)
 	}
 	for( uint8_t i=0;i<lengthofcustom;i++)
 		LCD_create_custom_char(i+memstartpos,custom_character[posofcustomchar[i]]);
+	switch(align)
+	{
+		case AlignLeft:
+			posx=0;
+		break;
+		case AlignCenter:
+			posx=(16-lengthofcustom)/2;			
+			break;
+		case AlignRight:
+			posx=16-lengthofcustom;
+		break;
+	}
 	LCD_gotoxy(posx,posy);
 	for( uint8_t i=0;i<lengthofcustom;i++)
 		LCD_send(lengthofcustom-1-i+memstartpos,DAT);//(lengthofcustom-1-i);
 }
 /*
 */
-void LCD_putstralign(char *lcd_str,uint8_t y_pos,Alignment_t align)
+void LCD_putstralign(char *lcd_str,uint8_t x_pos,uint8_t y_pos,Alignment_t align)
 {
-	uint8_t x_pos;
 	switch(align)
 	{
 		case AlignLeft:

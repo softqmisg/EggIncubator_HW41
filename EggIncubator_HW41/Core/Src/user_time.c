@@ -87,6 +87,6 @@ void TimeSave(Time_t t,uint16_t add)
 }
 void TimeInit(Time_t *t)
 {
-		EEReadByte((uint8_t *)&t,sizeof(Time_t),EE_ADD_CURTIME);
+		EEReadByte((uint8_t *)t,sizeof(Time_t),EE_ADD_CURTIME);
 
 }

@@ -4,8 +4,8 @@
 #include "tim.h"
 typedef enum{FanOn,FanOff} FanState_t;
 typedef struct{
-	uint16_t adjustFanTemp;
-	uint16_t adjustFanHum;
+	int16_t adjustFanTemp;
+	int16_t adjustFanHum;
 	FanState_t state;
 } Fan_t;
 
@@ -13,8 +13,9 @@ typedef struct{
 #define HEATERCHANNEL TIM_CHANNEL_2
 
 typedef struct{
-	uint16_t adjustHeaterTemp;
-	uint16_t adjustHeaterPwmp;
+	int16_t upperLimitTemp;
+	int16_t adjustHeaterTemp;
+	int16_t adjustHeaterPwmp;
 	uint16_t percent;
 } Heater_t;
 
