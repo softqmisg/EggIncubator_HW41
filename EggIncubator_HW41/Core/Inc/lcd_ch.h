@@ -113,6 +113,9 @@
 #define ROTOBAT_STR				13
 #define ZAMAN_STR					14
 #define ROOZ_STR					15
+#define DOOREH_STR				16
+#define SETTER_STR				17
+#define HATCHER_STR				18
 
 #define DEGREE_CH_CODE					0XDF
 //////////////////////////////////////////////////////////////////

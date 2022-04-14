@@ -22,7 +22,9 @@ uint8_t Dama_Pos_ch[]={13,11,4};
 uint8_t Rotobat_Pos_ch[]={1,30,8,7,31};
 uint8_t Zaman_Pos_ch[]={22,11,4,12};
 uint8_t Rooz_Pos_ch[]={1,32,22};
-
+uint8_t Dooreh_Pos_ch[]={13,32,1,33};
+uint8_t Setter_Pos_ch[]={24,23,16};
+uint8_t Hatcher_Pos_ch[]={34,14,16};
 
 uint8_t custom_character[][8] = {
 		   {0x00, 0x00, 0x00, 0x1f, 0x05, 0x07, 0x00, 0x00 },//0//Mo
@@ -58,6 +60,8 @@ uint8_t custom_character[][8] = {
 			 {0x04, 0x04, 0x04, 0x07, 0x05, 0x1f, 0x00, 0x00 },//30//t_			 
 			 {0x00, 0x00, 0x0A, 0x00, 0x11, 0x1e, 0x00, 0x00 },//31//T			 
 			 {0x00, 0x00, 0x0e, 0x0a, 0x0e, 0x02, 0x04, 0x18 },//32//Oo	
+			 {0x00, 0x00, 0x00, 0x04, 0x06, 0x09, 0x0F, 0x00 },//33//H	
+			 {0x00, 0x04, 0x0A, 0x0D, 0x09, 0x1E, 0x00, 0x00 },//34//H_	
 
 };
 /*
@@ -383,6 +387,21 @@ void LCD_putpersian(uint8_t StringCode,uint8_t posx,uint8_t posy,Alignment_t ali
 			posofcustomchar=Rooz_Pos_ch;
 			memstartpos=4;
 		break;
+		case DOOREH_STR:
+			lengthofcustom=4;
+			posofcustomchar=Dooreh_Pos_ch;
+		break;
+		case SETTER_STR:
+			lengthofcustom=3;
+			posofcustomchar=Setter_Pos_ch;
+			memstartpos=4;
+		break;
+		case HATCHER_STR:
+			lengthofcustom=3;
+			posofcustomchar=Hatcher_Pos_ch;
+			memstartpos=4;
+		break;
+		
 	}
 	for( uint8_t i=0;i<lengthofcustom;i++)
 		LCD_create_custom_char(i+memstartpos,custom_character[posofcustomchar[i]]);

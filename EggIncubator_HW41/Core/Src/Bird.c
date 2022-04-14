@@ -64,7 +64,7 @@ void BirdReadManual(Bird_t *bird)
 {
 	uint16_t add=EE_ADD_MANBIRD;
 	bird->Type=Manual;
-	bird->NumofProg=1;
+	bird->NumofProg=2;
 	EEReadByte((uint8_t *)&(bird->TotalDurationDays),2,add);add+=2;
 	EEReadByte((uint8_t *)&(bird->HatchTotalDays),2,add);add+=2;
 	EEReadByte((uint8_t *)&(bird->pProgs[0].humidty),2,add);add+=2;

@@ -45,4 +45,7 @@
 
 	#define HUM_UPPER_VALUE	1000
 	#define HUM_LOWER_VALUE	0
+	
+	#define DAY_UPPER_VALUE	999
+	#define DAY_LOWER_VALUE	1
 #endif

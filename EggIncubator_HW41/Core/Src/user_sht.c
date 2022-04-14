@@ -18,7 +18,7 @@ void ShtInit(Sht_t *sensor)
 void ShtReadSensor(Sht_t *sensor)
 {
 	float tmp;
-	sensor->error|=SHT2x_MeasureHM(TEMP, &tmp);
+	sensor->error=SHT2x_MeasureHM(TEMP, &tmp);
 	sensor->temperature=(int16_t)(tmp*10.0)+sensor->calibTemp;
 	HAL_Delay(70);
 	sensor->error|=SHT2x_MeasureHM(HUMIDITY, &tmp);
