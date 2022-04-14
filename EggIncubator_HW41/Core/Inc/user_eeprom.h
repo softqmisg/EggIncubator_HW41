@@ -39,4 +39,10 @@
 	
 	#define DEFAULT_PASSWORD	0 //4digit
 	#define DEFAULT_UPPER_LIMIT_TEMP	400
+	
+	#define TEMP_UPPER_VALUE	600
+	#define TEMP_LOWER_VALUE	100
+
+	#define HUM_UPPER_VALUE	1000
+	#define HUM_LOWER_VALUE	0
 #endif

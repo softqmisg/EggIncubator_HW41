@@ -34,4 +34,4 @@ eggincubator_hw41/motor.o: ..\Core\Src\Motor.c ..\Core\Inc\Motor.h \
   ..\Core\Inc\user_time.h \
   C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\string.h \
   ..\Core\Inc\user_eeprom.h ..\Core\Inc\bird.h ..\Core\Inc\eeprom.h \
-  ..\Core\Inc\i2c.h
+  ..\Core\Inc\i2c.h ..\Core\Inc\user_time.h

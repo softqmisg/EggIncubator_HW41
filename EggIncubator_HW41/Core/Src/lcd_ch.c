@@ -310,8 +310,6 @@ void LCD_load_custom_char(uint8_t custom_chars[][8])
 				LCD_create_custom_char(i, custom_chars[i]);	
 }
 //////////////////////////////////////////////////////////////////////////////////////////
-
-	 
 void LCD_putpersian(uint8_t StringCode,uint8_t posx,uint8_t posy,Alignment_t align)
 {
 	uint8_t lengthofcustom=0;
@@ -421,6 +419,12 @@ void LCD_putstralign(char *lcd_str,uint8_t x_pos,uint8_t y_pos,Alignment_t align
 		break;
 	}
 	LCD_putstrpos(lcd_str,x_pos,y_pos);
+}
+void LCD_clear_size(uint8_t x,uint8_t y,uint8_t size)
+{
+	LCD_gotoxy(x,y);
+	for(uint8_t i=0;i<size;i++)
+		LCD_send(' ',DAT);
 }
 /*void LCD_put_custom_text(uint8_t x,uint8_t y,uint8_t text)
 {

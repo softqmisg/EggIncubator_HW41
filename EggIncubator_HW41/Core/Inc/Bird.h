@@ -3,7 +3,7 @@
 #include "main.h"
 #include "user_time.h"
 #define NumOfBirds	10
-typedef enum {Manual=0,Morgh,ShotorMorgh,Ghaz,Ordak,Kabk,Gharghavol,Belderchin,Boghalamoon,MorghShakhdar} BirdType_t;
+typedef enum {Manual=0,Morgh,MorghShakhdar,Boghalamoon,Belderchin,Gharghavol,Kabk,Ordak,Ghaz,ShotorMorgh} BirdType_t;
 typedef struct{
 	int16_t humidty;
 	int16_t temperature;

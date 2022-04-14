@@ -153,37 +153,52 @@
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>st,0x0A</ItemText>
+          <ItemText>sht20,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>rt,0x0A</ItemText>
+          <ItemText>curProg</ItemText>
         </Ww>
         <Ww>
           <count>2</count>
           <WinNumber>1</WinNumber>
-          <ItemText>defaultBirds[(uint8_t)Manual]</ItemText>
+          <ItemText>curBird,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>3</count>
           <WinNumber>1</WinNumber>
-          <ItemText>bb,0x0A</ItemText>
+          <ItemText>curProg</ItemText>
         </Ww>
         <Ww>
           <count>4</count>
           <WinNumber>1</WinNumber>
-          <ItemText>Manual</ItemText>
+          <ItemText>TimerGoMainMenu</ItemText>
         </Ww>
         <Ww>
           <count>5</count>
           <WinNumber>1</WinNumber>
-          <ItemText>bb.pProgs[0],0x0A</ItemText>
+          <ItemText>motor,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>6</count>
           <WinNumber>1</WinNumber>
-          <ItemText>bb.pProgs[1],0x0A</ItemText>
+          <ItemText>tmpType</ItemText>
+        </Ww>
+        <Ww>
+          <count>7</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>curTime,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>8</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>curBird,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>9</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>tmpType</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>

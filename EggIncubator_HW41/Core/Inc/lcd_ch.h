@@ -98,14 +98,15 @@
 ///////////////////////////////////////////////////////////////
 #define DASTI_STR					0
 #define MORGH_STR					1
-#define SHOTORMORGH_STR		2
-#define GHAZ_STR					3
-#define ORDAK_STR					4
-#define KABK_STR					5
-#define	GHARGHAVOL_STR		6
-#define BELDERCHIN_STR		7
-#define BOGHALAMOON_STR		8
-#define MORGHSHAKHDAR_STR	9	
+#define MORGHSHAKHDAR_STR	2
+#define BOGHALAMOON_STR		3
+#define BELDERCHIN_STR		4
+#define	GHARGHAVOL_STR		5
+#define KABK_STR					6
+#define ORDAK_STR					7
+#define GHAZ_STR					8
+#define SHOTORMORGH_STR		9
+
 #define TIMER_STR					10
 #define CHARKHSH_STR			11
 #define DAMA_STR					12
@@ -128,4 +129,5 @@ void LCD_put_custom_char( uint8_t location);
 void LCD_putpersian(uint8_t StringCode,uint8_t posx,uint8_t posy,Alignment_t align);
 void LCD_clearrow(uint8_t row);
 void LCD_putstralign(char *lcd_str,uint8_t x_pos,uint8_t y_pos,Alignment_t align);
+void LCD_clear_size(uint8_t x,uint8_t y,uint8_t size);
 #endif /* LCD_CH_H_ */

@@ -19,7 +19,7 @@
 #define SHORTPRESS_MAX			40//*10 milisecond
 
 #define LONGPRESS_MIN				200//*10 milisecond
-#define LONGLONGPRESS_MIN		10//*10 milisecond
+#define LONGLONGPRESS_MIN		20//*10 milisecond
 
 
 #define KEYUP					0
