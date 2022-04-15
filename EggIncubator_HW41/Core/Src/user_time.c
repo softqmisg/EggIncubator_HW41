@@ -62,6 +62,7 @@ void IncTime(Time_t *t,Time_t inc)
 		t->min+=inc.min;
 		if(t->min>59)
 		{
+			t->min=0;
 			t->hr+=1;
 			t->hr+=inc.hr;
 			if(t->hr>23)
