@@ -27,15 +27,24 @@ Project File Date:  04/12/2022
 <h2>Output:</h2>
 *** Using Compiler 'V6.14', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
 Build target 'EggIncubator_HW41'
-../Core/Src/main.c(304): warning: 6 enumeration values not handled in switch: 'AdvanceAdjustFanTempMenu', 'AdvanceAdjustFanHumMenu', 'AdvanceAdjustHeaterTempMenu'... [-Wswitch]
-                switch(curMenu)
-                       ^
-1 warning generated.
+../Core/Src/main.c(716): warning: 11 enumeration values not handled in switch: 'MainMenu', 'SettingBirdMenu', 'SettingBirdDayMenu'... [-Wswitch]
+                                        switch(curMenu)
+                                               ^
+../Core/Src/main.c(742): warning: 11 enumeration values not handled in switch: 'MainMenu', 'SettingBirdMenu', 'SettingBirdDayMenu'... [-Wswitch]
+                                        switch(curMenu)
+                                               ^
+../Core/Src/main.c(768): warning: 11 enumeration values not handled in switch: 'MainMenu', 'SettingBirdMenu', 'SettingBirdDayMenu'... [-Wswitch]
+                                        switch(curMenu)
+                                               ^
+../Core/Src/main.c(800): warning: 11 enumeration values not handled in switch: 'MainMenu', 'SettingBirdMenu', 'SettingBirdDayMenu'... [-Wswitch]
+                                        switch(curMenu)
+                                               ^
+4 warnings generated.
 compiling main.c...
 linking...
-Program Size: Code=19536 RO-data=692 RW-data=708 ZI-data=1540  
+Program Size: Code=20420 RO-data=672 RW-data=708 ZI-data=1556  
 FromELF: creating hex file...
-"EggIncubator_HW41\EggIncubator_HW41.axf" - 0 Error(s), 1 Warning(s).
+"EggIncubator_HW41\EggIncubator_HW41.axf" - 0 Error(s), 4 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -59,7 +68,7 @@ Package Vendor: Keil
 
    * Component: ARM::CMSIS:CORE:5.4.0
       Include file:  CMSIS\Core\Include\tz_context.h
-Build Time Elapsed:  00:00:01
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>

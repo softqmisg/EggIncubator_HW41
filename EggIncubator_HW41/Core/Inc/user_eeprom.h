@@ -36,7 +36,7 @@
 	
 	#define DEFAULT_CALIB_TEMP	0
 	#define DEFAULT_CALIB_HUM		0
-	
+	//////////////////////////////////////////////////
 	#define DEFAULT_PASSWORD	"0000" //4digit
 	#define DEFAULT_UPPER_LIMIT_TEMP	400
 	
@@ -54,4 +54,5 @@
 
 	#define HUM_ADJUST_UPPER_LIMIT	100	
 	#define HUM_ADJUST_LOWER_LIMIT	-100	
+	/////////////////////////////////////////////////////
 #endif
