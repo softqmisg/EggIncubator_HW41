@@ -26,6 +26,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include "lcd_ch.h"
@@ -280,13 +281,20 @@ int main(void)
 			SettingBirdMenu,
 			SettingBirdDayMenu,
 			SettingManualTemperatureMenu,SettingManualHumidtyMenu,SettingManualDaysMenu,SettingManualHatchersMenu,
-			AdvanceMenu
+			PasswordMenu,
+			AdvancedMenu,
+			AdvanceMotorOnTimeMenu,AdvanceMotorOffTimeMenu,
+			AdvanceAdjustFanTempMenu,AdvanceAdjustFanHumMenu,
+			AdvanceAdjustHeaterTempMenu,AdvanceAdjustHeaterPwmMenu,
+			AdvancecCalibShtTempMenu,AdvanceCalibShtHumMenu,
 			} curMenu=MainMenu;
 	uint8_t counter_switchmaindispaly=0,tik_switchmaindispaly=1,MainPageNumber=0;
 	uint8_t tmpType,tmpProg;
 	Time_t tmpTime;
 	int16_t tmpTemp,tmpHumid,tmpDay;
 	char tmpIsHatch;
+	uint8_t indexpos;
+	char tmppass[5];
   while (1)
   {
 //		HAL_IWDG_Refresh(&hiwdg);
@@ -397,6 +405,7 @@ int main(void)
 					}
 				}
 				//Check Keys
+				//Up key:Motor rotation
 				if(Keys[KEYUP].RawState==Press)
 				{
 					if(motor.mode==MotorAuto)
@@ -425,11 +434,13 @@ int main(void)
 						LCD_clear_home();
 					}
 				}
+				//LEDBUZZER key:Lamp On Off
 				if(Keys[KEYLEDBUZZER].ShortPress)
 				{
 					Keys[KEYLEDBUZZER].ShortPress=0;
 					HAL_GPIO_TogglePin(LedCntlOut_GPIO_Port,LedCntlOut_Pin);
 				}
+				//LEDBUZZER key long:Buzzer On Off
 				if(Keys[KEYLEDBUZZER].LongPress)
 				{
 					Keys[KEYLEDBUZZER].LongPress=0;
@@ -445,10 +456,35 @@ int main(void)
 						LCD_putstralign("BUZZER OFF",0,0,AlignCenter);						
 					}
 				}				
-				if(Keys[KEYSETTING].ShortPress || Keys[KEYSETTING].LongPress)
+				// both Key Setting and Down:Password menu
+				if(Keys[KEYDOWN].LongPress && Keys[KEYSETTING].LongPress)
+				{
+					Keys[KEYSETTING].LongPress=Keys[KEYSETTING].LongLongPress=0;
+					Keys[KEYDOWN].LongPress=Keys[KEYDOWN].LongLongPress=0;
+					TimerGoMainMenu=DELAY_GOMAINMENU;
+
+					HeaterSetPercent(0);
+					FanSetState(&fan,FanOff);
+					motor.mode=MotorManual;	MotorSetState(&motor,MotorOff);
+					HAL_GPIO_WritePin(HumidityOut_GPIO_Port,HumidityOut_Pin,GPIO_PIN_RESET);
+					HAL_GPIO_WritePin(LedHumidity_GPIO_Port,LedHumidity_Pin,GPIO_PIN_SET);		
+					HAL_GPIO_WritePin(LedHatcher_GPIO_Port,LedHatcher_Pin,GPIO_PIN_SET);
+
+					LCD_clear_home();
+					LCD_putstralign("PASSWORD",0,0,AlignCenter);
+					sprintf(tmppass,"%s",DEFAULT_PASSWORD);
+					LCD_putstralign(tmppass,0,1,AlignCenter);
+					indexpos=0;
+					LCD_cursor_on();
+					LCD_gotoxy(indexpos+6,1);
+					Keys[KEYSETTING].LongPress=Keys[KEYSETTING].LongLongPress=0;
+					Keys[KEYDOWN].LongPress=Keys[KEYDOWN].LongLongPress=0;
+					curMenu=PasswordMenu;
+				}
+				//
+				if(Keys[KEYSETTING].ShortPress )
 				{
 					Keys[KEYSETTING].ShortPress=0;
-					Keys[KEYSETTING].LongPress=0;
 					TimerGoMainMenu=DELAY_GOMAINMENU;
 					
 					LCD_clear_home();
@@ -466,6 +502,245 @@ int main(void)
 					
 					curMenu=SettingBirdMenu;
 				}
+				break;
+			//Password Menu//
+			case PasswordMenu:
+				if(Keys[KEYUP].ShortPress||Keys[KEYUP].LongLongPress)
+				{
+					Keys[KEYUP].ShortPress=0;Keys[KEYUP].LongLongPress=0;
+					TimerGoMainMenu=DELAY_GOMAINMENU;
+					tmppass[indexpos]++;
+					if(tmppass[indexpos]>'9') tmppass[indexpos]='0';
+					LCD_putstralign(tmppass,0,1,AlignCenter);
+					LCD_gotoxy(indexpos+6,1);					
+
+				}
+				if(Keys[KEYDOWN].ShortPress||Keys[KEYDOWN].LongLongPress)
+				{
+					Keys[KEYDOWN].ShortPress=0;Keys[KEYDOWN].LongLongPress=0;
+					TimerGoMainMenu=DELAY_GOMAINMENU;
+					if(tmppass[indexpos]=='0') tmppass[indexpos]='9'+1;
+					tmppass[indexpos]--;
+					LCD_putstralign(tmppass,0,1,AlignCenter);
+					LCD_gotoxy(indexpos+6,1);					
+				}				
+				if(Keys[KEYSETTING].ShortPress)
+				{
+					Keys[KEYSETTING].ShortPress=0;
+					TimerGoMainMenu=DELAY_GOMAINMENU;
+					indexpos++;
+					LCD_putstralign(tmppass,0,1,AlignCenter);
+					LCD_gotoxy(indexpos+6,1);								
+
+					if(indexpos>3)
+					{
+						LCD_cursor_off();
+						if(!strcmp(tmppass,DEFAULT_PASSWORD))
+						{
+							LCD_clear_home();
+							LCD_putstralign("Motor On",0,0,AlignCenter);
+							sprintf(lcd_str[1],"%02d:%02d:%02d",motor.OnTime.hr,motor.OnTime.min,motor.OnTime.sec);
+							LCD_putstralign(lcd_str[1],0,1,AlignCenter);
+							indexpos=0;
+							curMenu=AdvancedMenu;
+						}
+						else
+						{
+							LCD_putstralign("Wrong",0,1,AlignCenter);
+							HAL_Delay(2000);
+							TimerGoMainMenu=0;
+						}
+					}
+				}				
+				if(TimerGoMainMenu==0)
+				{
+					LCD_clear_home();
+					tik_1s=1;
+					tik_switchmaindispaly=1;
+					MainPageNumber=0;
+					motor.mode=MotorAuto;
+					curMenu=MainMenu;
+				}				
+				break;
+				//Advance Menu:selectItem
+			case AdvancedMenu: 
+				if(Keys[KEYUP].ShortPress || Keys[KEYDOWN].ShortPress)
+				{
+					TimerGoMainMenu=DELAY_GOMAINMENU;
+					if(Keys[KEYUP].ShortPress)
+					{
+						Keys[KEYUP].ShortPress=0;
+						indexpos++;
+						if(indexpos>7)
+							indexpos=0;
+					}
+					else
+					{
+						Keys[KEYDOWN].ShortPress=0;
+						if(indexpos==0)
+							indexpos=8;
+						indexpos--;
+					}
+					LCD_clear_home();
+					switch(indexpos)
+					{
+						case 0:
+							LCD_putstralign("Motor On",0,0,AlignCenter);
+							sprintf(lcd_str[1],"%02d:%02d:%02d",motor.OnTime.hr,motor.OnTime.min,motor.OnTime.sec);
+						break;
+						case 1:
+							LCD_putstralign("Motor Off",0,0,AlignCenter);
+							sprintf(lcd_str[1],"%02d:%02d:%02d",motor.OffTime.hr,motor.OffTime.min,motor.OffTime.sec);
+						break;
+						case 2:
+							LCD_putstralign("Adj Fan Temp",0,0,AlignCenter);
+							sprintf(lcd_str[1],"%+2d.%1d %cC",fan.adjustFanTemp/10,abs(fan.adjustFanTemp%10),DEGREE_CH_CODE);
+						break;
+						case 3:
+							LCD_putstralign("Adj Fan HUM",0,0,AlignCenter);
+							sprintf(lcd_str[1],"%+2d.%1d %%",fan.adjustFanHum/10,abs(fan.adjustFanHum%10));
+						break;
+						case 4:
+							LCD_putstralign("Adj Heat Temp",0,0,AlignCenter);
+							sprintf(lcd_str[1],"%+2d.%1d %cC",heater.adjustHeaterTemp/10,abs(heater.adjustHeaterTemp%10),DEGREE_CH_CODE);
+						break;
+						case 5:
+							LCD_putstralign("Adj Heat PWM",0,0,AlignCenter);
+							sprintf(lcd_str[1],"%3d.%d %%",heater.adjustHeaterPwmp/10,heater.adjustHeaterPwmp%10);
+						break;
+						case 6:
+							LCD_putstralign("Calib SHT Temp",0,0,AlignCenter);
+							sprintf(lcd_str[1],"%+2d.%1d %cC",sht20.calibTemp/10,abs(sht20.calibTemp),DEGREE_CH_CODE);
+						break;
+						case 7:
+							LCD_putstralign("Calib SHT HUM",0,0,AlignCenter);
+							sprintf(lcd_str[1],"%+2d.%1d %%",sht20.calibHum/10,abs(sht20.calibHum%10));
+						break;
+					}
+					LCD_putstralign(lcd_str[1],0,1,AlignCenter);
+				}
+				if(Keys[KEYSETTING].ShortPress)
+				{
+					Keys[KEYSETTING].ShortPress=0;
+					switch(indexpos)
+					{
+						case 0:
+							tmpTime=motor.OnTime;
+							indexpos=0;
+							LCD_cursor_on();
+							LCD_gotoxy(5+indexpos*3,1);
+							curMenu=AdvanceMotorOnTimeMenu;
+						break;
+						case 1:
+							tmpTime=motor.OffTime;
+							indexpos=0;
+							LCD_cursor_on();
+							LCD_gotoxy(5+indexpos*3,1);
+							curMenu=AdvanceMotorOffTimeMenu;						
+							break;
+						case 2:
+							break;
+						case 3:
+							break;
+						case 4:
+							break;
+						case 5:
+							break;
+						case 6:
+							break;
+						case 7:
+							break;
+					}
+				}
+				if(TimerGoMainMenu==0)
+				{
+					LCD_clear_home();
+					tik_1s=1;
+					tik_switchmaindispaly=1;
+					MainPageNumber=0;
+					motor.mode=MotorAuto;
+					curMenu=MainMenu;
+				}						
+				break;
+				//Advance Menu:Set Motor On Off Time 
+			case AdvanceMotorOnTimeMenu:
+			case AdvanceMotorOffTimeMenu:
+				if(Keys[KEYUP].ShortPress||Keys[KEYUP].LongLongPress)
+				{
+					Keys[KEYUP].ShortPress=0;Keys[KEYUP].LongLongPress=0;
+					TimerGoMainMenu=DELAY_GOMAINMENU;
+					switch(indexpos)
+					{
+						case 0:
+							tmpTime.hr++;
+							if(tmpTime.hr>99) tmpTime.hr=99;
+							break;
+						case 1:
+							tmpTime.min++;
+							if(tmpTime.min>59) tmpTime.min=59;
+						break;
+						case 2:
+							tmpTime.sec++;
+							if(tmpTime.sec>59) tmpTime.sec=59;
+						break;
+					}
+					sprintf(lcd_str[1],"%02d:%02d:%02d",tmpTime.hr,tmpTime.min,tmpTime.sec);
+					LCD_putstralign(lcd_str[1],0,1,AlignCenter);
+				}
+				if(Keys[KEYDOWN].ShortPress||Keys[KEYDOWN].LongLongPress)
+				{
+					Keys[KEYDOWN].ShortPress=0;Keys[KEYDOWN].LongLongPress=0;
+					TimerGoMainMenu=DELAY_GOMAINMENU;
+					switch(indexpos)
+					{
+						case 0:
+							if(tmpTime.hr==0) tmpTime.hr=1;
+							tmpTime.hr--;
+							break;
+						case 1:
+							if(tmpTime.min==0) tmpTime.min=1;
+							tmpTime.min--;
+						break;
+						case 2:
+							if(tmpTime.sec==0) tmpTime.sec=1;
+							tmpTime.sec--;
+						break;
+					}
+					sprintf(lcd_str[1],"%02d:%02d:%02d",tmpTime.hr,tmpTime.min,tmpTime.sec);
+					LCD_putstralign(lcd_str[1],0,1,AlignCenter);
+				}
+				if(Keys[KEYSETTING].ShortPress)
+				{
+					Keys[KEYSETTING].ShortPress=0;
+					TimerGoMainMenu=DELAY_GOMAINMENU;
+					indexpos++;
+					if(indexpos>3)
+					{
+						TimerGoMainMenu=0;
+						if(curMenu==AdvanceMotorOnTimeMenu)
+						{
+							memcpy(&motor.OnTime,&tmpTime,sizeof(Time_t));
+							TimeSave(motor.OnTime,EE_ADD_MOTOR_ON);
+						}
+						else
+						{
+							memcpy(&motor.OffTime,&tmpTime,sizeof(Time_t));
+							TimeSave(motor.OffTime,EE_ADD_MOTOR_OFF);
+						}
+						LCD_cursor_off();
+					}
+					LCD_gotoxy(5+indexpos*3,1);
+				}				
+
+				if(TimerGoMainMenu==0)
+				{
+					if(curMenu==AdvanceMotorOnTimeMenu)
+						indexpos=0;
+					else
+						indexpos=1;
+					TimerGoMainMenu=DELAY_GOMAINMENU;
+					curMenu=AdvancedMenu;
+				}					
 				break;
 			//Setting Bird Menu//				
 			case SettingBirdMenu:
@@ -848,62 +1123,7 @@ int main(void)
 					MainPageNumber=0;
 				}				
 				break;
-			//Advance Menu//
-			case AdvanceMenu:
-				break;
 		}
-		#if 0
-		if(tik_1s)
-		{
-			tik_1s=0;
-			if(!SHT2x_GetValue(&temp,&hum))
-			{
-				BuzzerRepeatStop();
-				sprintf(lcd_str,"%s,",ftoa(temp));
-				sprintf(lcd_str,"%s%s",lcd_str,ftoa(hum));
-			}
-			else
-			{
-				BuzzerRepeatStart(100,4000);
-				sprintf(lcd_str,"----,----");
-			}
-			LCD_putstrpos(lcd_str,0,0);
-		}
-		if(Keys[KEYUP].ShortPress)
-		{
-			Keys[KEYUP].ShortPress=0;
-			a+=0.1;
-			sprintf(lcd_str,"Mehdi:%s",ftoa(a));
-			LCD_putstrpos(lcd_str, 0, 1);			
-		}
-		if(Keys[KEYUP].LongLongPress)
-		{
-			Keys[KEYUP].LongLongPress=0;
-			a+=1.0;
-			sprintf(lcd_str,"Mehdi:%s",ftoa(a));
-			LCD_putstrpos(lcd_str, 0, 1);			
-		}		
-		if(Keys[KEYLEDBUZZER].LongPress)
-		{
-			Keys[KEYLEDBUZZER].LongPress=0;
-			if(Buzzer.mute)
-			{
-				BuzzerMute(0);
-				sprintf(lcd_str,"Alarm on");
-			}
-			else
-			{
-				BuzzerMute(1);
-				sprintf(lcd_str,"Alarm off");				
-			}
-			LCD_putstrpos(lcd_str, 0, 0);	
-		}			
-		if(Keys[KEYDOWN].RawState==Press && Keys[KEYUP].RawState==Press)
-		{
-				sprintf(lcd_str,"Both");				
-				LCD_putstrpos(lcd_str, 0, 0);	
-		}
-	#endif
   }
   /* USER CODE END 3 */
 }

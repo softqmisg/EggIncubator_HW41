@@ -133,4 +133,7 @@ void LCD_putpersian(uint8_t StringCode,uint8_t posx,uint8_t posy,Alignment_t ali
 void LCD_clearrow(uint8_t row);
 void LCD_putstralign(char *lcd_str,uint8_t x_pos,uint8_t y_pos,Alignment_t align);
 void LCD_clear_size(uint8_t x,uint8_t y,uint8_t size);
+void LCD_cursor_on(void);
+void LCD_cursor_off(void);
+
 #endif /* LCD_CH_H_ */

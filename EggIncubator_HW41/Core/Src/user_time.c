@@ -52,24 +52,23 @@ int8_t compareTime(Time_t t1,Time_t t2)
 }
 /*
 */
-void IncTime(Time_t *time,Time_t inc)
+void IncTime(Time_t *t,Time_t inc)
 {
-	time->sec+=inc.sec;
-	if(time->sec>59)
+	t->sec+=inc.sec;
+	if(t->sec>59)
 	{
-		time->sec=0;
-		time->min+=1;
-		time->min+=inc.min;
-		if(time->min>59)
+		t->sec=0;
+		t->min+=1;
+		t->min+=inc.min;
+		if(t->min>59)
 		{
-			time->min=0;
-			time->hr+=1;
-			time->hr+=inc.hr;
-			if(time->hr>23)
+			t->hr+=1;
+			t->hr+=inc.hr;
+			if(t->hr>23)
 			{
-				time->hr=0;
-				time->day+=1;
-				time->day=inc.day;
+				t->hr=0;
+				t->day+=1;
+				t->day=inc.day;
 			}
 		}
 	}
@@ -83,7 +82,7 @@ void IncTimesec(Time_t *t)
 */
 void TimeSave(Time_t t,uint16_t add)
 {
-	EEWriteByte((uint8_t *)&t,sizeof(t),add);
+	EEWriteByte((uint8_t *)&t,sizeof(Time_t),add);
 }
 void TimeInit(Time_t *t)
 {

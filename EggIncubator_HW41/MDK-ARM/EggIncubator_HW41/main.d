@@ -33,6 +33,7 @@ eggincubator_hw41/main.o: ..\Core\Src\main.c ..\Core\Inc\main.h \
   ..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal_tim_ex.h \
   ..\Core\Inc\i2c.h ..\Core\Inc\main.h ..\Core\Inc\iwdg.h \
   ..\Core\Inc\tim.h ..\Core\Inc\gpio.h \
+  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdlib.h \
   C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdio.h \
   C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\string.h ..\Core\Inc\lcd_ch.h \
   ..\Core\Inc\string_num.h ..\Core\Inc\sht2x_BB.h ..\Core\Inc\I2C_HAL.h \

@@ -1,1 +1,0 @@
-make decision :for Manual Bird, motor status and hatcher Led 

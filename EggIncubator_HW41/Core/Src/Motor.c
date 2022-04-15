@@ -60,7 +60,6 @@ void MotorCheck(Motor_t *motor)
 				}
 				else
 				{
-					
 					HAL_GPIO_WritePin(Motor23Out_GPIO_Port,Motor12Out_Pin,GPIO_PIN_SET);
 				}
 			break;
