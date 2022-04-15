@@ -6,7 +6,7 @@ Egg Incubator for Hardware verison 4.1
 - [x] share the code in the github
 - [x] define code strategy
 - [x] define Timers
-- [ ] writing library
+- [x] writing library
   - [x] LCD
   - [x] Keys
   - [x] SHT
@@ -18,5 +18,6 @@ Egg Incubator for Hardware verison 4.1
   - [x] Fan
 - [x] Write Default Values to EEPROM  algorithm
 - [x] Inialization variables after boot
-- [ ] Writing Menus
-- [ ] Temperature and humidity algorithm
+- [x] Writing Menus
+- [x] Temperature and humidity algorithm
+- [ ] Adjust Parameters
