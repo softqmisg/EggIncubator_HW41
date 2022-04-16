@@ -55,18 +55,21 @@ int8_t compareTime(Time_t t1,Time_t t2)
 void IncTime(Time_t *t,Time_t inc)
 {
 	t->sec+=inc.sec;
+	t->min+=inc.min;
+	t->hr+=inc.hr;
+	t->day+=inc.day;
 	if(t->sec>59)
 	{
 		t->sec=0;
-		t->min+=inc.min;
+		t->min+=1;
 		if(t->min>59)
 		{
 			t->min=0;
-			t->hr+=inc.hr;
+			t->hr+=1;
 			if(t->hr>23)
 			{
 				t->hr=0;
-				t->day+=inc.day;
+				t->day+=1;
 			}
 		}
 	}
