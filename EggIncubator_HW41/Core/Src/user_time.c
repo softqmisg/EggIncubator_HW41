@@ -58,18 +58,15 @@ void IncTime(Time_t *t,Time_t inc)
 	if(t->sec>59)
 	{
 		t->sec=0;
-		t->min+=1;
 		t->min+=inc.min;
 		if(t->min>59)
 		{
 			t->min=0;
-			t->hr+=1;
 			t->hr+=inc.hr;
 			if(t->hr>23)
 			{
 				t->hr=0;
-				t->day+=1;
-				t->day=inc.day;
+				t->day+=inc.day;
 			}
 		}
 	}
