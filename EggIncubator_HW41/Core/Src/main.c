@@ -351,8 +351,8 @@ int main(void)
 					ShtReadSensor(&sht20);
 					if(!sht20.error)
 					{
-						FanCheckHum(fan,curBird.pProgs[curProg].humidty,sht20.humidity);
-						FanCheckTemp(fan,curBird.pProgs[curProg].temperature,sht20.temperature);
+						FanCheckTempHum(fan,curBird.pProgs[curProg].temperature,sht20.temperature,curBird.pProgs[curProg].humidty,sht20.humidity);
+//						FanCheckTemp(fan,curBird.pProgs[curProg].temperature,sht20.temperature);
 						HeaterCheck(heater,curBird.pProgs[curProg].temperature,sht20.temperature);
 						if(sht20.humidity<curBird.pProgs[curProg].humidty)
 						{

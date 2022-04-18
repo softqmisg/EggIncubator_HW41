@@ -38,55 +38,67 @@ void FanSetState(Fan_t *fan,FanState_t state)
 		HAL_GPIO_WritePin(LedExhaust_GPIO_Port,LedExhaust_Pin,GPIO_PIN_RESET);		
 	}
 }
-void FanCheckTemp(Fan_t fan,int16_t setTemp,int16_t curTemp)
+uint8_t FanStateTemp(Fan_t fan,int16_t setTemp,int16_t curTemp)
 {
 	static int16_t prev_temp=0;
+	uint8_t r=0;
 	if(curTemp>=setTemp)
 	{
-		FanSetState(&fan,FanOn);
+		r=1;
 	}
 	else if(setTemp-curTemp>=fan.adjustFanTemp)
 	{
-		FanSetState(&fan,FanOff);
+		r=0;
 	}
 	else if(setTemp-curTemp<fan.adjustFanTemp)
 	{
 		if(curTemp-prev_temp>0)
 		{
-			FanSetState(&fan,FanOff);
+			r=0;
 		}
 		else if(curTemp-prev_temp<0)
 		{
-			FanSetState(&fan,FanOn);
+			r=1;
 		}
 	}
 	prev_temp=curTemp;
-}
+	return r;
 
-void FanCheckHum(Fan_t fan,int16_t setHum,int16_t curHum)
+}
+uint8_t  FanStateHum(Fan_t fan,int16_t setHum,int16_t curHum)
 {
 	static int16_t prev_hum=0;
+	uint8_t r=0;
 	if(curHum>=setHum)
 	{
-		FanSetState(&fan,FanOn);
+		r=1;
 	}
 	else if(setHum-curHum>=fan.adjustFanHum)
 	{
-		FanSetState(&fan,FanOff);
+		r=0;
 	}
 	else if(setHum-curHum<fan.adjustFanHum)
 	{
 		if(curHum-prev_hum>0)
 		{
-			FanSetState(&fan,FanOff);
+			r=0;
 		}
 		else if(curHum-prev_hum<0)
 		{
-			FanSetState(&fan,FanOn);
+			r=1;
 		}
 	}
 	prev_hum=curHum;
+	return r;
 }
+void FanCheckTempHum(Fan_t fan,int16_t setTemp,int16_t curTemp,int16_t setHum,int16_t curHum)
+{
+	if(FanStateHum(fan,setHum,curHum) || FanStateTemp(fan,setTemp,curTemp) )
+			FanSetState(&fan,FanOn);
+	else
+		FanSetState(&fan,FanOff);
+}
+
 
 void HeaterSave(Heater_t heater)
 {

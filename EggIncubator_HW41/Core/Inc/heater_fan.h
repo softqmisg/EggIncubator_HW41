@@ -22,8 +22,9 @@ typedef struct{
 void FanInit(Fan_t *fan);
 void FanSetState(Fan_t *fan,FanState_t state);
 void FanSave(Fan_t fan);
-void FanCheckTemp(Fan_t fan,int16_t setTemp,int16_t curTemp);
-void FanCheckHum(Fan_t fan,int16_t setHum,int16_t curHum);
+//void FanCheckTemp(Fan_t fan,int16_t setTemp,int16_t curTemp);
+//void FanCheckHum(Fan_t fan,int16_t setHum,int16_t curHum);
+void FanCheckTempHum(Fan_t fan,int16_t setTemp,int16_t curTemp,int16_t setHum,int16_t curHum);
 
 
 void HeaterInit(Heater_t *heater);
