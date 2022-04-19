@@ -152,7 +152,7 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>365</LineNumber>
+          <LineNumber>374</LineNumber>
           <EnabledFlag>0</EnabledFlag>
           <Address>134235262</Address>
           <ByteObject>0</ByteObject>
@@ -163,23 +163,7 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>../Core/Src/main.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\EggIncubator_HW41\../Core/Src/main.c\365</Expression>
-        </Bp>
-        <Bp>
-          <Number>1</Number>
-          <Type>0</Type>
-          <LineNumber>364</LineNumber>
-          <EnabledFlag>0</EnabledFlag>
-          <Address>134235222</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>../Core/Src/main.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\EggIncubator_HW41\../Core/Src/main.c\364</Expression>
+          <Expression>\\EggIncubator_HW41\../Core/Src/main.c\374</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -302,6 +286,16 @@
           <count>23</count>
           <WinNumber>1</WinNumber>
           <ItemText>percent,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>24</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Buzzer</ItemText>
+        </Ww>
+        <Ww>
+          <count>25</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>type</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>

@@ -52,7 +52,7 @@
 /* USER CODE BEGIN PD */
 #define DELAY_GOMAINMENU	20//s
 //#define DELAY_SWITCHMAINDISPLAY		3//s
-uint8_t DELAY_SWITCHMAINDISPLAY[]={6,3,9};  //TimeDay,TempHum,Bird
+uint8_t DELAY_SWITCHMAINDISPLAY[]={3,9,6};  //Bird,TempHum,TimeDay,,
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -79,26 +79,40 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		//Buzzer evaluate//
 		if(Buzzer.active)
 		{
-			if(!Buzzer.mute)
-				BUZZER_ON();
-			Buzzer.counter_on++;
-			if(Buzzer.counter_on>Buzzer.duration)
+			Buzzer.counterTime++;
+			if(Buzzer.stateoffon) //buzzer ON
 			{
-				Buzzer.counter_on=0;
-				BUZZER_OFF();
-				Buzzer.active=0;
-			}
-		}
-		else
-		{
-			if(Buzzer.repeatstate)
-			{
-				Buzzer.counter_repeat++;
-				if(Buzzer.counter_repeat>Buzzer.delaybetweenrepeat)
+				if(Buzzer.counterTime>Buzzer.rhythmProg[Buzzer.indexrhythm].onduration)
 				{
-					Buzzer.counter_repeat=0;
-					Buzzer.active=1;
+					Buzzer.stateoffon=0;
+					Buzzer.counterTime=0;
 				}
+				else
+				{
+					if(!Buzzer.mute)
+						BUZZER_ON();
+				}
+			}
+			else
+			{
+				if(Buzzer.counterTime>Buzzer.rhythmProg[Buzzer.indexrhythm].offduration)
+				{
+					Buzzer.indexrhythm++;
+					if(Buzzer.indexrhythm>=Buzzer.numofrhythms)
+					{
+						Buzzer.indexrhythm=0;
+						if(!Buzzer.repeatactive)
+						{
+							Buzzer.active=0;
+						}
+					}
+					Buzzer.stateoffon=1;
+					Buzzer.counterTime=0;
+				}
+				else
+				{
+					BUZZER_OFF();
+				}			
 			}
 		}
 		//Read Keys//
@@ -248,8 +262,8 @@ int main(void)
 	LCD_init();
 	BuzzerInit();
 	KeysInit();
-	BuzzerOn(100);
-	
+	BuzzerSetRhythm(Rhythm1,0);
+//	while(1);
 	char lcd_str[2][16];
 	uint8_t tmp_uint8;
 	uint16_t tmp_uint16;
@@ -299,7 +313,7 @@ int main(void)
 	enum{MainMenu=0,
 			SettingBirdMenu,
 			SettingBirdDayMenu,
-			SettingManualTemperatureMenu,SettingManualHumidtyMenu,SettingManualDaysMenu,SettingManualHatchersMenu,
+			SettingManualTemperatureMenu,SettingManualhumidityMenu,SettingManualDaysMenu,SettingManualHatchersMenu,
 			PasswordMenu,
 			AdvancedMenu,
 			AdvanceMotorOnTimeMenu,AdvanceMotorOffTimeMenu,
@@ -316,7 +330,8 @@ int main(void)
 	uint8_t indexpos;
 	char tmppass[5];
 	uint8_t sensor_error=0;
-	uint8_t buzzer_mode=0;
+	BuzzerSetRhythm(SilentRhythm,1);
+
   while (1)
   {
 		//HAL_IWDG_Refresh(&hiwdg);
@@ -330,13 +345,7 @@ int main(void)
 				if(tik_1s)
 				{
 					tik_1s=0;
-					//main menu tik//
-					counter_switchmaindispaly++;
-					if(counter_switchmaindispaly>DELAY_SWITCHMAINDISPLAY[MainPageNumber])
-					{
-						counter_switchmaindispaly=0;
-						tik_switchmaindispaly=1;
-					}
+
 					//increment time and save//
 					IncTimesec(&curTime);
 					if(curTime.sec==0)
@@ -361,9 +370,9 @@ int main(void)
 					ShtReadSensor(&sht20);
 					if(!sht20.error)
 					{
-						FanCheckTempHum(fan,curBird.pProgs[curProg].temperature,sht20.temperature,curBird.pProgs[curProg].humidty,sht20.humidity);
+						FanCheckTempHum(fan,curBird.pProgs[curProg].temperature,sht20.temperature,curBird.pProgs[curProg].humidity,sht20.humidity);
 						HeaterCheck(heater,curBird.pProgs[curProg].temperature,sht20.temperature);
-						if(sht20.humidity<curBird.pProgs[curProg].humidty)
+						if(sht20.humidity<curBird.pProgs[curProg].humidity)
 						{
 							HAL_GPIO_WritePin(HumidityOut_GPIO_Port,HumidityOut_Pin,GPIO_PIN_RESET);
 							HAL_GPIO_WritePin(LedHumidity_GPIO_Port,LedHumidity_Pin,GPIO_PIN_RESET);
@@ -374,15 +383,22 @@ int main(void)
 							HAL_GPIO_WritePin(LedHumidity_GPIO_Port,LedHumidity_Pin,GPIO_PIN_SET);							
 						}
 						
-						BuzzerRepeatStop();
+						if((sht20.temperature<curBird.pProgs[curProg].temperature-fan.adjustFanTemp)	 ||
+								(sht20.humidity<curBird.pProgs[curProg].humidity-fan.adjustFanHum	)	
+							)
+								BuzzerSetRhythm(Rhythm1,1);
+						else if((sht20.temperature>curBird.pProgs[curProg].temperature+fan.adjustFanTemp) ||
+										(sht20.humidity>curBird.pProgs[curProg].humidity+fan.adjustFanHum )	
+							)
+							BuzzerSetRhythm(Rhythm3,1);
+						else
+							BuzzerSetRhythm(SilentRhythm,1);
 						if(sensor_error)
 						{
 							sensor_error=0;
-							buzzer_mode=0;
 							tik_switchmaindispaly=1;
 							MainPageNumber=0;
 						}
-					
 					}
 					else
 					{
@@ -390,31 +406,29 @@ int main(void)
 						LCD_putstralign("SENSOR ERROR",0,0,AlignCenter);
 						sensor_error=1;
 						MainPageNumber=3;
-						if(buzzer_mode==0)
-						{
-							BuzzerRepeatStart(100,100);
-							buzzer_mode=1;
-						}
-						else
-						{
-							BuzzerRepeatStart(300,1000);
-							buzzer_mode=0;							
-						}
+						BuzzerSetRhythm(Rhythm2,1);
 					}
-				}
-				if(tik_switchmaindispaly)
-				{
-					tik_switchmaindispaly=0;
+					//main menu tik//
+					counter_switchmaindispaly++;
+					if(counter_switchmaindispaly>DELAY_SWITCHMAINDISPLAY[MainPageNumber])
+					{
+						counter_switchmaindispaly=0;
+						tik_switchmaindispaly=1;
+					}					
 					switch(MainPageNumber)
 					{
 						case 0:
-							LCD_clear_home();
 							LCD_putstralign("Bird",0,0,AlignCenter);
 							LCD_putpersian((uint8_t)curBird.Type,0,1,AlignCenter);
-							MainPageNumber=1;
+							if(tik_switchmaindispaly)
+							{
+								tik_switchmaindispaly=0;
+								MainPageNumber=1;
+								LCD_clear_home();
+								
+							}
 							break;
 						case 1:
-							LCD_clear_home();
 							if(sht20.error)
 								{
 								}
@@ -426,11 +440,16 @@ int main(void)
 									LCD_putstralign(lcd_str[0],7,0,AlignNone);
 									LCD_putpersian(ROTOBAT_STR,1,1,AlignNone);
 									LCD_putstralign(lcd_str[1],7,1,AlignNone);
-									MainPageNumber=2;
+									if(tik_switchmaindispaly)
+									{
+										tik_switchmaindispaly=0;
+										MainPageNumber=2;
+										LCD_clear_home();
+										
+									}
 								}
 							break;
 						case 2:
-							LCD_clear_home();
 							LCD_putpersian(ZAMAN_STR,2,0,AlignNone);
 							sprintf(lcd_str[0],"= %02d:%02d  ",curTime.hr,curTime.min);
 							LCD_putstralign(lcd_str[0],7,0,AlignNone);
@@ -438,8 +457,13 @@ int main(void)
 							LCD_putpersian(ROOZ_STR,2,1,AlignNone);
 							sprintf(lcd_str[0],"= %3d",curTime.day);
 							LCD_putstralign(lcd_str[0],7,1,AlignNone);
-						
-							MainPageNumber=0;
+							if(tik_switchmaindispaly)
+							{
+								tik_switchmaindispaly=0;
+								MainPageNumber=0;
+								LCD_clear_home();
+								
+							}						
 							break;
 						case 3:
 
@@ -1112,13 +1136,13 @@ int main(void)
 				{
 					Keys[KEYSETTING].ShortPress=0;
 					TimerGoMainMenu=DELAY_GOMAINMENU;
-					tmpHumid=defaultBirds[Manual].pProgs[tmpProg].humidty;
+					tmpHumid=defaultBirds[Manual].pProgs[tmpProg].humidity;
 					LCD_clear_home();
 					LCD_putpersian(ROTOBAT_STR,0,0,AlignCenter);						
 					LCD_putstrpos("=>",1,1);
 					sprintf(lcd_str[1],"%2d.%1d %%",tmpHumid/10,tmpHumid%10);
 					LCD_putstralign(lcd_str[1],0,1,AlignCenter);
-					curMenu=SettingManualHumidtyMenu;
+					curMenu=SettingManualhumidityMenu;
 				}
 				if(TimerGoMainMenu==0)
 				{
@@ -1131,7 +1155,7 @@ int main(void)
 				}				
 			break;
 				//Setting Manual:Humidity
-			case SettingManualHumidtyMenu:
+			case SettingManualhumidityMenu:
 				if(Keys[KEYUP].ShortPress)
 				{
 						Keys[KEYUP].ShortPress=0;
@@ -1296,7 +1320,7 @@ int main(void)
 						curBird.HatchTotalDays=0;
 						curBird.pProgs[0].durationDays=tmpDay;
 						curBird.pProgs[0].temperature=tmpTemp;
-						curBird.pProgs[0].humidty=tmpHumid;
+						curBird.pProgs[0].humidity=tmpHumid;
 						curBird.pProgs[1].durationDays=0;
 					}
 					else
@@ -1304,7 +1328,7 @@ int main(void)
 						curBird.HatchTotalDays=tmpDay;
 						curBird.pProgs[1].durationDays=tmpDay;
 						curBird.pProgs[1].temperature=tmpTemp;
-						curBird.pProgs[1].humidty=tmpHumid;	
+						curBird.pProgs[1].humidity=tmpHumid;	
 						curBird.pProgs[0].durationDays=0;						
 					}
 					EEWriteByte((uint8_t *)&curBird.Type,1,EE_ADD_CURBIRDTYPE);

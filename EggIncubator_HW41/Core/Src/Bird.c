@@ -4,49 +4,49 @@
 #include <string.h>
 //{Manual=0,Morgh,ShotorMorgh,Ghaz,Ordak,Kabk,Gharghavol,Belderchin,Boghalamoon,MorghShakhdar} BirdType_t;
 Prog_t Manual_prog[2]={
-		{.humidty=600,.temperature=377,.durationDays=21},//setter
-		{.humidty=600,.temperature=377,.durationDays=0},//hatcher
+		{.humidity=600,.temperature=377,.durationDays=21},//setter
+		{.humidity=600,.temperature=377,.durationDays=0},//hatcher
 
 };
 Prog_t Morgh_prog[2]={
-		{.humidty=550,.temperature=377,.durationDays=18},//setter
-		{.humidty=700,.temperature=372,.durationDays=3},//hatcher
+		{.humidity=550,.temperature=377,.durationDays=18},//setter
+		{.humidity=700,.temperature=372,.durationDays=3},//hatcher
 };
 Prog_t MorghShakhdar_prog[2]={
-		{.humidty=550,.temperature=377,.durationDays=23},//setter
-		{.humidty=700,.temperature=372,.durationDays=3},//hatcher
+		{.humidity=550,.temperature=377,.durationDays=23},//setter
+		{.humidity=700,.temperature=372,.durationDays=3},//hatcher
 };
 Prog_t Boghalamoon_prog[4]={
-		{.humidty=550,.temperature=380,.durationDays=7},//setter1
-		{.humidty=520,.temperature=377,.durationDays=7},//setter2
-		{.humidty=600,.temperature=375,.durationDays=11},//setter3
-		{.humidty=700,.temperature=372,.durationDays=3},//hatcher
+		{.humidity=550,.temperature=380,.durationDays=7},//setter1
+		{.humidity=520,.temperature=377,.durationDays=7},//setter2
+		{.humidity=600,.temperature=375,.durationDays=11},//setter3
+		{.humidity=700,.temperature=372,.durationDays=3},//hatcher
 };
 Prog_t Belderchin_prog[2]={
-		{.humidty=550,.temperature=377,.durationDays=14},//setter
-		{.humidty=700,.temperature=372,.durationDays=3},//hatcher
+		{.humidity=550,.temperature=377,.durationDays=14},//setter
+		{.humidity=700,.temperature=372,.durationDays=3},//hatcher
 };
 Prog_t Gharghavol_prog[2]={
-		{.humidty=550,.temperature=377,.durationDays=22},//setter
-		{.humidty=700,.temperature=372,.durationDays=3},//hatcher
+		{.humidity=550,.temperature=377,.durationDays=22},//setter
+		{.humidity=700,.temperature=372,.durationDays=3},//hatcher
 };
 Prog_t Kabk_prog[2]={
-		{.humidty=550,.temperature=377,.durationDays=21},//setter
-		{.humidty=700,.temperature=372,.durationDays=3},//hatcher
+		{.humidity=550,.temperature=377,.durationDays=21},//setter
+		{.humidity=700,.temperature=372,.durationDays=3},//hatcher
 };
 Prog_t Ordak_prog[2]={
-		{.humidty=600,.temperature=377,.durationDays=25},//setter
-		{.humidty=700,.temperature=372,.durationDays=3},//hatcher
+		{.humidity=600,.temperature=377,.durationDays=25},//setter
+		{.humidity=700,.temperature=372,.durationDays=3},//hatcher
 };
 Prog_t Ghaz_prog[4]={
-		{.humidty=600,.temperature=380,.durationDays=7},//setter1
-		{.humidty=580,.temperature=378,.durationDays=7},//setter2
-		{.humidty=620,.temperature=375,.durationDays=11},//setter3
-		{.humidty=750,.temperature=372,.durationDays=3},//hatcher
+		{.humidity=600,.temperature=380,.durationDays=7},//setter1
+		{.humidity=580,.temperature=378,.durationDays=7},//setter2
+		{.humidity=620,.temperature=375,.durationDays=11},//setter3
+		{.humidity=750,.temperature=372,.durationDays=3},//hatcher
 };
 Prog_t ShotorMorgh_prog[2]={
-		{.humidty=250,.temperature=363,.durationDays=39},//setter
-		{.humidty=300,.temperature=366,.durationDays=3},//hatcher
+		{.humidity=250,.temperature=363,.durationDays=39},//setter
+		{.humidity=300,.temperature=366,.durationDays=3},//hatcher
 };
 
 Bird_t	defaultBirds[NumOfBirds]={
@@ -71,10 +71,10 @@ void BirdReadManual(Bird_t *bird)
 	bird->NumofProg=2;
 	EEReadByte((uint8_t *)&(bird->TotalDurationDays),2,add);add+=2;
 	EEReadByte((uint8_t *)&(bird->HatchTotalDays),2,add);add+=2;
-	EEReadByte((uint8_t *)&(bird->pProgs[0].humidty),2,add);add+=2;
+	EEReadByte((uint8_t *)&(bird->pProgs[0].humidity),2,add);add+=2;
 	EEReadByte((uint8_t *)&(bird->pProgs[0].temperature),2,add);add+=2;
 	EEReadByte((uint8_t *)&(bird->pProgs[0].durationDays),2,add);add+=2;	
-	EEReadByte((uint8_t *)&(bird->pProgs[1].humidty),2,add);add+=2;
+	EEReadByte((uint8_t *)&(bird->pProgs[1].humidity),2,add);add+=2;
 	EEReadByte((uint8_t *)&(bird->pProgs[1].temperature),2,add);add+=2;
 	EEReadByte((uint8_t *)&(bird->pProgs[1].durationDays),2,add);add+=2;	
 
@@ -84,10 +84,10 @@ void BirdSaveManual(Bird_t bird)
 	uint16_t add=EE_ADD_MANBIRD;
 	EEWriteByte((uint8_t *)&(bird.TotalDurationDays),2,add);add+=2;
 	EEWriteByte((uint8_t *)&(bird.HatchTotalDays),2,add);add+=2;
-	EEWriteByte((uint8_t *)&(bird.pProgs[0].humidty),2,add);add+=2;
+	EEWriteByte((uint8_t *)&(bird.pProgs[0].humidity),2,add);add+=2;
 	EEWriteByte((uint8_t *)&(bird.pProgs[0].temperature),2,add);add+=2;
 	EEWriteByte((uint8_t *)&(bird.pProgs[0].durationDays),2,add);add+=2;	
-	EEWriteByte((uint8_t *)&(bird.pProgs[1].humidty),2,add);add+=2;
+	EEWriteByte((uint8_t *)&(bird.pProgs[1].humidity),2,add);add+=2;
 	EEWriteByte((uint8_t *)&(bird.pProgs[1].temperature),2,add);add+=2;
 	EEWriteByte((uint8_t *)&(bird.pProgs[1].durationDays),2,add);add+=2;	
 

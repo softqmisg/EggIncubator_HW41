@@ -5,7 +5,7 @@
 #define NumOfBirds	10
 typedef enum {Manual=0,Morgh,MorghShakhdar,Boghalamoon,Belderchin,Gharghavol,Kabk,Ordak,Ghaz,ShotorMorgh} BirdType_t;
 typedef struct{
-	int16_t humidty;
+	int16_t humidity;
 	int16_t temperature;
 	uint16_t	durationDays;
 } Prog_t;
