@@ -51,7 +51,8 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define DELAY_GOMAINMENU	20//s
-#define DELAY_SWITCHMAINDISPLAY		3//s
+//#define DELAY_SWITCHMAINDISPLAY		3//s
+uint8_t DELAY_SWITCHMAINDISPLAY[]={6,3,9};  //TimeDay,TempHum,Bird
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -234,6 +235,7 @@ int main(void)
 	HAL_TIM_Base_Start_IT(&htim16); //timer 10ms
 	HAL_TIM_Base_Start_IT(&htim17);	//timer 1s
 	
+
   HAL_GPIO_WritePin(LedHeater_GPIO_Port, LedHeater_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(LedHumidity_GPIO_Port, LedHumidity_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(LedExhaust_GPIO_Port, LedExhaust_Pin, GPIO_PIN_SET);
@@ -330,7 +332,7 @@ int main(void)
 					tik_1s=0;
 					//main menu tik//
 					counter_switchmaindispaly++;
-					if(counter_switchmaindispaly>DELAY_SWITCHMAINDISPLAY)
+					if(counter_switchmaindispaly>DELAY_SWITCHMAINDISPLAY[MainPageNumber])
 					{
 						counter_switchmaindispaly=0;
 						tik_switchmaindispaly=1;
@@ -413,7 +415,6 @@ int main(void)
 							break;
 						case 1:
 							LCD_clear_home();
-
 							if(sht20.error)
 								{
 								}
@@ -653,7 +654,7 @@ int main(void)
 						break;
 						case 5:
 							LCD_putstralign("Adj Heat PWM",0,0,AlignCenter);
-							sprintf(lcd_str[1],"%3d.%1d %%",heater.adjustHeaterPwmp/10,heater.adjustHeaterPwmp%10);
+							sprintf(lcd_str[1],"%3d.0 %%",heater.adjustHeaterPwmp/10);
 						break;
 						case 6:
 							LCD_putstralign("Calib SHT Temp",0,0,AlignCenter);
@@ -754,7 +755,10 @@ int main(void)
 					if(Keys[KEYUP].ShortPress)
 					{
 						Keys[KEYUP].ShortPress=0;
-						tmpInt16++;
+						if(curMenu==AdvanceAdjustHeaterPwmMenu)
+							tmpInt16+=10;
+						else
+							tmpInt16++;
 					}
 					else
 					{
@@ -778,7 +782,7 @@ int main(void)
 						break;
 						case AdvanceAdjustHeaterPwmMenu:
 							if(tmpInt16>1000) tmpInt16=1000;
-							sprintf(lcd_str[1],"%3d.%1d %%",tmpInt16/10,tmpInt16%10);
+							sprintf(lcd_str[1],"%3d.0 %%",tmpInt16/10);
 						break;
 					}
 					LCD_putstralign(lcd_str[1],0,1,AlignCenter);
@@ -789,13 +793,16 @@ int main(void)
 				{
 					if(Keys[KEYDOWN].ShortPress)
 					{
-						tmpInt16--;
 						Keys[KEYDOWN].ShortPress=0;
+						if(curMenu==AdvanceAdjustHeaterPwmMenu)
+							tmpInt16-=10;
+						else
+							tmpInt16--;
 					}
 					else
 					{
-						tmpInt16-=10;
 						Keys[KEYDOWN].LongLongPress=0;
+						tmpInt16-=10;
 					}
 					TimerGoMainMenu=DELAY_GOMAINMENU;
 					switch(curMenu)
@@ -813,7 +820,7 @@ int main(void)
 						break;
 						case AdvanceAdjustHeaterPwmMenu:
 							if(tmpInt16<0) tmpInt16=0;
-							sprintf(lcd_str[1],"%3d.%1d %%",tmpInt16/10,tmpInt16%10);
+							sprintf(lcd_str[1],"%3d.0 %%",tmpInt16/10);
 						break;
 					}
 					LCD_putstralign(lcd_str[1],0,1,AlignCenter);
@@ -856,27 +863,38 @@ int main(void)
 				if(TimerGoMainMenu==0)
 				{
 						LCD_cursor_off();
+
 					switch(curMenu)
 					{
 						case AdvanceAdjustFanTempMenu:
-							indexpos=2;
+							sprintf(lcd_str[1],"%s %cC",negativStr(fan.adjustFanTemp),DEGREE_CH_CODE);//							sprintf(lcd_str[1],"%+3d.%1d %cC",fan.adjustFanTemp/10,abs(fan.adjustFanTemp%10),DEGREE_CH_CODE);
+						indexpos=2;
 						break;
 						case AdvanceAdjustFanHumMenu:
-							indexpos=3;
+							sprintf(lcd_str[1],"%s %%",negativStr(fan.adjustFanHum));//sprintf(lcd_str[1],"%+3d.%1d %%",fan.adjustFanHum/10,abs(fan.adjustFanHum%10));
+
+						indexpos=3;
 						break;
 						case AdvanceAdjustHeaterTempMenu:
-							indexpos=4;
+							sprintf(lcd_str[1],"%s %cC",negativStr( heater.adjustHeaterTemp),DEGREE_CH_CODE);//sprintf(lcd_str[1],"%+3d.%1d %cC",heater.adjustHeaterTemp/10,abs(heater.adjustHeaterTemp%10),DEGREE_CH_CODE);
+
+						indexpos=4;
 						break;
 						case AdvanceAdjustHeaterPwmMenu:
-							indexpos=5;
+							sprintf(lcd_str[1],"%3d.0 %%",heater.adjustHeaterPwmp/10);
+						indexpos=5;
 						break;
 						case AdvanceCalibShtTempMenu:
-							indexpos=6;
+							sprintf(lcd_str[1],"%s %cC",negativStr(sht20.calibTemp),DEGREE_CH_CODE);//sprintf(lcd_str[1],"%+3d.%1d %cC",sht20.calibTemp/10,abs(sht20.calibTemp),DEGREE_CH_CODE);
+						indexpos=6;
 						break;
 						case AdvanceCalibShtHumMenu:
-							indexpos=7;
+							sprintf(lcd_str[1],"%s %%",negativStr(sht20.calibHum));//sprintf(lcd_str[1],"%+3d.%1d %%",sht20.calibHum/10,abs(sht20.calibHum%10));
+						indexpos=7;
 						break;
 					}
+					LCD_putstralign(lcd_str[1],0,1,AlignCenter);
+
 					TimerGoMainMenu=DELAY_GOMAINMENU;
 					curMenu=AdvancedMenu;
 				}					
@@ -961,9 +979,17 @@ int main(void)
 				{
 						LCD_cursor_off();
 					if(curMenu==AdvanceMotorOnTimeMenu)
+					{
+						sprintf(lcd_str[1],"%02d:%02d:%02d",motor.OnTime.hr,motor.OnTime.min,motor.OnTime.sec);
 						indexpos=0;
+					}
 					else
+					{
+						sprintf(lcd_str[1],"%02d:%02d:%02d",motor.OffTime.hr,motor.OffTime.min,motor.OffTime.sec);
 						indexpos=1;
+					}
+					LCD_putstralign(lcd_str[1],0,1,AlignCenter);
+				
 					TimerGoMainMenu=DELAY_GOMAINMENU;
 					curMenu=AdvancedMenu;
 				}					
