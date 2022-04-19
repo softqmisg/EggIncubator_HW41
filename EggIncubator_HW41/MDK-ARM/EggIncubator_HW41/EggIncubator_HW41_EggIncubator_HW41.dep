@@ -255,7 +255,7 @@ I (..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal_pwr_ex.h)(0x62430417)
 I (..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal_tim.h)(0x62430417)
 I (..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal_tim_ex.h)(0x62430417)
 I (..\Core\Inc\user_time.h)(0x625E58B7)
-I (..\Core\Inc\user_eeprom.h)(0x625E5F4D)
+I (..\Core\Inc\user_eeprom.h)(0x625E8939)
 I (..\Core\Inc\eeprom.h)(0x625190D3)
 I (..\Core\Inc\i2c.h)(0x625E629B)
 I (C:\Keil_v5\ARM\ARMCLANG\include\string.h)(0x5DE02EA4)
@@ -294,7 +294,7 @@ I (..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal_pwr.h)(0x62430417)
 I (..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal_pwr_ex.h)(0x62430417)
 I (..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal_tim.h)(0x62430417)
 I (..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal_tim_ex.h)(0x62430417)
-I (..\Core\Inc\user_eeprom.h)(0x625E5F4D)
+I (..\Core\Inc\user_eeprom.h)(0x625E8939)
 I (..\Core\Inc\bird.h)(0x6256B9B0)
 I (..\Core\Inc\eeprom.h)(0x625190D3)
 I (..\Core\Inc\i2c.h)(0x625E629B)
@@ -335,7 +335,7 @@ I (..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal_tim.h)(0x62430417)
 I (..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal_tim_ex.h)(0x62430417)
 I (..\Core\Inc\user_time.h)(0x625E58B7)
 I (C:\Keil_v5\ARM\ARMCLANG\include\string.h)(0x5DE02EA4)
-I (..\Core\Inc\user_eeprom.h)(0x625E5F4D)
+I (..\Core\Inc\user_eeprom.h)(0x625E8939)
 I (..\Core\Inc\bird.h)(0x6256B9B0)
 I (..\Core\Inc\eeprom.h)(0x625190D3)
 I (..\Core\Inc\i2c.h)(0x625E629B)
@@ -376,12 +376,12 @@ I (..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal_tim.h)(0x62430417)
 I (..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal_tim_ex.h)(0x62430417)
 I (..\Core\Inc\sht2x_BB.h)(0x624C069F)
 I (..\Core\Inc\I2C_HAL.h)(0x62480648)
-I (..\Core\Inc\user_eeprom.h)(0x625E5F4D)
+I (..\Core\Inc\user_eeprom.h)(0x625E8939)
 I (..\Core\Inc\bird.h)(0x6256B9B0)
 I (..\Core\Inc\user_time.h)(0x625E58B7)
 I (..\Core\Inc\eeprom.h)(0x625190D3)
 I (..\Core\Inc\i2c.h)(0x625E629B)
-F (..\Core\Src\Heater_fan.c)(0x625E7335)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0 -c-fno-rtti -fsigned-char-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ../Core/Inc -I ../Drivers/STM32F0xx_HAL_Driver/Inc -I ../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F0xx/Include -I ../Drivers/CMSIS/Include-I./RTE/_EggIncubator_HW41-IC:/Users/mehdi/AppData/Local/Arm/Packs/ARM/CMSIS/5.7.0/CMSIS/Core/Include-IC:/Users/mehdi/AppData/Local/Arm/Packs/Keil/STM32F0xx_DFP/2.0.0/Drivers/CMSIS/Device/ST/STM32F0xx/Include-D__UVISION_VERSION="530" -D_RTE_ -DSTM32F030x6 -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F030x6-o eggincubator_hw41/heater_fan.o -MD)
+F (..\Core\Src\Heater_fan.c)(0x625E8C07)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0 -c-fno-rtti -fsigned-char-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ../Core/Inc -I ../Drivers/STM32F0xx_HAL_Driver/Inc -I ../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F0xx/Include -I ../Drivers/CMSIS/Include-I./RTE/_EggIncubator_HW41-IC:/Users/mehdi/AppData/Local/Arm/Packs/ARM/CMSIS/5.7.0/CMSIS/Core/Include-IC:/Users/mehdi/AppData/Local/Arm/Packs/Keil/STM32F0xx_DFP/2.0.0/Drivers/CMSIS/Device/ST/STM32F0xx/Include-D__UVISION_VERSION="530" -D_RTE_ -DSTM32F030x6 -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F030x6-o eggincubator_hw41/heater_fan.o -MD)
 I (..\Core\Inc\heater_fan.h)(0x625D93EF)
 I (..\Core\Inc\main.h)(0x625E629C)
 I (..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal.h)(0x62430417)
@@ -417,12 +417,12 @@ I (..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal_pwr_ex.h)(0x62430417)
 I (..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal_tim.h)(0x62430417)
 I (..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal_tim_ex.h)(0x62430417)
 I (..\Core\Inc\tim.h)(0x625E629B)
-I (..\Core\Inc\user_eeprom.h)(0x625E5F4D)
+I (..\Core\Inc\user_eeprom.h)(0x625E8939)
 I (..\Core\Inc\bird.h)(0x6256B9B0)
 I (..\Core\Inc\user_time.h)(0x625E58B7)
 I (..\Core\Inc\eeprom.h)(0x625190D3)
 I (..\Core\Inc\i2c.h)(0x625E629B)
-F (../Core/Src/main.c)(0x625E7348)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0 -c-fno-rtti -fsigned-char-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ../Core/Inc -I ../Drivers/STM32F0xx_HAL_Driver/Inc -I ../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F0xx/Include -I ../Drivers/CMSIS/Include-I./RTE/_EggIncubator_HW41-IC:/Users/mehdi/AppData/Local/Arm/Packs/ARM/CMSIS/5.7.0/CMSIS/Core/Include-IC:/Users/mehdi/AppData/Local/Arm/Packs/Keil/STM32F0xx_DFP/2.0.0/Drivers/CMSIS/Device/ST/STM32F0xx/Include-D__UVISION_VERSION="530" -D_RTE_ -DSTM32F030x6 -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F030x6-o eggincubator_hw41/main.o -MD)
+F (../Core/Src/main.c)(0x625E93A2)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0 -c-fno-rtti -fsigned-char-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ../Core/Inc -I ../Drivers/STM32F0xx_HAL_Driver/Inc -I ../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F0xx/Include -I ../Drivers/CMSIS/Include-I./RTE/_EggIncubator_HW41-IC:/Users/mehdi/AppData/Local/Arm/Packs/ARM/CMSIS/5.7.0/CMSIS/Core/Include-IC:/Users/mehdi/AppData/Local/Arm/Packs/Keil/STM32F0xx_DFP/2.0.0/Drivers/CMSIS/Device/ST/STM32F0xx/Include-D__UVISION_VERSION="530" -D_RTE_ -DSTM32F030x6 -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F030x6-o eggincubator_hw41/main.o -MD)
 I (..\Core\Inc\main.h)(0x625E629C)
 I (..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal.h)(0x62430417)
 I (..\Core\Inc\stm32f0xx_hal_conf.h)(0x625E629C)
@@ -469,7 +469,7 @@ I (..\Core\Inc\sht2x_BB.h)(0x624C069F)
 I (..\Core\Inc\I2C_HAL.h)(0x62480648)
 I (..\Core\Inc\Buzzer.h)(0x624C0682)
 I (..\Core\Inc\Keys.h)(0x6256A4DA)
-I (..\Core\Inc\user_eeprom.h)(0x625E5F4D)
+I (..\Core\Inc\user_eeprom.h)(0x625E8939)
 I (..\Core\Inc\bird.h)(0x6256B9B0)
 I (..\Core\Inc\user_time.h)(0x625E58B7)
 I (..\Core\Inc\eeprom.h)(0x625190D3)

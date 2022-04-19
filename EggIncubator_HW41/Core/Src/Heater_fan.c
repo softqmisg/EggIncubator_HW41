@@ -40,55 +40,57 @@ void FanSetState(Fan_t *fan,FanState_t state)
 }
 uint8_t FanStateTemp(Fan_t fan,int16_t setTemp,int16_t curTemp)
 {
-	static int16_t prev_temp=0;
+	static int8_t flag_temp=0;
 	uint8_t r=0;
-	if(curTemp>=setTemp)
+	if(curTemp>=(setTemp+fan.adjustFanTemp))
 	{
 		r=1;
+		flag_temp=1;
 	}
-	else if(setTemp-curTemp>=fan.adjustFanTemp)
+	else if(curTemp<=setTemp)
 	{
 		r=0;
+		flag_temp=0;
 	}
-	else if(setTemp-curTemp<fan.adjustFanTemp)
+	else if(curTemp>setTemp)
 	{
-		if(curTemp-prev_temp>0)
+		if(flag_temp==0)
 		{
 			r=0;
 		}
-		else if(curTemp-prev_temp<0)
+		else if(flag_temp==1)
 		{
 			r=1;
 		}
 	}
-	prev_temp=curTemp;
 	return r;
 
 }
 uint8_t  FanStateHum(Fan_t fan,int16_t setHum,int16_t curHum)
 {
-	static int16_t prev_hum=0;
+	static uint8_t flag_hum=0;
 	uint8_t r=0;
-	if(curHum>=setHum)
+	if(curHum>=(setHum+fan.adjustFanHum))
 	{
 		r=1;
+		flag_hum=1;
 	}
-	else if(setHum-curHum>=fan.adjustFanHum)
+	else if(curHum<=setHum)
 	{
 		r=0;
+		flag_hum=0;
 	}
-	else if(setHum-curHum<fan.adjustFanHum)
+	else if(curHum>setHum)
 	{
-		if(curHum-prev_hum>0)
+		if(flag_hum==0)
 		{
 			r=0;
 		}
-		else if(curHum-prev_hum<0)
+		else if(flag_hum==1)
 		{
 			r=1;
 		}
 	}
-	prev_hum=curHum;
 	return r;
 }
 void FanCheckTempHum(Fan_t fan,int16_t setTemp,int16_t curTemp,int16_t setHum,int16_t curHum)
@@ -118,7 +120,7 @@ void HeaterInit(Heater_t *heater)
 }
 void HeaterSetPercent(uint16_t percent)
 {
-	__HAL_TIM_SetCompare(&HEATERTIMER,HEATERCHANNEL,100-percent);
+	__HAL_TIM_SetCompare(&HEATERTIMER,HEATERCHANNEL,1000-percent);
 	if(percent==0)
 		HAL_GPIO_WritePin(LedHeater_GPIO_Port,LedHeater_Pin,GPIO_PIN_SET);
 	else
@@ -127,7 +129,7 @@ void HeaterSetPercent(uint16_t percent)
 
 void HeaterCheck(Heater_t heater,int16_t setTemp,int16_t curTemp)
 {
-	if(curTemp>heater.upperLimitTemp)
+	if((int16_t)curTemp>(int16_t)heater.upperLimitTemp)
 	{
 		HAL_GPIO_WritePin(HeaterRelay_GPIO_Port,HeaterRelay_Pin,GPIO_PIN_SET);
 	}
@@ -138,7 +140,7 @@ void HeaterCheck(Heater_t heater,int16_t setTemp,int16_t curTemp)
 		{
 			HeaterSetPercent(0);
 		}
-		else if(setTemp-curTemp<heater.adjustHeaterTemp)
+		else if((int16_t)curTemp>((int16_t)setTemp-heater.adjustHeaterTemp))
 		{
 			HeaterSetPercent(heater.adjustHeaterPwmp);
 		}

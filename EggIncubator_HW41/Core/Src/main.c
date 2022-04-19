@@ -376,6 +376,7 @@ int main(void)
 						if(sensor_error)
 						{
 							sensor_error=0;
+							buzzer_mode=0;
 							tik_switchmaindispaly=1;
 							MainPageNumber=0;
 						}
@@ -624,7 +625,7 @@ int main(void)
 					{
 						Keys[KEYDOWN].ShortPress=0;
 						if(indexpos==0)
-							indexpos=8;
+							indexpos=9;
 						indexpos--;
 					}
 					LCD_clear_home();
@@ -750,9 +751,18 @@ int main(void)
 				case AdvanceCalibShtHumMenu:
 				if(Keys[KEYUP].ShortPress||Keys[KEYUP].LongLongPress)
 				{
-					Keys[KEYUP].ShortPress=0;Keys[KEYUP].LongLongPress=0;
+					if(Keys[KEYUP].ShortPress)
+					{
+						Keys[KEYUP].ShortPress=0;
+						tmpInt16++;
+					}
+					else
+					{
+						Keys[KEYUP].LongLongPress=0;
+						tmpInt16+=10;
+					}
 					TimerGoMainMenu=DELAY_GOMAINMENU;
-					tmpInt16++;
+					
 					switch(curMenu)
 					{
 						case AdvanceAdjustFanTempMenu:
@@ -774,11 +784,20 @@ int main(void)
 					LCD_putstralign(lcd_str[1],0,1,AlignCenter);
 					LCD_gotoxy(8,1);
 				}
+
 				if(Keys[KEYDOWN].ShortPress||Keys[KEYDOWN].LongLongPress)
 				{
-					Keys[KEYDOWN].ShortPress=0;Keys[KEYDOWN].LongLongPress=0;
+					if(Keys[KEYDOWN].ShortPress)
+					{
+						tmpInt16--;
+						Keys[KEYDOWN].ShortPress=0;
+					}
+					else
+					{
+						tmpInt16-=10;
+						Keys[KEYDOWN].LongLongPress=0;
+					}
 					TimerGoMainMenu=DELAY_GOMAINMENU;
-					tmpInt16--;
 					switch(curMenu)
 					{
 						case AdvanceAdjustFanTempMenu:
@@ -794,7 +813,7 @@ int main(void)
 						break;
 						case AdvanceAdjustHeaterPwmMenu:
 							if(tmpInt16<0) tmpInt16=0;
-							sprintf(lcd_str[1],"%s %%",negativStr(tmpInt16));
+							sprintf(lcd_str[1],"%3d.%1d %%",tmpInt16/10,tmpInt16%10);
 						break;
 					}
 					LCD_putstralign(lcd_str[1],0,1,AlignCenter);
