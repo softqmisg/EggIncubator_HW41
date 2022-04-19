@@ -238,7 +238,12 @@ int main(void)
   HAL_GPIO_WritePin(LedHumidity_GPIO_Port, LedHumidity_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(LedExhaust_GPIO_Port, LedExhaust_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(LedHatcher_GPIO_Port, LedHatcher_Pin, GPIO_PIN_SET);
-  LCD_init();
+	HAL_GPIO_WritePin(LedCntlOut_GPIO_Port,LedCntlOut_Pin,GPIO_PIN_SET);
+	HAL_GPIO_WritePin(Motor12Out_GPIO_Port,Motor12Out_Pin,GPIO_PIN_SET);
+	HAL_GPIO_WritePin(Motor23Out_GPIO_Port,Motor23Out_Pin,GPIO_PIN_SET);
+	HAL_GPIO_WritePin(HeaterRelay_GPIO_Port,HeaterRelay_Pin,GPIO_PIN_SET);
+
+	LCD_init();
 	BuzzerInit();
 	KeysInit();
 	BuzzerOn(100);
@@ -261,6 +266,7 @@ int main(void)
 		HeaterSave(defaultHeater);
 		ShtSave(defaultSht);
 	}
+	KeysInit();
 	//////////////////////Initialize after boot///////////////////////////////////////////
 	LCD_clearrow(1);
 	LCD_putstralign("Loading...",0,1,AlignCenter);
@@ -283,7 +289,7 @@ int main(void)
 	HAL_Delay(3000);
 	LCD_clear_home();
 	///////////////////////////////////////////////////////////////
-//	HAL_IWDG_Init(&hiwdg);
+	//HAL_IWDG_Init(&hiwdg);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -307,9 +313,11 @@ int main(void)
 	char tmpIsHatch;
 	uint8_t indexpos;
 	char tmppass[5];
+	uint8_t sensor_error=0;
+	uint8_t buzzer_mode=0;
   while (1)
   {
-//		HAL_IWDG_Refresh(&hiwdg);
+		//HAL_IWDG_Refresh(&hiwdg);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -352,23 +360,43 @@ int main(void)
 					if(!sht20.error)
 					{
 						FanCheckTempHum(fan,curBird.pProgs[curProg].temperature,sht20.temperature,curBird.pProgs[curProg].humidty,sht20.humidity);
-//						FanCheckTemp(fan,curBird.pProgs[curProg].temperature,sht20.temperature);
 						HeaterCheck(heater,curBird.pProgs[curProg].temperature,sht20.temperature);
 						if(sht20.humidity<curBird.pProgs[curProg].humidty)
 						{
-							HAL_GPIO_WritePin(HumidityOut_GPIO_Port,HumidityOut_Pin,GPIO_PIN_SET);
+							HAL_GPIO_WritePin(HumidityOut_GPIO_Port,HumidityOut_Pin,GPIO_PIN_RESET);
 							HAL_GPIO_WritePin(LedHumidity_GPIO_Port,LedHumidity_Pin,GPIO_PIN_RESET);
 						}
 						else
 						{
-							HAL_GPIO_WritePin(HumidityOut_GPIO_Port,HumidityOut_Pin,GPIO_PIN_RESET);
+							HAL_GPIO_WritePin(HumidityOut_GPIO_Port,HumidityOut_Pin,GPIO_PIN_SET);
 							HAL_GPIO_WritePin(LedHumidity_GPIO_Port,LedHumidity_Pin,GPIO_PIN_SET);							
 						}
+						
 						BuzzerRepeatStop();
+						if(sensor_error)
+						{
+							sensor_error=0;
+							tik_switchmaindispaly=1;
+							MainPageNumber=0;
+						}
+					
 					}
 					else
 					{
-						BuzzerRepeatStart(50,4000);
+						LCD_clear_home();
+						LCD_putstralign("SENSOR ERROR",0,0,AlignCenter);
+						sensor_error=1;
+						MainPageNumber=3;
+						if(buzzer_mode==0)
+						{
+							BuzzerRepeatStart(100,100);
+							buzzer_mode=1;
+						}
+						else
+						{
+							BuzzerRepeatStart(300,1000);
+							buzzer_mode=0;							
+						}
 					}
 				}
 				if(tik_switchmaindispaly)
@@ -387,20 +415,17 @@ int main(void)
 
 							if(sht20.error)
 								{
-									sprintf(lcd_str[0],"= ---");
-									sprintf(lcd_str[1],"= ---");
 								}
 								else
 								{
 									sprintf(lcd_str[0],"=%3d.%1d %cC",sht20.temperature/10,sht20.temperature%10,DEGREE_CH_CODE);
 									sprintf(lcd_str[1],"=%3d.%1d %%",sht20.humidity/10,sht20.humidity%10);
+									LCD_putpersian(DAMA_STR,3,0,AlignNone);
+									LCD_putstralign(lcd_str[0],7,0,AlignNone);
+									LCD_putpersian(ROTOBAT_STR,1,1,AlignNone);
+									LCD_putstralign(lcd_str[1],7,1,AlignNone);
+									MainPageNumber=2;
 								}
-								LCD_putpersian(DAMA_STR,3,0,AlignNone);
-								LCD_putstralign(lcd_str[0],7,0,AlignNone);
-								LCD_putpersian(ROTOBAT_STR,1,1,AlignNone);
-								LCD_putstralign(lcd_str[1],7,1,AlignNone);
-
-							MainPageNumber=2;
 							break;
 						case 2:
 							LCD_clear_home();
@@ -413,6 +438,9 @@ int main(void)
 							LCD_putstralign(lcd_str[0],7,1,AlignNone);
 						
 							MainPageNumber=0;
+							break;
+						case 3:
+
 							break;
 					}
 				}
@@ -428,6 +456,9 @@ int main(void)
 						LCD_clear_home();
 						LCD_putpersian(CHARKHSH_STR,0,0,AlignCenter);
 					}
+					if(sht20.error)
+						sprintf(lcd_str[1],"T=----  H=----");
+					else
 					sprintf(lcd_str[1],"T=%2d.%1d  H=%2d.%1d",
 																										sht20.temperature/10,sht20.temperature%10,
 																										sht20.humidity/10,sht20.humidity%10
@@ -478,7 +509,7 @@ int main(void)
 					HeaterSetPercent(0);
 					FanSetState(&fan,FanOff);
 					motor.mode=MotorManual;	MotorSetState(&motor,MotorOff);
-					HAL_GPIO_WritePin(HumidityOut_GPIO_Port,HumidityOut_Pin,GPIO_PIN_RESET);
+					HAL_GPIO_WritePin(HumidityOut_GPIO_Port,HumidityOut_Pin,GPIO_PIN_SET);
 					HAL_GPIO_WritePin(LedHumidity_GPIO_Port,LedHumidity_Pin,GPIO_PIN_SET);		
 					HAL_GPIO_WritePin(LedHatcher_GPIO_Port,LedHatcher_Pin,GPIO_PIN_SET);
 
@@ -508,7 +539,7 @@ int main(void)
 					HeaterSetPercent(0);
 					FanSetState(&fan,FanOff);
 					motor.mode=MotorManual;	MotorSetState(&motor,MotorOff);
-					HAL_GPIO_WritePin(HumidityOut_GPIO_Port,HumidityOut_Pin,GPIO_PIN_RESET);
+					HAL_GPIO_WritePin(HumidityOut_GPIO_Port,HumidityOut_Pin,GPIO_PIN_SET);
 					HAL_GPIO_WritePin(LedHumidity_GPIO_Port,LedHumidity_Pin,GPIO_PIN_SET);		
 					HAL_GPIO_WritePin(LedHatcher_GPIO_Port,LedHatcher_Pin,GPIO_PIN_SET);
 					
@@ -586,7 +617,7 @@ int main(void)
 					{
 						Keys[KEYUP].ShortPress=0;
 						indexpos++;
-						if(indexpos>7)
+						if(indexpos>8)
 							indexpos=0;
 					}
 					else
@@ -630,6 +661,12 @@ int main(void)
 						case 7:
 							LCD_putstralign("Calib SHT HUM",0,0,AlignCenter);
 							sprintf(lcd_str[1],"%s %%",negativStr(sht20.calibHum));//sprintf(lcd_str[1],"%+3d.%1d %%",sht20.calibHum/10,abs(sht20.calibHum%10));
+						break;
+						case 8:
+							LCD_putstralign("EXIT",0,0,AlignCenter);
+							LCD_clearrow(1);
+							sprintf(lcd_str[1]," ");//sprintf(lcd_str[1],"%+3d.%1d %%",sht20.calibHum/10,abs(sht20.calibHum%10));
+
 						break;
 					}
 					LCD_putstralign(lcd_str[1],0,1,AlignCenter);
@@ -688,6 +725,9 @@ int main(void)
 							LCD_cursor_on();
 							LCD_gotoxy(8,1);
 							curMenu=AdvanceCalibShtHumMenu;	
+						break;
+						case 8://exit
+							TimerGoMainMenu=0;
 						break;
 					}
 				}

@@ -11,5 +11,5 @@ void TimeSave(Time_t t,uint16_t add);
 void TimeInit(Time_t *t);
 void IncTime(Time_t *time,Time_t inc);
 void IncTimesec(Time_t *time);
-int8_t compareTime(Time_t t1,Time_t t2);
+void compareTime(Time_t t1,Time_t t2,int8_t *c);
 #endif

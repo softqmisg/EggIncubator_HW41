@@ -29,12 +29,12 @@ void FanSetState(Fan_t *fan,FanState_t state)
 	fan->state=state;
 	if(state==FanOff)
 	{
-		HAL_GPIO_WritePin(FanExhaustOut_GPIO_Port,FanExhaustOut_Pin,GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(FanExhaustOut_GPIO_Port,FanExhaustOut_Pin,GPIO_PIN_SET);
 		HAL_GPIO_WritePin(LedExhaust_GPIO_Port,LedExhaust_Pin,GPIO_PIN_SET);
 	}
 	else
 	{
-		HAL_GPIO_WritePin(FanExhaustOut_GPIO_Port,FanExhaustOut_Pin,GPIO_PIN_SET);
+		HAL_GPIO_WritePin(FanExhaustOut_GPIO_Port,FanExhaustOut_Pin,GPIO_PIN_RESET);
 		HAL_GPIO_WritePin(LedExhaust_GPIO_Port,LedExhaust_Pin,GPIO_PIN_RESET);		
 	}
 }
@@ -118,7 +118,7 @@ void HeaterInit(Heater_t *heater)
 }
 void HeaterSetPercent(uint16_t percent)
 {
-	__HAL_TIM_SetCompare(&HEATERTIMER,HEATERCHANNEL,percent);
+	__HAL_TIM_SetCompare(&HEATERTIMER,HEATERCHANNEL,100-percent);
 	if(percent==0)
 		HAL_GPIO_WritePin(LedHeater_GPIO_Port,LedHeater_Pin,GPIO_PIN_SET);
 	else
@@ -129,11 +129,11 @@ void HeaterCheck(Heater_t heater,int16_t setTemp,int16_t curTemp)
 {
 	if(curTemp>heater.upperLimitTemp)
 	{
-		HAL_GPIO_WritePin(HeaterRelay_GPIO_Port,HeaterRelay_Pin,GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(HeaterRelay_GPIO_Port,HeaterRelay_Pin,GPIO_PIN_SET);
 	}
 	else
 	{
-		HAL_GPIO_WritePin(HeaterRelay_GPIO_Port,HeaterRelay_Pin,GPIO_PIN_SET);
+		HAL_GPIO_WritePin(HeaterRelay_GPIO_Port,HeaterRelay_Pin,GPIO_PIN_RESET);
 		if(curTemp>setTemp)
 		{
 			HeaterSetPercent(0);

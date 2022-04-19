@@ -1,7 +1,7 @@
 #include "user_time.h"
 #include "user_eeprom.h"
 #include "eeprom.h"
-int8_t compareTime(Time_t t1,Time_t t2)
+void compareTime(Time_t t1,Time_t t2,int8_t *c)
 {
 	int8_t r=0;
 	if(t1.day>t2.day)
@@ -48,7 +48,7 @@ int8_t compareTime(Time_t t1,Time_t t2)
 			}
 		}
 	}
-	return r;
+	*c=r;
 }
 /*
 */

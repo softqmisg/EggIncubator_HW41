@@ -35,45 +35,54 @@ void MotorInit(Motor_t *motor)
 }
 void MotorSetState(Motor_t *motor,MotorState_t state)
 {
-	if(motor->mode==MotorAuto)
-	{
+//	if(motor->mode==MotorManual)
+//	{
+//			HAL_GPIO_WritePin(Motor23Out_GPIO_Port,Motor23Out_Pin,GPIO_PIN_RESET);
+//	}	
+//	else if(motor->mode==MotorAuto)
+//	{
 		motor->state=state;
 		if(motor->state==MotorOff)
-				HAL_GPIO_WritePin(Motor23Out_GPIO_Port,Motor23Out_Pin,GPIO_PIN_RESET);
-		else if(motor->state==MotorOn)
+		{
 				HAL_GPIO_WritePin(Motor23Out_GPIO_Port,Motor23Out_Pin,GPIO_PIN_SET);
-	}
-	
+		}
+		else if(motor->state==MotorOn)
+		{
+				HAL_GPIO_WritePin(Motor23Out_GPIO_Port,Motor23Out_Pin,GPIO_PIN_RESET);
+		}
+//	}
 }
 void MotorCheck(Motor_t *motor)
 {
+	int8_t c;
 	if(motor->mode==MotorAuto)
 	{
 		switch(motor->state)
 		{
 			case MotorOn:
-				if(compareTime(motor->curTime,motor->OnTime)>=0)
+				compareTime(motor->curTime,motor->OnTime,&c);
+				if(c==0|| c==1)
 				{
-					HAL_GPIO_WritePin(Motor23Out_GPIO_Port,Motor12Out_Pin,GPIO_PIN_RESET);
+					HAL_GPIO_WritePin(Motor23Out_GPIO_Port,Motor23Out_Pin,GPIO_PIN_SET);
 					motor->state=MotorOff;
 					motor->curTime.hr=0;motor->curTime.min=0;motor->curTime.sec=0;
 				}
 				else
 				{
-					HAL_GPIO_WritePin(Motor23Out_GPIO_Port,Motor12Out_Pin,GPIO_PIN_SET);
+					HAL_GPIO_WritePin(Motor23Out_GPIO_Port,Motor23Out_Pin,GPIO_PIN_RESET);
 				}
 			break;
 			case MotorOff:
-				if(compareTime(motor->curTime,motor->OffTime)>=0)
+				compareTime(motor->curTime,motor->OffTime,&c);
+				if(c==0|| c==1)
 				{
-					HAL_GPIO_WritePin(Motor23Out_GPIO_Port,Motor12Out_Pin,GPIO_PIN_SET);
+					HAL_GPIO_WritePin(Motor23Out_GPIO_Port,Motor23Out_Pin,GPIO_PIN_RESET);
 					motor->state=MotorOn;
 					motor->curTime.hr=0;motor->curTime.min=0;motor->curTime.sec=0;
 				}
 				else
 				{
-					
-					HAL_GPIO_WritePin(Motor23Out_GPIO_Port,Motor12Out_Pin,GPIO_PIN_RESET);
+					HAL_GPIO_WritePin(Motor23Out_GPIO_Port,Motor23Out_Pin,GPIO_PIN_SET);
 				}
 			break;
 		}

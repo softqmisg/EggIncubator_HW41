@@ -90,10 +90,10 @@ void Error_Handler(void);
 #define LedCntlOut_GPIO_Port GPIOB
 #define FanExhaustOut_Pin GPIO_PIN_13
 #define FanExhaustOut_GPIO_Port GPIOB
-#define Motor23Out_Pin GPIO_PIN_14
-#define Motor23Out_GPIO_Port GPIOB
-#define Motor12Out_Pin GPIO_PIN_15
+#define Motor12Out_Pin GPIO_PIN_14
 #define Motor12Out_GPIO_Port GPIOB
+#define Motor23Out_Pin GPIO_PIN_15
+#define Motor23Out_GPIO_Port GPIOB
 #define HumidityOut_Pin GPIO_PIN_8
 #define HumidityOut_GPIO_Port GPIOA
 #define HeaterPwm_Pin GPIO_PIN_9

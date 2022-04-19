@@ -58,7 +58,7 @@ void MX_GPIO_Init(void)
                           |EE_WP_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, LedCntlOut_Pin|FanExhaustOut_Pin|Motor23Out_Pin|Motor12Out_Pin
+  HAL_GPIO_WritePin(GPIOB, LedCntlOut_Pin|FanExhaustOut_Pin|Motor12Out_Pin|Motor23Out_Pin
                           |LedHatcher_Pin|LedExhaust_Pin|SHT_SCL_Pin|SHT_SDA_Pin
                           |LedHumidity_Pin|LedHeater_Pin, GPIO_PIN_RESET);
 
@@ -98,7 +98,7 @@ void MX_GPIO_Init(void)
   /*Configure GPIO pins : PBPin PBPin PBPin PBPin
                            PBPin PBPin PBPin PBPin
                            PBPin PBPin */
-  GPIO_InitStruct.Pin = LedCntlOut_Pin|FanExhaustOut_Pin|Motor23Out_Pin|Motor12Out_Pin
+  GPIO_InitStruct.Pin = LedCntlOut_Pin|FanExhaustOut_Pin|Motor12Out_Pin|Motor23Out_Pin
                           |LedHatcher_Pin|LedExhaust_Pin|SHT_SCL_Pin|SHT_SDA_Pin
                           |LedHumidity_Pin|LedHeater_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
