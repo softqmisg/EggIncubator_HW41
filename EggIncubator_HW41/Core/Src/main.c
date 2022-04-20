@@ -530,6 +530,8 @@ int main(void)
 						Buzzer.mute=1;
 						LCD_putstralign("BUZZER OFF",0,0,AlignCenter);						
 					}
+					HAL_Delay(1000);
+					LCD_clear_home();
 				}				
 				// both Key Setting and Down:Password menu
 				if(Keys[KEYDOWN].LongPress && Keys[KEYUP].LongPress)
