@@ -382,14 +382,14 @@ int main(void)
 							HAL_GPIO_WritePin(HumidityOut_GPIO_Port,HumidityOut_Pin,GPIO_PIN_SET);
 							HAL_GPIO_WritePin(LedHumidity_GPIO_Port,LedHumidity_Pin,GPIO_PIN_SET);							
 						}
-						
-						if((sht20.temperature<curBird.pProgs[curProg].temperature-fan.adjustFanTemp)	 ||
-								(sht20.humidity<curBird.pProgs[curProg].humidity-fan.adjustFanHum	)	
-							)
+						///check for alarms///
+						if(sht20.temperature<curBird.pProgs[curProg].temperature-fan.adjustFanTemp)
 								BuzzerSetRhythm(Rhythm1,1);
-						else if((sht20.temperature>curBird.pProgs[curProg].temperature+fan.adjustFanTemp) ||
-										(sht20.humidity>curBird.pProgs[curProg].humidity+fan.adjustFanHum )	
-							)
+						else if(sht20.temperature>curBird.pProgs[curProg].temperature+fan.adjustFanTemp)
+							BuzzerSetRhythm(Rhythm3,1);
+						else if(sht20.humidity<curBird.pProgs[curProg].humidity-fan.adjustFanHum)
+								BuzzerSetRhythm(Rhythm1,1);
+						else if(sht20.humidity>curBird.pProgs[curProg].humidity+fan.adjustFanHum )
 							BuzzerSetRhythm(Rhythm3,1);
 						else
 							BuzzerSetRhythm(SilentRhythm,1);
