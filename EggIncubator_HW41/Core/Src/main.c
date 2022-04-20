@@ -263,6 +263,12 @@ int main(void)
 	BuzzerInit();
 	KeysInit();
 	BuzzerSetRhythm(Rhythm1,0);
+//	HAL_Delay(10000);
+//	BuzzerSetRhythm(SilentRhythm,1);
+//	HAL_Delay(5000);
+//	BuzzerSetRhythm(Rhythm3,1);
+//	HAL_Delay(10000);
+//	BuzzerSetRhythm(SilentRhythm,1);
 //	while(1);
 	char lcd_str[2][16];
 	uint8_t tmp_uint8;

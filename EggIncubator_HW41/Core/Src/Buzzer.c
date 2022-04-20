@@ -8,7 +8,7 @@ Rhythm_t SilentRhythmProg[1]={
 	{.onduration=0,.offduration=100}
 };
 Rhythm_t Rhythm1Prog[1]={
-	{.onduration=10,.offduration=200}
+	{.onduration=10,.offduration=400}
 };
 
 Rhythm_t Rhythm2Prog[3]={
@@ -28,7 +28,7 @@ void BuzzerMute(uint8_t mute)
 }
 void BuzzerSetRhythm(RhythmTypes_t type,uint8_t repeat)
 {
-	if(1)//Buzzer.type!=type)
+	if(Buzzer.type!=type)
 	{
 		Buzzer.type=type;
 		Buzzer.repeatactive=repeat;
