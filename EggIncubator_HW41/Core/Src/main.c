@@ -244,7 +244,7 @@ int main(void)
   MX_TIM1_Init();
   MX_TIM16_Init();
   MX_TIM17_Init();
-//  MX_IWDG_Init();
+  MX_IWDG_Init();
   /* USER CODE BEGIN 2 */
 	HAL_TIM_Base_Start_IT(&htim16); //timer 10ms
 	HAL_TIM_Base_Start_IT(&htim17);	//timer 1s
@@ -311,7 +311,7 @@ int main(void)
 	HAL_Delay(3000);
 	LCD_clear_home();
 	///////////////////////////////////////////////////////////////
-	//HAL_IWDG_Init(&hiwdg);
+	HAL_IWDG_Init(&hiwdg);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -340,7 +340,7 @@ int main(void)
 
   while (1)
   {
-		//HAL_IWDG_Refresh(&hiwdg);
+		HAL_IWDG_Refresh(&hiwdg);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
