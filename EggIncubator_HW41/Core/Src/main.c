@@ -274,9 +274,13 @@ int main(void)
 	uint16_t tmp_uint16;
 	Time_t curTime={.sec=0,.min=0,.hr=0,.day=0};
 	LCD_putstralign("Ghoghnoos",0,0,AlignCenter);
-	if(Keys[KEYUP].RawState==Press && Keys[KEYDOWN].RawState==Press)
+	uint8_t firsttime=0;
+	EEReadByte(&firsttime,1,EE_ADD_FIRST_TIME);
+	if((Keys[KEYUP].RawState==Press && Keys[KEYDOWN].RawState==Press)|| (firsttime!=0xA5))
 	{
 		LCD_putstralign("Save Default...",0,1,AlignCenter);
+		firsttime=0xA5;
+		EEWriteByte(&firsttime,1,EE_ADD_FIRST_TIME);
 		TimeSave(curTime,EE_ADD_CURTIME);
 		tmp_uint8=(uint8_t)DEFAULT_CURBIRDTYPE;
 		EEWriteByte(&tmp_uint8,1,EE_ADD_CURBIRDTYPE);
@@ -545,7 +549,7 @@ int main(void)
 
 					LCD_clear_home();
 					LCD_putstralign("PASSWORD",0,0,AlignCenter);
-					sprintf(tmppass,"%s",DEFAULT_PASSWORD);
+					sprintf(tmppass,"0000");
 					LCD_putstralign(tmppass,0,1,AlignCenter);
 					indexpos=0;
 					LCD_cursor_on();

@@ -27,7 +27,27 @@ Project File Date:  04/20/2022
 <h2>Output:</h2>
 *** Using Compiler 'V6.14', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
 Build target 'EggIncubator_HW41'
-"EggIncubator_HW41\EggIncubator_HW41.axf" - 0 Error(s), 0 Warning(s).
+../Core/Src/main.c(802): warning: 11 enumeration values not handled in switch: 'MainMenu', 'SettingBirdMenu', 'SettingBirdDayMenu'... [-Wswitch]
+                                        switch(curMenu)
+                                               ^
+../Core/Src/main.c(840): warning: 11 enumeration values not handled in switch: 'MainMenu', 'SettingBirdMenu', 'SettingBirdDayMenu'... [-Wswitch]
+                                        switch(curMenu)
+                                               ^
+../Core/Src/main.c(866): warning: 11 enumeration values not handled in switch: 'MainMenu', 'SettingBirdMenu', 'SettingBirdDayMenu'... [-Wswitch]
+                                        switch(curMenu)
+                                               ^
+../Core/Src/main.c(899): warning: 11 enumeration values not handled in switch: 'MainMenu', 'SettingBirdMenu', 'SettingBirdDayMenu'... [-Wswitch]
+                                        switch(curMenu)
+                                               ^
+../Core/Src/main.c(346): warning: enumeration value 'SettingManualDaysMenu' not handled in switch [-Wswitch]
+                switch(curMenu)
+                       ^
+5 warnings generated.
+compiling main.c...
+linking...
+Program Size: Code=21080 RO-data=704 RW-data=756 ZI-data=1580  
+FromELF: creating hex file...
+"EggIncubator_HW41\EggIncubator_HW41.axf" - 0 Error(s), 5 Warning(s).
 
 <h2>Software Packages used:</h2>
 

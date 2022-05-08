@@ -3,7 +3,7 @@
 <title>Static Call Graph - [EggIncubator_HW41\EggIncubator_HW41.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image EggIncubator_HW41\EggIncubator_HW41.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6140002: Last Updated: Sun May  8 12:01:46 2022
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6140002: Last Updated: Sun May  8 14:02:15 2022
 <BR><P>
 <H3>Maximum Stack Usage =        552 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -420,6 +420,7 @@ Global Symbols
 <LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotorInit
 <LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TimeInit
 <LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BirdInit
+<LI><a href="#[1a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FanInit
 </UL>
 <BR>[Address Reference Count : 2]<UL><LI> heater_fan.o(.text.HeaterInit)
@@ -1413,7 +1414,7 @@ Global Symbols
 <LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcd_delay_us
 </UL>
 
-<P><STRONG><a name="[1a]"></a>main</STRONG> (Thumb, 6760 bytes, Stack size 328 bytes, main.o(.text.main))
+<P><STRONG><a name="[1a]"></a>main</STRONG> (Thumb, 6780 bytes, Stack size 328 bytes, main.o(.text.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 552<LI>Call Chain = main &rArr; ShtSave &rArr; EEWriteByte &rArr; HAL_I2C_Mem_Write &rArr; I2C_RequestMemoryWrite &rArr; I2C_WaitOnTXISFlagUntilTimeout &rArr; I2C_IsAcknowledgeFailed
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ShtSave
@@ -1428,6 +1429,7 @@ Global Symbols
 <LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BirdSaveManual
 <LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BirdInit
 <LI><a href="#[1e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EEWriteByte
+<LI><a href="#[1d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EEReadByte
 <LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;KeysInit
 <LI><a href="#[b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BuzzerSetRhythm
 <LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BuzzerInit
