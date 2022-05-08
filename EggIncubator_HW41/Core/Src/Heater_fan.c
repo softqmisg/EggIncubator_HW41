@@ -42,17 +42,29 @@ uint8_t FanStateTemp(Fan_t fan,int16_t setTemp,int16_t curTemp)
 {
 	static int8_t flag_temp=0;
 	uint8_t r=0;
-	if(curTemp>=(setTemp+fan.adjustFanTemp))
+	int16_t u,l;
+	if((int16_t)fan.adjustFanTemp>=0)
+	{
+		u=setTemp+fan.adjustFanTemp;
+		l=setTemp;
+	}
+	else
+	{
+		u=setTemp;
+		l=setTemp+fan.adjustFanTemp;
+	}
+	
+	if(curTemp>=u)
 	{
 		r=1;
 		flag_temp=1;
 	}
-	else if(curTemp<=setTemp)
+	else if(curTemp<=l)
 	{
 		r=0;
 		flag_temp=0;
 	}
-	else if(curTemp>setTemp)
+	else if(curTemp>l)
 	{
 		if(flag_temp==0)
 		{
@@ -70,17 +82,28 @@ uint8_t  FanStateHum(Fan_t fan,int16_t setHum,int16_t curHum)
 {
 	static uint8_t flag_hum=0;
 	uint8_t r=0;
-	if(curHum>=(setHum+fan.adjustFanHum))
+	int16_t u,l;
+	if((int16_t)fan.adjustFanTemp>=0)
+	{
+		u=setHum+fan.adjustFanTemp;
+		l=setHum;
+	}
+	else
+	{
+		u=setHum;
+		l=setHum+fan.adjustFanHum;
+	}
+	if(curHum>=u)
 	{
 		r=1;
 		flag_hum=1;
 	}
-	else if(curHum<=setHum)
+	else if(curHum<=l)
 	{
 		r=0;
 		flag_hum=0;
 	}
-	else if(curHum>setHum)
+	else if(curHum>l)
 	{
 		if(flag_hum==0)
 		{
@@ -132,6 +155,8 @@ void HeaterSetPercent(uint16_t percent)
 
 void HeaterCheck(Heater_t heater,int16_t setTemp,int16_t curTemp)
 {
+	int16_t u,l;
+
 	if((int16_t)curTemp>(int16_t)heater.upperLimitTemp)
 	{
 		HAL_GPIO_WritePin(HeaterRelay_GPIO_Port,HeaterRelay_Pin,GPIO_PIN_SET);

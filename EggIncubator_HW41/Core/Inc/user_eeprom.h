@@ -18,28 +18,31 @@
 	
 	#define DEFAULT_CURBIRDTYPE		Morgh
 	
-	#define DEFAULT_MOTORON_SEC			20
+	#define DEFAULT_MOTORON_SEC			27
 	#define DEFAULT_MOTORON_MIN			0		
 	#define DEFAULT_MOTORON_HR			0		
 	#define DEFAULT_MOTORON_DAY			0		
 		
-	#define DEFAULT_MOTOROFF_SEC			40
+	#define DEFAULT_MOTOROFF_SEC			0
 	#define DEFAULT_MOTOROFF_MIN			0		
-	#define DEFAULT_MOTOROFF_HR				0		
+	#define DEFAULT_MOTOROFF_HR				1		
 	#define DEFAULT_MOTOROFF_DAY			0		
 	
 	#define DEFAULT_HEATER_PWM						1000
 	#define DEFAULT_ADJUST_FAN_TEMP				5
-	#define DEFAULT_ADJUST_FAN_HUM				50	
-	#define DEFAULT_ADJUST_HEATER_TEMP		5	
-	#define DEFAULT_ADJUST_HEATER_PWMP		700		//%
+	#define DEFAULT_ADJUST_FAN_HUM				25	
+	#define DEFAULT_ADJUST_HEATER_TEMP		2	
+	#define DEFAULT_ADJUST_HEATER_PWMP		50		//%
 	
 	#define DEFAULT_CALIB_TEMP	0
 	#define DEFAULT_CALIB_HUM		0
 	//////////////////////////////////////////////////
-	#define DEFAULT_PASSWORD	"0000" //4digit
+	#define DEFAULT_PASSWORD	"1365" //4digit
 	#define DEFAULT_UPPER_LIMIT_TEMP	385
 	
+	#define DEFAULT_BUZZER_TEMP	5
+	#define DEFAULT_BUZZER_HUM	60
+	/////////////////////////////////////////////////////
 	#define TEMP_UPPER_VALUE	600
 	#define TEMP_LOWER_VALUE	100
 
@@ -50,9 +53,9 @@
 	#define DAY_LOWER_VALUE	1
 	
 	#define TEMP_ADJUST_UPPER_LIMIT	100	
-	#define TEMP_ADJUST_LOWER_LIMIT	-100	
+	#define TEMP_ADJUST_LOWER_LIMIT	0	
 
 	#define HUM_ADJUST_UPPER_LIMIT	100	
-	#define HUM_ADJUST_LOWER_LIMIT	-100	
+	#define HUM_ADJUST_LOWER_LIMIT	0	
 	/////////////////////////////////////////////////////
 #endif

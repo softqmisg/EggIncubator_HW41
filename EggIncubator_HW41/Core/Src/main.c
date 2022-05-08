@@ -175,14 +175,14 @@ uint8_t FindProgNum(Bird_t bird,Time_t time)
 	}
 	else
 	{
-	while(bird.TotalDurationDays>sumdays)
-	{
-		sumdays+=bird.pProgs[prognum].durationDays;
-		if(sumdays>time.day) break;
-		prognum++;
-	}
-	if(prognum>=bird.NumofProg) 
-		prognum=bird.NumofProg-1;
+		while(bird.TotalDurationDays>sumdays)
+		{
+			sumdays+=bird.pProgs[prognum].durationDays;
+			if(sumdays>time.day) break;
+			prognum++;
+		}
+		if(prognum>=bird.NumofProg) 
+			prognum=bird.NumofProg-1;
 	}
 	return prognum;
 }
@@ -249,7 +249,6 @@ int main(void)
 	HAL_TIM_Base_Start_IT(&htim16); //timer 10ms
 	HAL_TIM_Base_Start_IT(&htim17);	//timer 1s
 	
-
   HAL_GPIO_WritePin(LedHeater_GPIO_Port, LedHeater_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(LedHumidity_GPIO_Port, LedHumidity_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(LedExhaust_GPIO_Port, LedExhaust_Pin, GPIO_PIN_SET);
@@ -269,7 +268,7 @@ int main(void)
 //	BuzzerSetRhythm(Rhythm3,1);
 //	HAL_Delay(10000);
 //	BuzzerSetRhythm(SilentRhythm,1);
-//	while(1);
+
 	char lcd_str[2][16];
 	uint8_t tmp_uint8;
 	uint16_t tmp_uint16;
@@ -304,10 +303,6 @@ int main(void)
 	Heater_t heater;
 	HeaterInit(&heater);
 	uint8_t curProg=FindProgNum(curBird,curTime);
-//	if(IsHatcher(curBird,curTime))
-//		HAL_GPIO_WritePin(LedHatcher_GPIO_Port,LedHatcher_Pin,GPIO_PIN_RESET);
-//	else
-//		HAL_GPIO_WritePin(LedHatcher_GPIO_Port,LedHatcher_Pin,GPIO_PIN_SET);	
 	HAL_Delay(3000);
 	LCD_clear_home();
 	///////////////////////////////////////////////////////////////
@@ -389,16 +384,17 @@ int main(void)
 							HAL_GPIO_WritePin(LedHumidity_GPIO_Port,LedHumidity_Pin,GPIO_PIN_SET);							
 						}
 						///check for alarms///
-						if(sht20.temperature<curBird.pProgs[curProg].temperature-fan.adjustFanTemp)
+						if(sht20.temperature<(curBird.pProgs[curProg].temperature-DEFAULT_BUZZER_TEMP))
 								BuzzerSetRhythm(Rhythm1,1);
-						else if(sht20.temperature>curBird.pProgs[curProg].temperature+fan.adjustFanTemp)
+						else if(sht20.temperature>(curBird.pProgs[curProg].temperature+DEFAULT_BUZZER_TEMP))
 							BuzzerSetRhythm(Rhythm3,1);
-						else if(sht20.humidity<curBird.pProgs[curProg].humidity-fan.adjustFanHum)
+						else if(sht20.humidity<(curBird.pProgs[curProg].humidity-DEFAULT_BUZZER_HUM))
 								BuzzerSetRhythm(Rhythm1,1);
-						else if(sht20.humidity>curBird.pProgs[curProg].humidity+fan.adjustFanHum )
+						else if(sht20.humidity>(curBird.pProgs[curProg].humidity+DEFAULT_BUZZER_HUM))
 							BuzzerSetRhythm(Rhythm3,1);
 						else
 							BuzzerSetRhythm(SilentRhythm,1);
+						//////////////////////////
 						if(sensor_error)
 						{
 							sensor_error=0;
@@ -1208,72 +1204,16 @@ int main(void)
 				}
 				if(Keys[KEYSETTING].ShortPress)
 				{
-					Keys[KEYSETTING].ShortPress=0;
-					TimerGoMainMenu=DELAY_GOMAINMENU;
-					tmpDay=defaultBirds[Manual].pProgs[tmpProg].durationDays;
-					LCD_clear_home();
-					LCD_putpersian(ROOZ_STR,0,0,AlignCenter);						
-					LCD_putstrpos("=>",1,1);
-					sprintf(lcd_str[1],"%3d",tmpDay);
-					LCD_putstralign(lcd_str[1],0,1,AlignCenter);
-					curMenu=SettingManualDaysMenu;
-				}
-				if(TimerGoMainMenu==0)
-				{
-					LCD_clear_home();
-					tik_1s=1;
-					tik_switchmaindispaly=1;
-					MainPageNumber=0;
-					motor.mode=MotorAuto;
-					curMenu=MainMenu;
-				}				
-			break;
-				//Setting Manual:Day
-			case SettingManualDaysMenu:
-				if(Keys[KEYUP].ShortPress)
-				{
-						Keys[KEYUP].ShortPress=0;
-						TimerGoMainMenu=DELAY_GOMAINMENU;
-						tmpDay++;
-						if(tmpDay>DAY_UPPER_VALUE)
-							tmpDay=DAY_UPPER_VALUE;
-						sprintf(lcd_str[1],"%3d",tmpDay);	
-						LCD_putstralign(lcd_str[1],0,1,AlignCenter);					
-				}
-				if(Keys[KEYUP].LongLongPress)
-				{
-						Keys[KEYUP].LongLongPress=0;
-						TimerGoMainMenu=DELAY_GOMAINMENU;
-						tmpDay+=10;
-						if(tmpDay>DAY_UPPER_VALUE)
-							tmpDay=DAY_UPPER_VALUE;
-						sprintf(lcd_str[1],"%3d",tmpDay);
-						LCD_putstralign(lcd_str[1],0,1,AlignCenter);					
-				}
-				if(Keys[KEYDOWN].ShortPress)
-				{
-						Keys[KEYDOWN].ShortPress=0;
-						TimerGoMainMenu=DELAY_GOMAINMENU;
+//					Keys[KEYSETTING].ShortPress=0;
+//					TimerGoMainMenu=DELAY_GOMAINMENU;
+//					tmpDay=defaultBirds[Manual].pProgs[tmpProg].durationDays;
+//					LCD_clear_home();
+//					LCD_putpersian(ROOZ_STR,0,0,AlignCenter);						
+//					LCD_putstrpos("=>",1,1);
+//					sprintf(lcd_str[1],"%3d",tmpDay);
+//					LCD_putstralign(lcd_str[1],0,1,AlignCenter);
+//					curMenu=SettingManualDaysMenu;
 					
-						if(tmpDay<=DAY_LOWER_VALUE) 
-								tmpDay=DAY_LOWER_VALUE+1;
-						tmpDay--;
-						sprintf(lcd_str[1],"%3d",tmpDay);
-						LCD_putstralign(lcd_str[1],0,1,AlignCenter);					
-				}
-				if(Keys[KEYDOWN].LongLongPress)
-				{
-						Keys[KEYDOWN].LongLongPress=0;
-						TimerGoMainMenu=DELAY_GOMAINMENU;
-	
-						if((tmpDay-10)<DAY_LOWER_VALUE) 
-								tmpDay=DAY_LOWER_VALUE+10;
-						tmpDay-=10;
-						sprintf(lcd_str[1],"%3d",tmpDay);
-						LCD_putstralign(lcd_str[1],0,1,AlignCenter);					
-				}
-				if(Keys[KEYSETTING].ShortPress)
-				{
 					Keys[KEYSETTING].ShortPress=0;
 					TimerGoMainMenu=DELAY_GOMAINMENU;
 					tmpIsHatch=(tmpProg==0)?'S':'H';
@@ -1281,7 +1221,7 @@ int main(void)
 					LCD_putpersian(DOOREH_STR,0,0,AlignCenter);						
 					LCD_putstrpos("=>",1,1);
 					LCD_putpersian((tmpIsHatch=='S')?SETTER_STR:HATCHER_STR,0,1,AlignCenter);
-					curMenu=SettingManualHatchersMenu;
+					curMenu=SettingManualHatchersMenu;					
 				}
 				if(TimerGoMainMenu==0)
 				{
@@ -1293,6 +1233,71 @@ int main(void)
 					curMenu=MainMenu;
 				}				
 			break;
+//				//Setting Manual:Day
+//			case SettingManualDaysMenu:
+//				if(Keys[KEYUP].ShortPress)
+//				{
+//						Keys[KEYUP].ShortPress=0;
+//						TimerGoMainMenu=DELAY_GOMAINMENU;
+//						tmpDay++;
+//						if(tmpDay>DAY_UPPER_VALUE)
+//							tmpDay=DAY_UPPER_VALUE;
+//						sprintf(lcd_str[1],"%3d",tmpDay);	
+//						LCD_putstralign(lcd_str[1],0,1,AlignCenter);					
+//				}
+//				if(Keys[KEYUP].LongLongPress)
+//				{
+//						Keys[KEYUP].LongLongPress=0;
+//						TimerGoMainMenu=DELAY_GOMAINMENU;
+//						tmpDay+=10;
+//						if(tmpDay>DAY_UPPER_VALUE)
+//							tmpDay=DAY_UPPER_VALUE;
+//						sprintf(lcd_str[1],"%3d",tmpDay);
+//						LCD_putstralign(lcd_str[1],0,1,AlignCenter);					
+//				}
+//				if(Keys[KEYDOWN].ShortPress)
+//				{
+//						Keys[KEYDOWN].ShortPress=0;
+//						TimerGoMainMenu=DELAY_GOMAINMENU;
+//					
+//						if(tmpDay<=DAY_LOWER_VALUE) 
+//								tmpDay=DAY_LOWER_VALUE+1;
+//						tmpDay--;
+//						sprintf(lcd_str[1],"%3d",tmpDay);
+//						LCD_putstralign(lcd_str[1],0,1,AlignCenter);					
+//				}
+//				if(Keys[KEYDOWN].LongLongPress)
+//				{
+//						Keys[KEYDOWN].LongLongPress=0;
+//						TimerGoMainMenu=DELAY_GOMAINMENU;
+//	
+//						if((tmpDay-10)<DAY_LOWER_VALUE) 
+//								tmpDay=DAY_LOWER_VALUE+10;
+//						tmpDay-=10;
+//						sprintf(lcd_str[1],"%3d",tmpDay);
+//						LCD_putstralign(lcd_str[1],0,1,AlignCenter);					
+//				}
+//				if(Keys[KEYSETTING].ShortPress)
+//				{
+//					Keys[KEYSETTING].ShortPress=0;
+//					TimerGoMainMenu=DELAY_GOMAINMENU;
+//					tmpIsHatch=(tmpProg==0)?'S':'H';
+//					LCD_clear_home();
+//					LCD_putpersian(DOOREH_STR,0,0,AlignCenter);						
+//					LCD_putstrpos("=>",1,1);
+//					LCD_putpersian((tmpIsHatch=='S')?SETTER_STR:HATCHER_STR,0,1,AlignCenter);
+//					curMenu=SettingManualHatchersMenu;
+//				}
+//				if(TimerGoMainMenu==0)
+//				{
+//					LCD_clear_home();
+//					tik_1s=1;
+//					tik_switchmaindispaly=1;
+//					MainPageNumber=0;
+//					motor.mode=MotorAuto;
+//					curMenu=MainMenu;
+//				}				
+//			break;
 				//Setting Manual:Hatcher/Setter
 			case SettingManualHatchersMenu:
 				if(Keys[KEYUP].ShortPress || Keys[KEYUP].LongLongPress)
@@ -1308,7 +1313,6 @@ int main(void)
 						Keys[KEYDOWN].ShortPress=0;
 						Keys[KEYDOWN].LongLongPress=0;
 						TimerGoMainMenu=DELAY_GOMAINMENU;
-						TimerGoMainMenu=DELAY_GOMAINMENU;
 						tmpIsHatch=(tmpIsHatch=='H')?'S':'H';
 						LCD_putpersian((tmpIsHatch=='S')?SETTER_STR:HATCHER_STR,0,1,AlignCenter);
 				}
@@ -1322,19 +1326,19 @@ int main(void)
 					TimeSave(curTime,EE_ADD_CURTIME);
 					TimeInit(&curTime);
 					curBird.Type=Manual;
-					curBird.TotalDurationDays=tmpDay;
+					curBird.TotalDurationDays=DAY_UPPER_VALUE;
 					if(tmpIsHatch=='S')
 					{
 						curBird.HatchTotalDays=0;
-						curBird.pProgs[0].durationDays=tmpDay;
+						curBird.pProgs[0].durationDays=DAY_UPPER_VALUE;
 						curBird.pProgs[0].temperature=tmpTemp;
 						curBird.pProgs[0].humidity=tmpHumid;
 						curBird.pProgs[1].durationDays=0;
 					}
 					else
 					{
-						curBird.HatchTotalDays=tmpDay;
-						curBird.pProgs[1].durationDays=tmpDay;
+						curBird.HatchTotalDays=DAY_UPPER_VALUE;
+						curBird.pProgs[1].durationDays=DAY_UPPER_VALUE;
 						curBird.pProgs[1].temperature=tmpTemp;
 						curBird.pProgs[1].humidity=tmpHumid;	
 						curBird.pProgs[0].durationDays=0;						
