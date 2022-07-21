@@ -83,9 +83,9 @@ uint8_t  FanStateHum(Fan_t fan,int16_t setHum,int16_t curHum)
 	static uint8_t flag_hum=0;
 	uint8_t r=0;
 	int16_t u,l;
-	if((int16_t)fan.adjustFanTemp>=0)
+	if((int16_t)fan.adjustFanHum>=0)
 	{
-		u=setHum+fan.adjustFanTemp;
+		u=setHum+fan.adjustFanHum;
 		l=setHum;
 	}
 	else

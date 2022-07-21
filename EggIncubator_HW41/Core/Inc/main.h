@@ -115,7 +115,7 @@ void Error_Handler(void);
 #define LedHeater_Pin GPIO_PIN_9
 #define LedHeater_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
-
+#define ENABLE_HUMIFIER	0
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus
