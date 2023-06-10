@@ -3,6 +3,7 @@
 void EEWriteByte(uint8_t *pData,uint8_t len,uint16_t memaddress)
 {
 	HAL_GPIO_WritePin(EEWP_Port,EEWP_Pin,GPIO_PIN_RESET);
+	HAL_Delay(10);
 	for(uint8_t i=0;i<len;i++)
 	{
 		while(HAL_I2C_IsDeviceReady(&EE_I2C, EE_BASEADDRESS, 1, HAL_MAX_DELAY) != HAL_OK);
@@ -10,6 +11,8 @@ void EEWriteByte(uint8_t *pData,uint8_t len,uint16_t memaddress)
 		HAL_Delay(10);
 	}
 		HAL_GPIO_WritePin(EEWP_Port,EEWP_Pin,GPIO_PIN_SET);
+		HAL_Delay(10);
+
 }
 void EEReadByte(uint8_t *pData,uint8_t len,uint16_t memaddress)
 {
