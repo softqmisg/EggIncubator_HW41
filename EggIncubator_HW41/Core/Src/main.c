@@ -276,10 +276,12 @@ int main(void)
 	LCD_putstralign("Ghoghnoos",0,0,AlignCenter);
 	uint8_t firsttime=0;
 	EEReadByte(&firsttime,1,EE_ADD_FIRST_TIME);
-	if((Keys[KEYUP].RawState==Press && Keys[KEYDOWN].RawState==Press)|| (firsttime!=0xA5))
+	HAL_Delay(200);
+	EEReadByte(&firsttime,1,EE_ADD_FIRST_TIME);
+	if((Keys[KEYUP].RawState==Press && Keys[KEYDOWN].RawState==Press)|| (firsttime!=0xA1))
 	{
 		LCD_putstralign("Save Default...",0,1,AlignCenter);
-		firsttime=0xA5;
+		firsttime=0xA1;
 		EEWriteByte(&firsttime,1,EE_ADD_FIRST_TIME);
 		TimeSave(curTime,EE_ADD_CURTIME);
 		tmp_uint8=(uint8_t)DEFAULT_CURBIRDTYPE;
