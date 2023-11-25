@@ -1364,6 +1364,7 @@ BirdLoadDefault();
 					TimeSave(curTime,EE_ADD_CURTIME);
 					TimeInit(&curTime);
 					curBird.Type=(BirdType_t)tmpType;
+					MotorInit(&motor); 
 					EEWriteByte((uint8_t *)&curBird.Type,1,EE_ADD_CURBIRDTYPE);HAL_Delay(50);
 					BirdInit(&curBird);
 					////checking type
