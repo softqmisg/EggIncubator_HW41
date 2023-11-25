@@ -70,6 +70,8 @@ uint8_t DELAY_SWITCHMAINDISPLAY[]={3,9,6};  //Bird,TempHum,TimeDay,,
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 volatile  uint8_t tik_1s=0;
+volatile uint8_t tik_3s=0;
+volatile uint8_t cnt_tik3s=0;
 volatile uint8_t TimerGoMainMenu=0;
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
@@ -157,6 +159,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	if(htim->Instance==TIM17)
 	{
 		tik_1s=1;
+		cnt_tik3s++;
+		if(cnt_tik3s==3)
+		{
+			cnt_tik3s=0;
+			tik_3s=1;
+		}
 		if(TimerGoMainMenu>0) 
 			TimerGoMainMenu--;
 	}
@@ -257,7 +265,7 @@ int main(void)
 	HAL_GPIO_WritePin(Motor12Out_GPIO_Port,Motor12Out_Pin,GPIO_PIN_SET);
 	HAL_GPIO_WritePin(Motor23Out_GPIO_Port,Motor23Out_Pin,GPIO_PIN_SET);
 	HAL_GPIO_WritePin(HeaterRelay_GPIO_Port,HeaterRelay_Pin,GPIO_PIN_SET);
-
+BirdLoadDefault();
 	LCD_init();
 	BuzzerInit();
 	KeysInit();
@@ -278,20 +286,24 @@ int main(void)
 	EEReadByte(&firsttime,1,EE_ADD_FIRST_TIME);
 	HAL_Delay(200);
 	EEReadByte(&firsttime,1,EE_ADD_FIRST_TIME);
-	if((Keys[KEYUP].RawState==Press && Keys[KEYDOWN].RawState==Press)|| (firsttime!=0xA1))
+	if((Keys[KEYUP].RawState==Press && Keys[KEYUP].RawState==Press)|| (firsttime!=0xA1))
 	{
-		LCD_putstralign("Save Default...",0,1,AlignCenter);
-		firsttime=0xA1;
-		EEWriteByte(&firsttime,1,EE_ADD_FIRST_TIME);
-		TimeSave(curTime,EE_ADD_CURTIME);
-		tmp_uint8=(uint8_t)DEFAULT_CURBIRDTYPE;
-		EEWriteByte(&tmp_uint8,1,EE_ADD_CURBIRDTYPE);
-		BirdSaveManual(defaultBirds[Manual]);
-		TimeSave(defaultMotor.OnTime,EE_ADD_MOTOR_ON);
-		TimeSave(defaultMotor.OffTime,EE_ADD_MOTOR_OFF);
-		FanSave(defaultFan);
-		HeaterSave(defaultHeater);
-		ShtSave(defaultSht);
+		HAL_Delay(800);
+		if((Keys[KEYUP].RawState==Press && Keys[KEYUP].RawState==Press)|| (firsttime!=0xA1))
+		{
+			LCD_putstralign("Save Default...",0,1,AlignCenter);
+			firsttime=0xA1;
+			EEWriteByte(&firsttime,1,EE_ADD_FIRST_TIME);
+			TimeSave(curTime,EE_ADD_CURTIME);
+			tmp_uint8=(uint8_t)DEFAULT_CURBIRDTYPE;
+			EEWriteByte(&tmp_uint8,1,EE_ADD_CURBIRDTYPE);
+			BirdSaveManual(defaultBirds[Manual]);
+			TimeSave(defaultMotor.OnTime,EE_ADD_MOTOR_ON);
+			TimeSave(defaultMotor.OffTime,EE_ADD_MOTOR_OFF);
+			FanSave(defaultFan);
+			HeaterSave(defaultHeater);
+			ShtSave(defaultSht);
+		}
 	}
 	KeysInit();
 	//////////////////////Initialize after boot///////////////////////////////////////////
@@ -374,7 +386,12 @@ int main(void)
 						MotorCheck(&motor);
 					}
 					//Read sensor//
-					ShtReadSensor(&sht20);
+
+					if(tik_3s)
+					{
+						tik_3s=0;
+						ShtReadSensor(&sht20);
+					}
 					if(!sht20.error)
 					{
 						FanCheckTempHum(fan,curBird.pProgs[curProg].temperature,sht20.temperature,curBird.pProgs[curProg].humidity,sht20.humidity);
@@ -391,11 +408,11 @@ int main(void)
 						}
 						///check for alarms///
 						if(sht20.temperature<(curBird.pProgs[curProg].temperature-DEFAULT_BUZZER_TEMP))
-								BuzzerSetRhythm(Rhythm1,1);
+							BuzzerSetRhythm(Rhythm1,1);
 						else if(sht20.temperature>(curBird.pProgs[curProg].temperature+DEFAULT_BUZZER_TEMP))
 							BuzzerSetRhythm(Rhythm3,1);
 						else if(sht20.humidity<(curBird.pProgs[curProg].humidity-DEFAULT_BUZZER_HUM))
-								BuzzerSetRhythm(Rhythm1,1);
+							BuzzerSetRhythm(Rhythm1,1);
 						else if(sht20.humidity>(curBird.pProgs[curProg].humidity+DEFAULT_BUZZER_HUM))
 							BuzzerSetRhythm(Rhythm3,1);
 						else
@@ -422,7 +439,8 @@ int main(void)
 					{
 						counter_switchmaindispaly=0;
 						tik_switchmaindispaly=1;
-					}					
+					}	
+					//MainPageNumber=2;
 					switch(MainPageNumber)
 					{
 						case 0:
@@ -444,6 +462,7 @@ int main(void)
 								{
 									sprintf(lcd_str[0],"=%3d.%1d %cC",sht20.temperature/10,sht20.temperature%10,DEGREE_CH_CODE);
 									sprintf(lcd_str[1],"=%3d.%1d %%",sht20.humidity/10,sht20.humidity%10);
+									//sprintf(lcd_str[1],"=%3d.%1d %cC",curBird.pProgs[curProg].temperature/10,curBird.pProgs[curProg].temperature%10,DEGREE_CH_CODE);
 									LCD_putpersian(DAMA_STR,3,0,AlignNone);
 									LCD_putstralign(lcd_str[0],7,0,AlignNone);
 									LCD_putpersian(ROTOBAT_STR,1,1,AlignNone);
@@ -460,6 +479,7 @@ int main(void)
 						case 2:
 							LCD_putpersian(ZAMAN_STR,2,0,AlignNone);
 							sprintf(lcd_str[0],"= %02d:%02d  ",curTime.hr,curTime.min);
+						//sprintf(lcd_str[0],"=%02d:%02d:%02d",curTime.hr,curTime.min,curTime.sec);
 							LCD_putstralign(lcd_str[0],7,0,AlignNone);
 
 							LCD_putpersian(ROOZ_STR,2,1,AlignNone);
@@ -569,7 +589,7 @@ int main(void)
 					LCD_clear_home();
 					LCD_putstrpos("Bird Select",1,0);
 					LCD_putstrpos("=>",1,1);
-					tmpType=curBird.Type;
+					tmpType=(uint8_t)curBird.Type;
 					LCD_putpersian((uint8_t)tmpType,0,1,AlignCenter);
 					
 					HeaterSetPercent(0);
@@ -1056,7 +1076,7 @@ int main(void)
 					Keys[KEYSETTING].ShortPress=0;
 					TimerGoMainMenu=DELAY_GOMAINMENU;
 					LCD_clear_home();
-					if(tmpType==Manual)
+					if(tmpType==(uint8_t)Manual)
 					{
 						TimerGoMainMenu=DELAY_GOMAINMENU;
 						if(defaultBirds[Manual].pProgs[0].durationDays)
@@ -1239,71 +1259,6 @@ int main(void)
 					curMenu=MainMenu;
 				}				
 			break;
-//				//Setting Manual:Day
-//			case SettingManualDaysMenu:
-//				if(Keys[KEYUP].ShortPress)
-//				{
-//						Keys[KEYUP].ShortPress=0;
-//						TimerGoMainMenu=DELAY_GOMAINMENU;
-//						tmpDay++;
-//						if(tmpDay>DAY_UPPER_VALUE)
-//							tmpDay=DAY_UPPER_VALUE;
-//						sprintf(lcd_str[1],"%3d",tmpDay);	
-//						LCD_putstralign(lcd_str[1],0,1,AlignCenter);					
-//				}
-//				if(Keys[KEYUP].LongLongPress)
-//				{
-//						Keys[KEYUP].LongLongPress=0;
-//						TimerGoMainMenu=DELAY_GOMAINMENU;
-//						tmpDay+=10;
-//						if(tmpDay>DAY_UPPER_VALUE)
-//							tmpDay=DAY_UPPER_VALUE;
-//						sprintf(lcd_str[1],"%3d",tmpDay);
-//						LCD_putstralign(lcd_str[1],0,1,AlignCenter);					
-//				}
-//				if(Keys[KEYDOWN].ShortPress)
-//				{
-//						Keys[KEYDOWN].ShortPress=0;
-//						TimerGoMainMenu=DELAY_GOMAINMENU;
-//					
-//						if(tmpDay<=DAY_LOWER_VALUE) 
-//								tmpDay=DAY_LOWER_VALUE+1;
-//						tmpDay--;
-//						sprintf(lcd_str[1],"%3d",tmpDay);
-//						LCD_putstralign(lcd_str[1],0,1,AlignCenter);					
-//				}
-//				if(Keys[KEYDOWN].LongLongPress)
-//				{
-//						Keys[KEYDOWN].LongLongPress=0;
-//						TimerGoMainMenu=DELAY_GOMAINMENU;
-//	
-//						if((tmpDay-10)<DAY_LOWER_VALUE) 
-//								tmpDay=DAY_LOWER_VALUE+10;
-//						tmpDay-=10;
-//						sprintf(lcd_str[1],"%3d",tmpDay);
-//						LCD_putstralign(lcd_str[1],0,1,AlignCenter);					
-//				}
-//				if(Keys[KEYSETTING].ShortPress)
-//				{
-//					Keys[KEYSETTING].ShortPress=0;
-//					TimerGoMainMenu=DELAY_GOMAINMENU;
-//					tmpIsHatch=(tmpProg==0)?'S':'H';
-//					LCD_clear_home();
-//					LCD_putpersian(DOOREH_STR,0,0,AlignCenter);						
-//					LCD_putstrpos("=>",1,1);
-//					LCD_putpersian((tmpIsHatch=='S')?SETTER_STR:HATCHER_STR,0,1,AlignCenter);
-//					curMenu=SettingManualHatchersMenu;
-//				}
-//				if(TimerGoMainMenu==0)
-//				{
-//					LCD_clear_home();
-//					tik_1s=1;
-//					tik_switchmaindispaly=1;
-//					MainPageNumber=0;
-//					motor.mode=MotorAuto;
-//					curMenu=MainMenu;
-//				}				
-//			break;
 				//Setting Manual:Hatcher/Setter
 			case SettingManualHatchersMenu:
 				if(Keys[KEYUP].ShortPress || Keys[KEYUP].LongLongPress)
@@ -1347,11 +1302,17 @@ int main(void)
 						curBird.pProgs[1].durationDays=DAY_UPPER_VALUE;
 						curBird.pProgs[1].temperature=tmpTemp;
 						curBird.pProgs[1].humidity=tmpHumid;	
-						curBird.pProgs[0].durationDays=0;						
+						curBird.pProgs[0].durationDays=0;							
 					}
+					
 					EEWriteByte((uint8_t *)&curBird.Type,1,EE_ADD_CURBIRDTYPE);
 					BirdSaveManual(curBird);
 					BirdInit(&curBird);
+					///checking type
+//					sprintf(lcd_str[0],"%d,%d ",curBird.Type,tmpType);
+//					LCD_putstrpos(lcd_str[0],0,0);
+//					HAL_Delay(3500);
+					///
 				}
 				if(TimerGoMainMenu==0)
 				{
@@ -1363,7 +1324,6 @@ int main(void)
 					curMenu=MainMenu;
 				}				
 			break;
-
 				//SettingDay Menu
 			case SettingBirdDayMenu:
 				if(Keys[KEYUP].ShortPress || Keys[KEYUP].LongLongPress)
@@ -1403,9 +1363,18 @@ int main(void)
 					curTime.day=tmpTime.day;curTime.hr=0;curTime.min=0;curTime.sec=0;
 					TimeSave(curTime,EE_ADD_CURTIME);
 					TimeInit(&curTime);
-					curBird.Type=tmpType;
-					EEWriteByte((uint8_t *)&curBird.Type,1,EE_ADD_CURBIRDTYPE);
+					curBird.Type=(BirdType_t)tmpType;
+					EEWriteByte((uint8_t *)&curBird.Type,1,EE_ADD_CURBIRDTYPE);HAL_Delay(50);
 					BirdInit(&curBird);
+					////checking type
+//					sprintf(lcd_str[0],"%d,%d ",curBird.Type,tmpType);
+//					LCD_putstrpos(lcd_str[0],0,0);
+//					sprintf(lcd_str[1],"%d ",curBird.pProgs[0].temperature);
+//					LCD_putstrpos(lcd_str[1],0,1);
+//					
+//					HAL_Delay(3500);
+					////
+
 				}
 				if(TimerGoMainMenu==0)
 				{
@@ -1417,6 +1386,7 @@ int main(void)
 					MainPageNumber=0;
 				}				
 				break;
+				
 		}
   }
   /* USER CODE END 3 */

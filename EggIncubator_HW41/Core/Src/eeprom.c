@@ -18,7 +18,7 @@ void EEReadByte(uint8_t *pData,uint8_t len,uint16_t memaddress)
 {
 	while(HAL_I2C_IsDeviceReady(&EE_I2C, EE_BASEADDRESS, 1, HAL_MAX_DELAY) != HAL_OK);
 	HAL_I2C_Mem_Read(&EE_I2C,EE_BASEADDRESS,memaddress,EE_ADDRESSSIZE,pData,len,HAL_MAX_DELAY);
-	HAL_Delay(10);
+	HAL_Delay(50);
 }
 /*
 */

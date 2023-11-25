@@ -34,4 +34,4 @@ eggincubator_hw41/user_sht.o: ..\Core\Src\user_sht.c \
   ..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_hal_tim_ex.h \
   ..\Core\Inc\sht2x_BB.h ..\Core\Inc\I2C_HAL.h ..\Core\Inc\user_eeprom.h \
   ..\Core\Inc\bird.h ..\Core\Inc\user_time.h ..\Core\Inc\eeprom.h \
-  ..\Core\Inc\i2c.h ..\Core\Inc\sht2x_BB.h
+  ..\Core\Inc\i2c.h

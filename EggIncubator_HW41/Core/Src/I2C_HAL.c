@@ -16,7 +16,7 @@
 void DelayMicroSeconds (uint32_t nbrOfUs)
 {
 	uint8_t k=1;
-	uint32_t max=((uint32_t)nbrOfUs*43)/10;
+	uint32_t max=((uint32_t)nbrOfUs*33)/10;
 	for(uint32_t i=0; i<max; i++)
 	{ 
 		__ASM("nop"); //nop's may be added for timing adjustment

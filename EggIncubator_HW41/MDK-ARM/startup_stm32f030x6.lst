@@ -329,14 +329,14 @@ ARM Macro Assembler    Page 5
 ARM Macro Assembler    Page 6 
 
 
-Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M0 --depend=eggi
-ncubator_hw41\startup_stm32f030x6.d -oeggincubator_hw41\startup_stm32f030x6.o -
-I.\RTE\_EggIncubator_HW41 -IC:\Users\mehdi\AppData\Local\Arm\Packs\ARM\CMSIS\5.
-7.0\CMSIS\Core\Include -IC:\Users\mehdi\AppData\Local\Arm\Packs\Keil\STM32F0xx_
-DFP\2.0.0\Drivers\CMSIS\Device\ST\STM32F0xx\Include --predefine="__MICROLIB SET
-A 1" --predefine="__UVISION_VERSION SETA 530" --predefine="_RTE_ SETA 1" --pred
-efine="STM32F030x6 SETA 1" --predefine="_RTE_ SETA 1" --list=startup_stm32f030x
-6.lst startup_stm32f030x6.s
+Command Line: --debug --xref --diag_suppress=9931,A1950W --cpu=Cortex-M0 --depe
+nd=eggincubator_hw41\startup_stm32f030x6.d -oeggincubator_hw41\startup_stm32f03
+0x6.o -I.\RTE\_EggIncubator_HW41 -IC:\Users\Administrator\AppData\Local\Arm\Pac
+ks\ARM\CMSIS\5.9.0\CMSIS\Core\Include -IC:\Users\Administrator\AppData\Local\Ar
+m\Packs\Keil\STM32F0xx_DFP\2.1.1\Drivers\CMSIS\Device\ST\STM32F0xx\Include --pr
+edefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 538" --predefin
+e="_RTE_ SETA 1" --predefine="STM32F030x6 SETA 1" --predefine="_RTE_ SETA 1" --
+list=startup_stm32f030x6.lst startup_stm32f030x6.s
 
 
 
