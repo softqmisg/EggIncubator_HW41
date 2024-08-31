@@ -5,10 +5,10 @@
 <h2>Tool Versions:</h2>
 IDE-Version: µVision V5.38.0.0
 Copyright (C) 2022 ARM Ltd and ARM Germany GmbH. All rights reserved.
-License Information: mehdi Mofidi, Sanjeh, LIC=GMZI6-DJ5EW-RASDM-XU4LK-NV0Y6-M11QY
+License Information: mehdi BMofidi, sanjeh, LIC=UB4EI-TRJU7-17QRR-KBEBM-HSE4F-MYYI2
  
 Tool Versions:
-Toolchain:       MDK-ARM Plus  Version: 5.38.0.0
+Toolchain:       MDK-ARM Professional  Version: 5.38.0.0
 Toolchain Path:  C:\Keil_v5\ARM\ARMCLANG\Bin
 C Compiler:      ArmClang.exe V6.19
 Assembler:       Armasm.exe V6.19
@@ -21,12 +21,25 @@ Target DLL:      Segger\JL2CM3.dll V2.99.42.0
 Dialog DLL:      TARMCM1.DLL V1.14.6.0
  
 <h2>Project:</h2>
-E:\Designs\Industrial_Meter_projects\ME_1426_Egg_Incubator\ME_1426_Controller_V03\firmware\EggIncubator_HW41\EggIncubator_HW41\MDK-ARM\EggIncubator_HW41.uvprojx
-Project File Date:  11/25/2023
+E:\Designs\Industrial_Meter_projects\ME_1426_Egg_Incubator\ME_1426_Controller_V03\firmware\EggIncubator_HW41_c6\EggIncubator_HW41\MDK-ARM\EggIncubator_HW41.uvprojx
+Project File Date:  08/31/2024
 
 <h2>Output:</h2>
 *** Using Compiler 'V6.19', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
 Build target 'EggIncubator_HW41'
+compiling user_time.c...
+compiling Bird.c...
+../Core/Src/lcd_ch.c(571): warning: enumeration value 'AlignNone' not handled in switch [-Wswitch]
+        switch(align)
+               ^~~~~
+../Core/Src/lcd_ch.c(591): warning: enumeration value 'AlignNone' not handled in switch [-Wswitch]
+        switch(align)
+               ^~~~~
+2 warnings generated.
+compiling lcd_ch.c...
+compiling user_sht.c...
+compiling Motor.c...
+compiling Heater_fan.c...
 ../Core/Src/main.c(824): warning: 11 enumeration values not handled in switch: 'MainMenu', 'SettingBirdMenu', 'SettingBirdDayMenu'... [-Wswitch]
                                         switch(curMenu)
                                                ^~~~~~~
@@ -45,9 +58,9 @@ Build target 'EggIncubator_HW41'
 5 warnings generated.
 compiling main.c...
 linking...
-Program Size: Code=23336 RO-data=704 RW-data=968 ZI-data=1456  
+Program Size: Code=23594 RO-data=478 RW-data=1056 ZI-data=1456  
 FromELF: creating hex file...
-"EggIncubator_HW41\EggIncubator_HW41.axf" - 0 Error(s), 5 Warning(s).
+"EggIncubator_HW41\EggIncubator_HW41.axf" - 0 Error(s), 7 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -71,7 +84,7 @@ Package Vendor: Keil
 
    * Component: ARM::CMSIS:CORE:5.6.0
       Include file:  CMSIS/Core/Include/tz_context.h
-Build Time Elapsed:  00:00:04
+Build Time Elapsed:  00:00:05
 </pre>
 </body>
 </html>

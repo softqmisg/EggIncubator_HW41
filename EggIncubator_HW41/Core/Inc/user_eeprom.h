@@ -54,9 +54,9 @@
 	#define DAY_LOWER_VALUE	1
 	
 	#define TEMP_ADJUST_UPPER_LIMIT	100	
-	#define TEMP_ADJUST_LOWER_LIMIT	0	
+	#define TEMP_ADJUST_LOWER_LIMIT	-100	
 
 	#define HUM_ADJUST_UPPER_LIMIT	100	
-	#define HUM_ADJUST_LOWER_LIMIT	0	
+	#define HUM_ADJUST_LOWER_LIMIT	-100	
 	/////////////////////////////////////////////////////
 #endif

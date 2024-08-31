@@ -11,6 +11,10 @@
 /*
  * Pin out definition
  */
+ 
+  #define ARABIC 1
+ #define PERSIAN 0
+ 
 #define LCDDB4_OFFSET	3
 #define LCDDATA_MASK	0x0F<<LCDDB4_OFFSET
 #define LCDDB4_PORT	LCD_D4_GPIO_Port
