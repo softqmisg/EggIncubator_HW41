@@ -27,40 +27,18 @@ Project File Date:  08/31/2024
 <h2>Output:</h2>
 *** Using Compiler 'V6.19', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
 Build target 'EggIncubator_HW41'
-compiling user_time.c...
-compiling Bird.c...
-../Core/Src/lcd_ch.c(571): warning: enumeration value 'AlignNone' not handled in switch [-Wswitch]
+../Core/Src/lcd_ch.c(573): warning: enumeration value 'AlignNone' not handled in switch [-Wswitch]
         switch(align)
                ^~~~~
-../Core/Src/lcd_ch.c(591): warning: enumeration value 'AlignNone' not handled in switch [-Wswitch]
+../Core/Src/lcd_ch.c(593): warning: enumeration value 'AlignNone' not handled in switch [-Wswitch]
         switch(align)
                ^~~~~
 2 warnings generated.
 compiling lcd_ch.c...
-compiling user_sht.c...
-compiling Motor.c...
-compiling Heater_fan.c...
-../Core/Src/main.c(824): warning: 11 enumeration values not handled in switch: 'MainMenu', 'SettingBirdMenu', 'SettingBirdDayMenu'... [-Wswitch]
-                                        switch(curMenu)
-                                               ^~~~~~~
-../Core/Src/main.c(862): warning: 11 enumeration values not handled in switch: 'MainMenu', 'SettingBirdMenu', 'SettingBirdDayMenu'... [-Wswitch]
-                                        switch(curMenu)
-                                               ^~~~~~~
-../Core/Src/main.c(888): warning: 11 enumeration values not handled in switch: 'MainMenu', 'SettingBirdMenu', 'SettingBirdDayMenu'... [-Wswitch]
-                                        switch(curMenu)
-                                               ^~~~~~~
-../Core/Src/main.c(921): warning: 11 enumeration values not handled in switch: 'MainMenu', 'SettingBirdMenu', 'SettingBirdDayMenu'... [-Wswitch]
-                                        switch(curMenu)
-                                               ^~~~~~~
-../Core/Src/main.c(360): warning: enumeration value 'SettingManualDaysMenu' not handled in switch [-Wswitch]
-                switch(curMenu)
-                       ^~~~~~~
-5 warnings generated.
-compiling main.c...
 linking...
-Program Size: Code=23594 RO-data=478 RW-data=1056 ZI-data=1456  
+Program Size: Code=23594 RO-data=478 RW-data=1084 ZI-data=1460  
 FromELF: creating hex file...
-"EggIncubator_HW41\EggIncubator_HW41.axf" - 0 Error(s), 7 Warning(s).
+"EggIncubator_HW41\EggIncubator_HW41.axf" - 0 Error(s), 2 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -84,7 +62,7 @@ Package Vendor: Keil
 
    * Component: ARM::CMSIS:CORE:5.6.0
       Include file:  CMSIS/Core/Include/tz_context.h
-Build Time Elapsed:  00:00:05
+Build Time Elapsed:  00:00:03
 </pre>
 </body>
 </html>
