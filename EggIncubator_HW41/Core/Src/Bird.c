@@ -15,12 +15,17 @@ Prog_t MorghShakhdar_prog[2]={
 		{.humidity=550,.temperature=377,.durationDays=23},//setter
 		{.humidity=700,.temperature=372,.durationDays=3}//hatcher
 };
-Prog_t Boghalamoon_prog[4]={
-		{.humidity=550,.temperature=380,.durationDays=7},//setter1
-		{.humidity=520,.temperature=377,.durationDays=7},//setter2
-		{.humidity=600,.temperature=375,.durationDays=11},//setter3
+//Prog_t Boghalamoon_prog[4]={
+//		{.humidity=550,.temperature=380,.durationDays=7},//setter1
+//		{.humidity=520,.temperature=377,.durationDays=7},//setter2
+//		{.humidity=600,.temperature=375,.durationDays=11},//setter3
+//		{.humidity=700,.temperature=372,.durationDays=3}//hatcher
+//};
+Prog_t Boghalamoon_prog[2]={
+		{.humidity=550,.temperature=370,.durationDays=25},//setter
 		{.humidity=700,.temperature=372,.durationDays=3}//hatcher
 };
+
 Prog_t Belderchin_prog[2]={
 		{.humidity=550,.temperature=377,.durationDays=14},//setter
 		{.humidity=700,.temperature=372,.durationDays=3}//hatcher
@@ -37,11 +42,15 @@ Prog_t Ordak_prog[2]={
 		{.humidity=600,.temperature=377,.durationDays=25},//setter
 		{.humidity=700,.temperature=372,.durationDays=3}//hatcher
 };
-Prog_t Ghaz_prog[4]={
-		{.humidity=600,.temperature=380,.durationDays=7},//setter1
-		{.humidity=580,.temperature=378,.durationDays=7},//setter2
-		{.humidity=620,.temperature=375,.durationDays=11},//setter3
-		{.humidity=750,.temperature=372,.durationDays=3}//hatcher
+//Prog_t Ghaz_prog[4]={
+//		{.humidity=600,.temperature=380,.durationDays=7},//setter1
+//		{.humidity=580,.temperature=378,.durationDays=7},//setter2
+//		{.humidity=620,.temperature=375,.durationDays=11},//setter3
+//		{.humidity=750,.temperature=372,.durationDays=3}//hatcher
+//};
+Prog_t Ghaz_prog[2]={
+		{.humidity=600,.temperature=377,.durationDays=29},//setter
+		{.humidity=700,.temperature=372,.durationDays=3}//hatcher
 };
 Prog_t ShotorMorgh_prog[2]={
 		{.humidity=250,.temperature=363,.durationDays=39},//setter

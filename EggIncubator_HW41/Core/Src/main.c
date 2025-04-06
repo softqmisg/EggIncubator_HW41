@@ -427,6 +427,8 @@ BirdLoadDefault();
 					}
 					else
 					{
+						HeaterSetPercent(0);
+						FanSetState(&fan,FanOff);						
 						LCD_clear_home();
 						LCD_putstralign("SENSOR ERROR",0,0,AlignCenter);
 						sensor_error=1;
