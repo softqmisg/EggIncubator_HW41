@@ -45,7 +45,17 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
+typedef struct {
+    const char *date;
+    const char *time;
+    const char *version;
+} FirmwareInfo;
 
+const FirmwareInfo firmware = {
+    .date = __DATE__,
+    .time = __TIME__,
+    .version = "4.1.2"
+};
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -281,7 +291,8 @@ BirdLoadDefault();
 	uint8_t tmp_uint8;
 	uint16_t tmp_uint16;
 	Time_t curTime={.sec=0,.min=0,.hr=0,.day=0};
-	LCD_putstralign("Ghoghnoos",0,0,AlignCenter);
+	LCD_putstralign("Ghoghnoos Plus+",0,0,AlignCenter);
+	LCD_putstralign((char *)firmware.version,0,1,AlignCenter);
 	uint8_t firsttime=0;
 	EEReadByte(&firsttime,1,EE_ADD_FIRST_TIME);
 	HAL_Delay(200);

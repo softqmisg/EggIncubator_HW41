@@ -72,12 +72,12 @@ Bird_t	defaultBirds[NumOfBirds]={
 	{.Type=Manual,				.TotalDurationDays=21,.HatchTotalDays=0,.NumofProg=2 },//Manual
 	{.Type=Morgh,					.TotalDurationDays=21,.HatchTotalDays=3,.NumofProg=2},//Morgh
 	{.Type=MorghShakhdar,	.TotalDurationDays=28,.HatchTotalDays=3,.NumofProg=2},//MorghShakhdar
-	{.Type=Boghalamoon,		.TotalDurationDays=28,.HatchTotalDays=3,.NumofProg=4},//Boghalamoon
+	{.Type=Boghalamoon,		.TotalDurationDays=28,.HatchTotalDays=3,.NumofProg=2},//Boghalamoon
 	{.Type=Belderchin,		.TotalDurationDays=17,.HatchTotalDays=3,.NumofProg=2},//Belderchin
 	{.Type=Gharghavol,		.TotalDurationDays=26,.HatchTotalDays=3,.NumofProg=2},//Gharghavol
 	{.Type=Kabk,					.TotalDurationDays=24,.HatchTotalDays=3,.NumofProg=2},//Kabk
 	{.Type=Ordak,					.TotalDurationDays=28,.HatchTotalDays=3,.NumofProg=2},//Ordak
-	{.Type=Ghaz,					.TotalDurationDays=28,.HatchTotalDays=3,.NumofProg=4},//Ghaz
+	{.Type=Ghaz,					.TotalDurationDays=32,.HatchTotalDays=3,.NumofProg=2},//Ghaz
 	{.Type=ShotorMorgh,		.TotalDurationDays=42,.HatchTotalDays=3,.NumofProg=2}//ShotorMorgh
 };
 /*
